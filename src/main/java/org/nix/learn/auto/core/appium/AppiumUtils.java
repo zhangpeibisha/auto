@@ -15,6 +15,6 @@ package org.nix.learn.auto.core.appium;
  */
 public class AppiumUtils {
 
-
+    
 
 }
