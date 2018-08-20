@@ -43,9 +43,9 @@ public abstract class AbstractDriverFactory implements DriverFactory {
     @Override
     public DesiredCapabilities getDesiredCapabilities(BasePhoneConfig config) {
         DesiredCapabilities capabilities = new DesiredCapabilities();
-        String json = JSONObject.toJSONString(capabilities);
-        Map<String,String> map = JSONObject.parseObject(json,Map.class);
-        for (Map.Entry<String,String> value : map.entrySet()) {
+        String json = JSONObject.toJSONString(config);
+        Map<String,Object> map = JSONObject.parseObject(json,Map.class);
+        for (Map.Entry<String,Object> value : map.entrySet()) {
             capabilities.setCapability(value.getKey(),value.getValue());
         }
         userInitDesiredCapabilities(capabilities);

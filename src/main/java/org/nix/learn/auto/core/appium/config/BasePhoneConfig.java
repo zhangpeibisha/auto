@@ -17,6 +17,22 @@ import java.util.Map;
 public class BasePhoneConfig implements Serializable {
 
     /**
+     * 创建app需要等driver
+     * @param platformName 操作系统名字
+     * @param platformVersion 操作系统版本
+     * @param deviceName 手机名字
+     * @param udid 手机标示序列号
+     */
+    public BasePhoneConfig(String platformName, String platformVersion, String deviceName, String udid) {
+        this.platformName = platformName;
+        this.platformVersion = platformVersion;
+        this.deviceName = deviceName;
+        this.udid = udid;
+    }
+
+
+
+    /**
      * 你想使用的自动化测试引擎|`Appium` (默认) 或 `Selendroid
      */
     protected String automationName = "Appium";

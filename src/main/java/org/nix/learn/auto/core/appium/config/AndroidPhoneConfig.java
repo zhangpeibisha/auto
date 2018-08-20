@@ -11,6 +11,28 @@ import java.util.Objects;
 public class AndroidPhoneConfig extends BasePhoneConfig {
 
     /**
+     * 测试安卓手机的必须参数
+     * @param platformName 操作系统名字
+     * @param platformVersion 操作系统版本号
+     * @param deviceName 手机驱动名字
+     * @param udid 手机adb链接的序列号
+     * @param appActivity app的启动活动
+     * @param appPackage app的包名
+     */
+    public AndroidPhoneConfig(String platformName,
+                              String platformVersion,
+                              String deviceName,
+                              String udid,
+                              String appActivity,
+                              String appPackage) {
+        super(platformName, platformVersion, deviceName, udid);
+        this.appActivity = appActivity;
+        this.appPackage = appPackage;
+    }
+
+
+
+    /**
      * 你要从你的应用包中启动的 Android Activity 名称。它通常需要在前面添加 `.`
      * (如：使用`.MainActivity` 而不是 `MainActivity`) |`MainActivity`, `.Settings`|
      */
@@ -185,9 +207,6 @@ public class AndroidPhoneConfig extends BasePhoneConfig {
      * | `chromeOptions: {args: [‘--disable-popup-blocking‘]}` |
      */
     private String chromeOptions;
-
-    public AndroidPhoneConfig() {
-    }
 
     /**
      * 拉启应用时必须提供活动和包
