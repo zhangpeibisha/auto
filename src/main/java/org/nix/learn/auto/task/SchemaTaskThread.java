@@ -1,8 +1,5 @@
-package org.nix.learn.auto.task.example;
+package org.nix.learn.auto.task;
 
-import org.nix.learn.auto.task.RunTask;
-import org.nix.learn.auto.task.TaskException;
-import org.nix.learn.auto.task.TaskResult;
 import org.nix.learn.auto.utils.DateUtils;
 
 import java.io.IOException;

@@ -1,17 +1,15 @@
-package org.nix.learn.auto.task.example;
+package org.nix.learn.auto.task;
 
 import com.alibaba.fastjson.JSONObject;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
-import org.nix.learn.auto.task.TaskException;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;

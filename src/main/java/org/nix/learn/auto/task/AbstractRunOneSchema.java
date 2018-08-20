@@ -1,4 +1,4 @@
-package org.nix.learn.auto.task.example;
+package org.nix.learn.auto.task;
 
 import io.appium.java_client.AppiumDriver;
 import org.nix.learn.auto.task.RunTask;
