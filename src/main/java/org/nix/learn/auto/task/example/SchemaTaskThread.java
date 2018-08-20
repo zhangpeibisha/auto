@@ -1,12 +1,16 @@
 package org.nix.learn.auto.task.example;
 
-import org.nix.learn.auto.task.KeepTaskTo;
+import org.nix.learn.auto.task.RunTask;
 import org.nix.learn.auto.task.TaskResult;
-import org.nix.learn.auto.task.example.AndroidTaskDrivers;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 /**
  * @author zhangpei341@pingan.cn.com 2018/8/20 上午9:26
@@ -15,53 +19,91 @@ import java.util.concurrent.Executors;
 public  class SchemaTaskThread implements TaskResult,Runnable {
 
     /**
-     * 需要执行的schema集合
+     * 将任务拆分为以一个scheme为一个单位进行
      */
-    private Set<String> schema;
-
-    /**
-     * 需要运行的电脑
-     */
-    private Set<AndroidTaskDrivers> drivers;
-
-    /**
-     * 保存结果的目录
-     */
-    private String keepResultDir;
+    private Set<RunTask> runOneSchemas;
 
     /**
      * 任务集合运行线程池
      */
     private ExecutorService pool;
 
-    public SchemaTaskThread(Set<String> schema, Set<AndroidTaskDrivers> drivers) {
-        this.schema = schema;
-        this.drivers = drivers;
-        initPool();
-    }
+    private List<Future> result = new ArrayList<>();
+
+    private String keepReuslt;
 
     private void initPool() {
-        pool = Executors.newFixedThreadPool(drivers.size());
+        pool = Executors.newFixedThreadPool(runOneSchemas.size());
+    }
+
+    public SchemaTaskThread(Set<RunTask> runOneSchemas) {
+        this.runOneSchemas = runOneSchemas;
+        initPool();
     }
 
     @Override
     public void run() {
-
+        for (RunTask oneSchema : runOneSchemas) {
+            Future future = pool.submit(oneSchema);
+            result.add(future);
+        }
+        close();
+        obtainTaskResult();
+        taskResultTo("");
     }
 
     @Override
-    public void obtainTaskResult() {
-
+    public String obtainTaskResult(String... value) {
+        StringBuilder builder = new StringBuilder();
+        int index = 0;
+        for (Future future : result) {
+            builder.append("序号:").append(index++).append("\n");
+            try {
+                builder.append("结果:").append(future.get().toString());
+            } catch (InterruptedException | ExecutionException e) {
+                builder.append("结果:").append("失败--").append(e.getMessage());
+            }
+        }
+        keepReuslt = builder.toString();
+        return keepReuslt;
     }
 
     @Override
-    public void taskResultTo(KeepTaskTo taskTo) {
-
+    public void taskResultTo(String value) {
+        System.out.println("打印最后的结果集合 \n"+keepReuslt);
     }
 
-    class RunOneSchema {
-
-
+    /**
+     * 关闭线程池
+     */
+    private void close(){
+        pool.shutdown();
     }
 
+    public static void main(String[] args) {
+
+        Set<RunTask> runOneSchemas = new HashSet<>();
+
+//        RunOneSchema runOneSchema_1 = RunOneSchema.createAndoridOneSchema(
+//                "emulator-5554","emulator-5554","com.android.browser","com.android.browser.BrowserActivity",
+//                "WEBVIEW_com.android.browser");
+//        RunOneSchema runOneSchema_2 = RunOneSchema.createAndoridOneSchema(
+//                "1267e25a","1267e25a","com.vivo.browser",
+//                "com.vivo.browser.MainActivity"," WEBVIEW_stetho_com.paic.zhifu.wallet.activitystg2");
+//        RunOneSchema runOneSchema_3 = RunOneSchema.createOneSchema();
+
+
+//        runOneSchemas.add(runOneSchema_1);
+//        runOneSchemas.add(runOneSchema_2);
+//        runOneSchemas.add(runOneSchema_3);
+
+        HBuilderRunOneSchema hBuilderRunOneSchema = HBuilderRunOneSchema.createOne("1267e25a",
+                "1267e25a","io.dcloud.H5462000D","io.dcloud.PandoraEntryActivity");
+
+        runOneSchemas.add(hBuilderRunOneSchema);
+
+        SchemaTaskThread taskThread = new SchemaTaskThread(runOneSchemas);
+        Thread thread = new Thread(taskThread);
+        thread.start();
+    }
 }

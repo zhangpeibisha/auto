@@ -10,11 +10,10 @@ public interface TaskResult{
     /**
      * 获取任务执行报告
      */
-    void obtainTaskResult();
+    String obtainTaskResult(String... value);
 
     /**
      * 定义任务结果应该去哪里
-     * @param taskTo 任务保存去向
      */
-    void taskResultTo(KeepTaskTo taskTo);
+    void taskResultTo(String result);
 }
