@@ -52,7 +52,6 @@ public class HBuilderRunOneSchema extends AbstractRunOneSchema{
     @Override
     public void runTask() {
 
-
         driver.findElement(By.id("writerURI")).sendKeys(schema);
         driver.findElement(By.id("clickRun")).click();
         try {

@@ -1,8 +1,14 @@
 package org.nix.learn.auto.task.example;
 
 import org.nix.learn.auto.task.RunTask;
+import org.nix.learn.auto.task.TaskException;
 import org.nix.learn.auto.task.TaskResult;
+import org.nix.learn.auto.utils.DateUtils;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -16,12 +22,22 @@ import java.util.concurrent.Future;
  * @author zhangpei341@pingan.cn.com 2018/8/20 上午9:26
  * @version 1.0
  */
-public  class SchemaTaskThread implements TaskResult,Runnable {
+public class SchemaTaskThread implements TaskResult, Runnable {
 
     /**
      * 将任务拆分为以一个scheme为一个单位进行
      */
     private Set<RunTask> runOneSchemas;
+
+    /**
+     * 保存报告的地址
+     */
+    private String keepResultPath;
+
+    /**
+     * 用户id
+     */
+    private String userId;
 
     /**
      * 任务集合运行线程池
@@ -36,8 +52,10 @@ public  class SchemaTaskThread implements TaskResult,Runnable {
         pool = Executors.newFixedThreadPool(runOneSchemas.size());
     }
 
-    public SchemaTaskThread(Set<RunTask> runOneSchemas) {
+    public SchemaTaskThread(Set<RunTask> runOneSchemas, String keepResultPath, String userId) {
         this.runOneSchemas = runOneSchemas;
+        this.keepResultPath = keepResultPath;
+        this.userId = userId;
         initPool();
     }
 
@@ -70,13 +88,19 @@ public  class SchemaTaskThread implements TaskResult,Runnable {
 
     @Override
     public void taskResultTo(String value) {
-        System.out.println("打印最后的结果集合 \n"+keepReuslt);
+        Path path = Paths.get(keepResultPath,userId+"-"+ DateUtils.getCurrentDate()+".txt");
+        try {
+            Files.write(path,keepReuslt.getBytes());
+        } catch (IOException e) {
+            throw new TaskException("文件写入失败",e);
+        }
+        System.out.println("打印最后的结果集合 \n" + keepReuslt);
     }
 
     /**
      * 关闭线程池
      */
-    private void close(){
+    private void close() {
         pool.shutdown();
     }
 
@@ -96,13 +120,18 @@ public  class SchemaTaskThread implements TaskResult,Runnable {
 //        runOneSchemas.add(runOneSchema_1);
 //        runOneSchemas.add(runOneSchema_2);
 //        runOneSchemas.add(runOneSchema_3);
-
+//
         HBuilderRunOneSchema hBuilderRunOneSchema = HBuilderRunOneSchema.createOne("1267e25a",
-                "1267e25a","io.dcloud.H5462000D","io.dcloud.PandoraEntryActivity");
+                "1267e25a", "io.dcloud.H5462000D", "io.dcloud.PandoraEntryActivity");
+
+//        HBuilderRunOneSchema hBuilderRunOneSchema1 = HBuilderRunOneSchema.createOne("emulator-5554",
+//                "emulator-5554","io.dcloud.H5462000D","io.dcloud.PandoraEntryActivity");
 
         runOneSchemas.add(hBuilderRunOneSchema);
+//        runOneSchemas.add(hBuilderRunOneSchema1);
 
-        SchemaTaskThread taskThread = new SchemaTaskThread(runOneSchemas);
+        SchemaTaskThread taskThread = new SchemaTaskThread(runOneSchemas,"/Users/mac/IdeaProjects/auto_git/src/main/file/","张沛341");
+
         Thread thread = new Thread(taskThread);
         thread.start();
     }
