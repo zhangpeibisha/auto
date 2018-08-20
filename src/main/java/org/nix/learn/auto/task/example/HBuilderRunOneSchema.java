@@ -52,11 +52,11 @@ public class HBuilderRunOneSchema extends AbstractRunOneSchema{
     @Override
     public void runTask() {
 
+
         driver.findElement(By.id("writerURI")).sendKeys(schema);
         driver.findElement(By.id("clickRun")).click();
         try {
             Thread.currentThread().sleep(5000);
-            driver.context("NATIVE_APP");
             File file = driver.getScreenshotAs(OutputType.FILE);
             fileName = file.getName();
             Path path = Paths.get(keepDir,fileName);
