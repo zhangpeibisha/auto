@@ -10,5 +10,4 @@ public class ExecutePhone {
     private String appiumPath;
 
 
-
 }
