@@ -7,6 +7,7 @@ import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.task.android.DefaultApkDetails;
 
 import java.util.*;
+import java.util.concurrent.Callable;
 
 /**
  * 一个服务器只要IP确认，
@@ -14,7 +15,7 @@ import java.util.*;
  * @author zhangpei341@pingan.cn.com 2018/8/21 上午10:34
  * @version 1.0
  */
-public class UseAppiumServer extends AppiumServer {
+public class UseAppiumServer extends AppiumServer implements Callable<List<AndroidDriver>> {
 
     /**
      * 在这个服务器上的手机的udids
@@ -59,7 +60,7 @@ public class UseAppiumServer extends AppiumServer {
         return drivers;
     }
 
-    public AndroidDriver createDriver(String udid, String appiumPath) {
+    private AndroidDriver createDriver(String udid, String appiumPath) {
 
         AndroidPhoneConfig config = new AndroidPhoneConfig(DefaultApkDetails.APP_ACTIVITY, DefaultApkDetails.APP_PACKAGE, udid);
 
@@ -79,5 +80,23 @@ public class UseAppiumServer extends AppiumServer {
         UseAppiumServer server = new UseAppiumServer(path, map, udids);
         List<AndroidDriver> drivers = server.createDriver();
         System.out.println();
+    }
+
+    public static UseAppiumServer getUserAppiumServer(){
+        String path = "0.0.0.0";
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("4723", true);
+        map.put("5000", false);
+
+        Set<String> udids = new HashSet<>();
+        udids.add("1267e25a");
+
+        UseAppiumServer server = new UseAppiumServer(path, map, udids);
+        return server;
+    }
+
+    @Override
+    public List<AndroidDriver> call() throws Exception {
+        return createDriver();
     }
 }
