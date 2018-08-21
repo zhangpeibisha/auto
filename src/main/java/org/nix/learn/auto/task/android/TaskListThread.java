@@ -9,6 +9,7 @@ import org.nix.learn.auto.task.TaskException;
 import org.nix.learn.auto.utils.Base64;
 import org.openqa.selenium.By;
 import org.openqa.selenium.OutputType;
+import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.Response;
 
 import java.io.File;
@@ -90,11 +91,12 @@ public class TaskListThread implements Callable<PhoneRunPresentation> {
 
         SchemaRunPresentation schemaRunPresentation = new SchemaRunPresentation(schema);
 
-        // 进入到起始页面
-        driver.startActivity(new Activity(DefaultApkDetails.APP_PACKAGE, DefaultApkDetails.APP_ACTIVITY));
-        driver.findElement(By.id(DefaultApkDetails.SEND_KEY_ID)).sendKeys(schema.obtainCompletePath());
-        driver.findElement(By.id(DefaultApkDetails.CLICK_ID)).click();
         try {
+            System.err.println(driver.getContextHandles());
+            // 进入到起始页面
+            driver.startActivity(new Activity(DefaultApkDetails.APP_PACKAGE, DefaultApkDetails.APP_ACTIVITY));
+            driver.findElement(By.id(DefaultApkDetails.SEND_KEY_ID)).sendKeys(schema.obtainCompletePath());
+            driver.findElement(By.id(DefaultApkDetails.CLICK_ID)).click();
             Thread.currentThread().sleep(10000);
             File file = driver.getScreenshotAs(OutputType.FILE);
             String savePath = savePicture(file,schema.getName());
@@ -109,6 +111,10 @@ public class TaskListThread implements Callable<PhoneRunPresentation> {
             return schemaRunPresentation;
         } catch (TaskException e) {
             schemaRunPresentation.setRemarks("文件保存失败，运行失败:"+e.getMessage());
+            schemaRunPresentation.setRunResult(false);
+            return schemaRunPresentation;
+        }catch (WebDriverException e){
+            schemaRunPresentation.setRemarks("appium异常，运行失败:"+e.getMessage());
             schemaRunPresentation.setRunResult(false);
             return schemaRunPresentation;
         }

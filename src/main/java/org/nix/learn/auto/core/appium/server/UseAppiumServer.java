@@ -53,7 +53,6 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
         String[] udidsStr = new String[udisLen];
         udidsStr = udids.toArray(udidsStr);
         for (int i = 0; i < udisLen; i++) {
-            System.out.println(paths.get(i) + "  " + udidsStr[i]);
             AndroidDriver driver = createDriver(udidsStr[i], paths.get(i));
             drivers.add(driver);
         }
@@ -71,8 +70,8 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
     public static void main(String[] args) {
         String path = "0.0.0.0";
         Map<String, Boolean> map = new HashMap<>();
-        map.put("4723", true);
-        map.put("5000", false);
+//        map.put("4723", true);
+        map.put("4725", false);
 
         Set<String> udids = new HashSet<>();
         udids.add("1267e25a");
@@ -86,10 +85,12 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
         String path = "0.0.0.0";
         Map<String, Boolean> map = new HashMap<>();
         map.put("4723", true);
-        map.put("5000", false);
+//        map.put("4725", true);
 
         Set<String> udids = new HashSet<>();
-        udids.add("1267e25a");
+//        udids.add("1267e25a");
+//        udids.add("d38bf0d0");
+        udids.add("P7C0218410003789");
 
         UseAppiumServer server = new UseAppiumServer(path, map, udids);
         return server;

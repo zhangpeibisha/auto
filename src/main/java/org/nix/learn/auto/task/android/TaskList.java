@@ -91,7 +91,7 @@ public class TaskList {
             try {
                 keepResult(future.get());
             } catch (InterruptedException | ExecutionException e) {
-                keepResult(e.getMessage());
+
             }
         }
     }
@@ -101,7 +101,6 @@ public class TaskList {
      * @param o 返回的结果
      */
     public void keepResult(Object o){
-        System.out.println(JSONObject.toJSONString(o));
         phoneRunPresentations.add((PhoneRunPresentation) o);
     }
 
@@ -121,9 +120,13 @@ public class TaskList {
         servers.add(UseAppiumServer.getUserAppiumServer());
 
         TaskList taskList = new TaskList(servers,getSchemas(),"/Users/mac/IdeaProjects/auto_git/src/main/file/");
-        taskList.run();
-        System.out.println(JSONObject.toJSONString(taskList.getPhoneRunPresentations()));
-        System.out.println();
+        try {
+            taskList.run();
+            System.out.println(JSONObject.toJSONString(taskList.getPhoneRunPresentations()));
+            System.out.println();
+        }catch (Exception e){
+
+        }
     }
 
     public static Set<Schema> getSchemas(){
