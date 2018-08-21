@@ -12,20 +12,18 @@ public class AndroidPhoneConfig extends BasePhoneConfig {
 
     /**
      * 测试安卓手机的必须参数
-     * @param platformName 操作系统名字
      * @param platformVersion 操作系统版本号
      * @param deviceName 手机驱动名字
      * @param udid 手机adb链接的序列号
      * @param appActivity app的启动活动
      * @param appPackage app的包名
      */
-    public AndroidPhoneConfig(String platformName,
-                              String platformVersion,
+    public AndroidPhoneConfig(String platformVersion,
                               String deviceName,
                               String udid,
                               String appActivity,
                               String appPackage) {
-        super(platformName, platformVersion, deviceName, udid);
+        super("Android", platformVersion, deviceName, udid);
         this.appActivity = appActivity;
         this.appPackage = appPackage;
     }

@@ -112,7 +112,7 @@ public class HBuilderRunOneSchema extends AbstractRunOneSchema{
         String platformName = "Android";
         String platformVersion = "4.4.4";
         String appiumPath = "http://127.0.0.1:4723/wd/hub";
-        AndroidPhoneConfig config = new AndroidPhoneConfig(platformName, platformVersion, deviceName, udid, appAcitvity, appPackage);
+        AndroidPhoneConfig config = new AndroidPhoneConfig(platformVersion, deviceName, udid, appAcitvity, appPackage);
 
         AndroidDriver driver = (AndroidDriver) new DefaultAndroidDriver(config, appiumPath).getDriver();
 

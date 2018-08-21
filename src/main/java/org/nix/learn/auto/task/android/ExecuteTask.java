@@ -1,6 +1,4 @@
-package org.nix.learn.auto.task.example;
-
-import org.nix.learn.auto.task.RunTask;
+package org.nix.learn.auto.task.android;
 
 import java.util.Set;
 
