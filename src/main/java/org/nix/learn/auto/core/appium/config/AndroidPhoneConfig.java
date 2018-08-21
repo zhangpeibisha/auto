@@ -217,6 +217,7 @@ public class AndroidPhoneConfig extends BasePhoneConfig {
         this.appActivity = appActivity;
         this.appPackage = appPackage;
         this.udid = udid;
+        this.deviceName = udid;
     }
 
     public String getAppActivity() {

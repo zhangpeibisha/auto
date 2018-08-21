@@ -157,10 +157,11 @@ public class TaskListThread implements Callable<PhoneRunPresentation> {
         Schema four = new Schema("生活缴费", four_1, true, "4.0.0", "/Users/mac/IdeaProjects/auto_git/src/main/file/4723/screenshot60220872694868756.png");
 
         schemas.add(one);
-        schemas.add(two);
-        schemas.add(three);
-        schemas.add(four);
+//        schemas.add(two);
+//        schemas.add(three);
+//        schemas.add(four);
 
+        //                   http://127.0.0.0:4723/wd/hub
         String appiumPath = "http://127.0.0.1:4723/wd/hub";
         String udid = "1267e25a";
         String keepDir = "/Users/mac/IdeaProjects/auto_git/src/main/file/";
@@ -177,7 +178,7 @@ public class TaskListThread implements Callable<PhoneRunPresentation> {
         String platformVersion = "4.4.4";
 
         AndroidPhoneConfig config = new AndroidPhoneConfig(
-                platformVersion, udid, udid, DefaultApkDetails.APP_ACTIVITY, DefaultApkDetails.APP_PACKAGE);
+                DefaultApkDetails.APP_ACTIVITY, DefaultApkDetails.APP_PACKAGE,udid);
 
         DefaultAndroidDriver defaultAndroidDriver = new DefaultAndroidDriver(config, appiumPath);
         return (AndroidDriver) defaultAndroidDriver.getDriver();
