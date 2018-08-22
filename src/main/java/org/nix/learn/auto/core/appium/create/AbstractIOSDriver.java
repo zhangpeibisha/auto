@@ -17,8 +17,15 @@ public abstract class AbstractIOSDriver extends AbstractDriverFactory {
         this.config = config;
     }
 
+    public AbstractIOSDriver(String appiumPath, AdditionalInfo additionalInfo, IOSPhoneConfig config) {
+        super(appiumPath, additionalInfo);
+        this.config = config;
+    }
+
     @Override
     public void createDriver() {
         driver = new IOSDriver(getAppiumPath(), getDesiredCapabilities(config));
     }
+
+
 }

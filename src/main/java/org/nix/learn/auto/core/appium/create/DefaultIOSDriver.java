@@ -14,8 +14,13 @@ public class DefaultIOSDriver extends AbstractIOSDriver{
         super(config, appiumPath);
     }
 
-    @Override
-    void userInitDesiredCapabilities(DesiredCapabilities capabilities) {
-
+    /**
+     * 用户自定义了携带参数
+     * @param config 手机系统配置参数
+     * @param appiumPath appium服务器配置
+     * @param config 额外携带的参数信息
+     */
+    public DefaultIOSDriver(String appiumPath, AdditionalInfo additionalInfo, IOSPhoneConfig config) {
+        super(appiumPath, additionalInfo, config);
     }
 }

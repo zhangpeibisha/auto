@@ -19,8 +19,14 @@ public abstract class AbstractAndroidDriver extends AbstractDriverFactory{
         this.config = config;
     }
 
+    public AbstractAndroidDriver(String appiumPath, AdditionalInfo additionalInfo, AndroidPhoneConfig config) {
+        super(appiumPath, additionalInfo);
+        this.config = config;
+    }
+
     @Override
     public void createDriver() {
         driver = new AndroidDriver(getAppiumPath(),getDesiredCapabilities(config));
     }
+
 }

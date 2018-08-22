@@ -22,8 +22,18 @@ public abstract class AbstractDriverFactory implements DriverFactory {
 
     protected String appiumPath;
 
+    /**
+     * 创建driver时需要携带的额外信息
+     */
+    protected AdditionalInfo additionalInfo;
+
     public AbstractDriverFactory(String appiumPath) {
         this.appiumPath = appiumPath;
+    }
+
+    public AbstractDriverFactory(String appiumPath, AdditionalInfo additionalInfo) {
+        this.appiumPath = appiumPath;
+        this.additionalInfo = additionalInfo;
     }
 
     /**
@@ -38,7 +48,18 @@ public abstract class AbstractDriverFactory implements DriverFactory {
      * 用户自定义添加一部分的配置
      * @param capabilities 用户可以额外再添加一部分配置
      */
-    abstract void userInitDesiredCapabilities(DesiredCapabilities capabilities);
+    void userInitDesiredCapabilities(DesiredCapabilities capabilities){
+        if (additionalInfo!=null){
+            for (Map.Entry<String,Object> va : readObjectParma().entrySet()) {
+                capabilities.setCapability(va.getKey(),va.getValue());
+            }
+        }
+    }
+
+    private Map<String,Object> readObjectParma(){
+        String str = JSONObject.toJSONString(additionalInfo);
+        return JSONObject.parseObject(str,Map.class);
+    }
 
     @Override
     public DesiredCapabilities getDesiredCapabilities(BasePhoneConfig config) {

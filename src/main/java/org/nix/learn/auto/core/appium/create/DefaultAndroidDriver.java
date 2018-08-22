@@ -1,10 +1,10 @@
 package org.nix.learn.auto.core.appium.create;
 
+import com.alibaba.fastjson.JSONObject;
 import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
-import org.nix.learn.auto.core.appium.config.BasePhoneConfig;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
-import java.net.URL;
+import java.util.Map;
 
 /**
  * @author zhangpei
@@ -12,6 +12,8 @@ import java.net.URL;
  * @date 2018/8/19
  */
 public class DefaultAndroidDriver extends AbstractAndroidDriver{
+
+
 
     /**
      * 创建一个driver必备的条件
@@ -23,13 +25,12 @@ public class DefaultAndroidDriver extends AbstractAndroidDriver{
     }
 
     /**
-     * 此处可以添加driver的额外自定义信息
-     * 也可以做其它driver的配置信息
-     * @param capabilities 用户可以额外再添加一部分配置
+     * 用户自定义了携带参数
+     * @param config 手机系统配置参数
+     * @param appiumPath appium服务器配置
+     * @param config 额外携带的参数信息
      */
-    @Override
-    void userInitDesiredCapabilities(DesiredCapabilities capabilities) {
-
-        capabilities.setCapability("phoneName","vivo");
+    public DefaultAndroidDriver(String appiumPath, AdditionalInfo additionalInfo, AndroidPhoneConfig config) {
+        super(appiumPath, additionalInfo, config);
     }
 }

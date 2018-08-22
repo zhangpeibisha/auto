@@ -1,5 +1,6 @@
 package org.nix.learn.auto.core.appium.server;
 
+import com.alibaba.fastjson.JSONObject;
 import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.nix.learn.auto.core.appium.AppiumException;
@@ -87,7 +88,7 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
 //        capabilities1.setCapability("phoneName","vivo");
 //        driver.getCapabilities().merge(capabilities1);
 
-        System.out.println(driver.getCapabilities().getCapability("phoneName"));
+        System.out.println(JSONObject.toJSONString(driver.getCapabilities()));
     }
 
     public static UseAppiumServer getUserAppiumServer(){

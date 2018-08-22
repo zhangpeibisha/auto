@@ -16,6 +16,9 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "system")
 public class SystemConfig {
 
+    /**
+     * 服务器多端口号
+     */
     private String port;
 
     public String getPort() {
