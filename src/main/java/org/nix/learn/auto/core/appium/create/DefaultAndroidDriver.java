@@ -22,8 +22,14 @@ public class DefaultAndroidDriver extends AbstractAndroidDriver{
         super(config,appiumPath);
     }
 
+    /**
+     * 此处可以添加driver的额外自定义信息
+     * 也可以做其它driver的配置信息
+     * @param capabilities 用户可以额外再添加一部分配置
+     */
     @Override
     void userInitDesiredCapabilities(DesiredCapabilities capabilities) {
 
+        capabilities.setCapability("phoneName","vivo");
     }
 }

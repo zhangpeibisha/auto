@@ -26,6 +26,11 @@ public class PhoneRunPresentation {
     private String resolvingPower;
 
     /**
+     * 手机序列号
+     */
+    private String phoneId;
+
+    /**
      * 这个手机上运行的运行报告结果
      */
     private List<SchemaRunPresentation> presentations;

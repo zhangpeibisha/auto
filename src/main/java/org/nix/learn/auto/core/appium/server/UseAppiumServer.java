@@ -1,10 +1,13 @@
 package org.nix.learn.auto.core.appium.server;
 
+import io.appium.java_client.AppiumDriver;
 import io.appium.java_client.android.AndroidDriver;
 import org.nix.learn.auto.core.appium.AppiumException;
 import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.task.android.DefaultApkDetails;
+import org.openqa.selenium.Capabilities;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -62,15 +65,15 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
     private AndroidDriver createDriver(String udid, String appiumPath) {
 
         AndroidPhoneConfig config = new AndroidPhoneConfig(DefaultApkDetails.APP_ACTIVITY, DefaultApkDetails.APP_PACKAGE, udid);
-
+        System.out.println();
         AndroidDriver driver = (AndroidDriver) new DefaultAndroidDriver(config, appiumPath).getDriver();
         return driver;
     }
 
     public static void main(String[] args) {
-        String path = "0.0.0.0";
+        String path = "127.0.0.1";
         Map<String, Boolean> map = new HashMap<>();
-//        map.put("4723", true);
+        map.put("4723", true);
         map.put("4725", false);
 
         Set<String> udids = new HashSet<>();
@@ -78,19 +81,27 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
 
         UseAppiumServer server = new UseAppiumServer(path, map, udids);
         List<AndroidDriver> drivers = server.createDriver();
-        System.out.println();
+        AppiumDriver driver = drivers.get(0);
+
+//        DesiredCapabilities capabilities1 = new DesiredCapabilities();
+//        capabilities1.setCapability("phoneName","vivo");
+//        driver.getCapabilities().merge(capabilities1);
+
+        System.out.println(driver.getCapabilities().getCapability("phoneName"));
     }
 
     public static UseAppiumServer getUserAppiumServer(){
-        String path = "0.0.0.0";
+        String path = "127.0.0.1";
+
         Map<String, Boolean> map = new HashMap<>();
         map.put("4723", true);
-//        map.put("4725", true);
+        map.put("4725", true);
+        map.put("4727", true);
 
         Set<String> udids = new HashSet<>();
-//        udids.add("1267e25a");
-//        udids.add("d38bf0d0");
-        udids.add("P7C0218410003789");
+        udids.add("1267e25a");
+        udids.add("ENU7N15A12003472");
+//        udids.add("fa91b0a5");
 
         UseAppiumServer server = new UseAppiumServer(path, map, udids);
         return server;
