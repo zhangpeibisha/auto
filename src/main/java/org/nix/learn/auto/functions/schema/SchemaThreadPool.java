@@ -58,11 +58,17 @@ public class SchemaThreadPool {
         }
     }
 
-    public static void put(Callable thread){
+    /**
+     * 有返回值的线程
+     * @param thread
+     * @return
+     */
+    public static Future put(Callable thread){
         try {
-            pool.submit(thread);
+           return pool.submit(thread);
         }catch (NullPointerException e){
             LogUtils.printLog("加入任务失败",e);
+            throw new NullPointerException("加入任务失败，线程为空指针");
         }
     }
 

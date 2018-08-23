@@ -8,7 +8,6 @@ import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.task.android.DefaultApkDetails;
 import org.openqa.selenium.Capabilities;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.util.*;
 import java.util.concurrent.Callable;
@@ -67,7 +66,10 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
 
         AndroidPhoneConfig config = new AndroidPhoneConfig(DefaultApkDetails.APP_ACTIVITY, DefaultApkDetails.APP_PACKAGE, udid);
         System.out.println();
-        AndroidDriver driver = (AndroidDriver) new DefaultAndroidDriver(config, appiumPath).getDriver();
+
+        DefaultAndroidDriver defaultAndroidDriver = new DefaultAndroidDriver(config, appiumPath);
+        AndroidDriver driver = (AndroidDriver) defaultAndroidDriver.getDriver();
+
         return driver;
     }
 
@@ -88,7 +90,10 @@ public class UseAppiumServer extends AppiumServer implements Callable<List<Andro
 //        capabilities1.setCapability("phoneName","vivo");
 //        driver.getCapabilities().merge(capabilities1);
 
-        System.out.println(JSONObject.toJSONString(driver.getCapabilities()));
+        Capabilities capabilities = driver.getCapabilities();
+
+        Map map1 = capabilities.asMap();
+        System.out.println(JSONObject.toJSONString(map1));
     }
 
     public static UseAppiumServer getUserAppiumServer(){

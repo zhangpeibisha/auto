@@ -1,5 +1,9 @@
 package org.nix.learn.auto.functions.schema;
 
+import org.openqa.selenium.Capabilities;
+
+import java.util.Set;
+
 /**
  * 定义一个收集信息的接口
  * 该接口主要是为了记录每个执行需要保存结果的信息
@@ -10,12 +14,11 @@ package org.nix.learn.auto.functions.schema;
 public interface Presentation{
 
     /**
-     * 该方法表示如何处理这些数据
-     *
-     * @param json json格式的数据
-     * @param classzz json格式的Java类
+     * 处理运行结果信息
+     * @param capabilities 配置类信息集合
+     * @param key 需要获取信息的keys,在执行过程中添加的参数
      */
-    void dataTo(String json,Class classzz);
+    void dataTo(Capabilities capabilities, String key);
 
 
 }

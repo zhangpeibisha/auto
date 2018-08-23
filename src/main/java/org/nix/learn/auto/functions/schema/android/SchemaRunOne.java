@@ -4,16 +4,30 @@ import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.AppiumUtils;
-import org.nix.learn.auto.functions.schema.Presentation;
-import org.nix.learn.auto.functions.schema.SchemaException;
-import org.nix.learn.auto.functions.schema.SchemaModel;
-import org.nix.learn.auto.functions.schema.SchemaRun;
-import org.nix.learn.auto.task.android.SchemaRunPresentation;
-import org.openqa.selenium.NoSuchElementException;
+import org.nix.learn.auto.core.appium.create.AdditionalInfo;
+import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
+import org.nix.learn.auto.entity.ApkInfo;
+import org.nix.learn.auto.functions.schema.*;
 import org.openqa.selenium.WebDriverException;
+import org.openqa.selenium.remote.DesiredCapabilities;
+
+import java.io.IOException;
+import java.nio.file.Path;
+
 
 /**
  * 运行一条schema的实现类
+ * <p>
+ * 最终任务的执行类
+ * <p>
+ * 这一层将不能并发执行，将并发任务交个上层管理执行
+ * 该层的主要任务就是执行具体任务，并实时更新执行状态
+ * <p>
+ * 执行状态分布：创建时为未执行，到该类后为执行中，末为执行成功和执行失败
+ * <p>
+ * 在创建任务时，就应当初始化每个schema的运行状态
+ * <p>
+ * 层次等级：4
  *
  * @author zhangpei341@pingan.cn.com 2018/8/22 下午4:34
  * @version 1.0
@@ -28,117 +42,65 @@ public class SchemaRunOne implements SchemaRun {
     private SchemaModel schemaModel;
 
     /**
-     * 用来执行的driver
+     * 创建driver的功能类
      */
-    private AndroidDriver driver;
+    private DefaultAndroidDriver defaultAndroidDriver;
 
     /**
-     * 用来处理执行情况的报告类
+     * 用来处理执行情况的报告类，提供报告处理功能
      */
-    private Presentation presentation;
+    private TaskPresentation presentation;
 
     /**
-     * 测试的目的apk信息
+     * 测试的apk版本
      */
-    private TestApkInfo apkInfo;
+    private String apkVersion;
 
     /**
-     * 构建一个运行对象
+     * 测试截图地址
+     */
+    private Path screenshotPath;
+
+    /**
      *
-     * @param schemaModel  需要执行的schema
-     * @param driver       执行的驱动
-     * @param presentation 执行的告生成
+     * @param schemaModel
+     * @param defaultAndroidDriver
+     * @param presentation
+     * @param apkVersion
+     * @param screenshotPath
      */
-    public SchemaRunOne(SchemaModel schemaModel, AndroidDriver driver, Presentation presentation) {
+    public SchemaRunOne(SchemaModel schemaModel, DefaultAndroidDriver defaultAndroidDriver, TaskPresentation presentation, String apkVersion, Path screenshotPath) {
         this.schemaModel = schemaModel;
-        this.driver = driver;
+        this.defaultAndroidDriver = defaultAndroidDriver;
         this.presentation = presentation;
+        this.apkVersion = apkVersion;
+        this.screenshotPath = screenshotPath;
     }
 
     @Override
     public void runTask() {
-        SchemaRunOneResult presentation = new SchemaRunOneResult();
-        presentation.setSchemaModel(schemaModel);
-        presentation.setApkInfo(apkInfo);
+        TaskPresentation taskPresentation = new TaskPresentation("底层执行类",schemaModel.requestPath(apkVersion));
+
+        // 核心运行部分
         try {
+            AndroidDriver driver = (AndroidDriver) defaultAndroidDriver.getDriver();
             // 首先进入初始页面
             driver.startActivity(new Activity(FunctionsApk.APP_PACKAGE, FunctionsApk.APP_ACTIVITY));
-            AppiumUtils.sendKeyElement(FunctionsApk.SEND_KEY_ID, driver, schemaModel.requestPath(apkInfo.getVersion()));
+            AppiumUtils.sendKeyElement(FunctionsApk.SEND_KEY_ID, driver,
+                    schemaModel.requestPath(apkVersion));
             AppiumUtils.clickElement(driver, FunctionsApk.CLICK_ID);
             Thread.currentThread().sleep(10000);
+            Path savePath = AppiumUtils.screenshot(driver, screenshotPath);
 
-        } catch (WebDriverException | SchemaException | InterruptedException e) {
-            presentation.setMsg(e.getMessage());
-            presentation.setResult(false);
+            // 开始手机信息进行保存，为报告生成做准备
+            taskPresentation.addKeyAndValue("result","[运行成功]");
+            taskPresentation.addKeyAndValue("screenshotPath",savePath);
+        } catch (WebDriverException | SchemaException | InterruptedException | IOException e) {
+            taskPresentation.addKeyAndValue("result","[运行失败]");
+            taskPresentation.addKeyAndValue("msg",e.getMessage());
         }
+
+        presentation.addPresentation(taskPresentation);
     }
 
-
-    static class SchemaRunOneResult {
-
-        /**
-         * 运行的schema信息
-         */
-        private SchemaModel schemaModel;
-
-        /**
-         * 运行的结果，成功或者失败
-         */
-        private Boolean result;
-
-        /**
-         * 运行信息
-         */
-        private String msg;
-
-        /**
-         * 测试的apk信息
-         */
-        private TestApkInfo apkInfo;
-
-        public SchemaRunOneResult() {
-        }
-
-        public SchemaModel getSchemaModel() {
-            return schemaModel;
-        }
-
-        public void setSchemaModel(SchemaModel schemaModel) {
-            this.schemaModel = schemaModel;
-        }
-
-        public Boolean getResult() {
-            return result;
-        }
-
-        public void setResult(Boolean result) {
-            this.result = result;
-        }
-
-        public String getMsg() {
-            return msg;
-        }
-
-        public void setMsg(String msg) {
-            this.msg = msg;
-        }
-
-        public TestApkInfo getApkInfo() {
-            return apkInfo;
-        }
-
-        public void setApkInfo(TestApkInfo apkInfo) {
-            this.apkInfo = apkInfo;
-        }
-
-        @Override
-        public String toString() {
-            return "SchemaRunOneResult{" +
-                    "schemaModel=" + schemaModel +
-                    ", result=" + result +
-                    ", msg='" + msg + '\'' +
-                    ", apkInfo=" + apkInfo +
-                    '}';
-        }
-    }
 }

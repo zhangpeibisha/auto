@@ -44,8 +44,37 @@ public class ApkInfo {
      */
     private Date createTime;
 
-    public ApkInfo(String version) {
+    public ApkInfo() {
+    }
+
+    /**
+     * 已经安装了信息
+     * @param version
+     * @param runEnvironment
+     * @param appPackage
+     * @param appActivity
+     * @param createTime
+     */
+    public ApkInfo(String version, String runEnvironment, String appPackage, String appActivity, Date createTime) {
         this.version = version;
+        this.runEnvironment = runEnvironment;
+        this.appPackage = appPackage;
+        this.appActivity = appActivity;
+        this.createTime = createTime;
+    }
+
+    /**
+     * 安装包信息
+     * @param version
+     * @param runEnvironment
+     * @param installPath
+     * @param createTime
+     */
+    public ApkInfo(String version, String runEnvironment, Path installPath, Date createTime) {
+        this.version = version;
+        this.runEnvironment = runEnvironment;
+        this.installPath = installPath;
+        this.createTime = createTime;
     }
 
     public static Logger getLogger() {
