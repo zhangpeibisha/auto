@@ -70,7 +70,7 @@ public class RunStaple {
 
         // 意味着将有部分手机不能使用，执行任务
         if (max == udidsLen) {
-            prentPresentation.addKeyAndValue("不能执行任务的手机", udids.subList(min+1,max));
+            prentPresentation.addKeyAndValue("不能执行任务的手机", udids.subList(min,max));
         }
         return defaultAndroidDrivers;
     }

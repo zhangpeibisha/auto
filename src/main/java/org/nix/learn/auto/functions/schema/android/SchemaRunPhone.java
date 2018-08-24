@@ -64,7 +64,6 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
 
     @Override
     public void run() {
-        initDriver();
         runTask();
     }
 
@@ -80,11 +79,6 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
             SchemaRunOne runOne = new SchemaRunOne(schemaModel,defaultAndroidDriver,son,apkVersion,screenshotPath);
             runOne.runTask();
         }
-    }
-
-    private void initDriver(){
-        // 此方法可启动driver的创建
-        defaultAndroidDriver.getDriver();
     }
 
 }

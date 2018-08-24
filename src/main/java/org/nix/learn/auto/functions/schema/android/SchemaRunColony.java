@@ -16,8 +16,8 @@ import java.util.*;
 
 /**
  * 顶级任务执行类，任务执行的入口就是创建该类的对象
- *
- *
+ * <p>
+ * <p>
  * 报告实际使用将采用缓存处理，每次运行完都将存入一次缓存中
  * 从而可以实时读取运行信息。
  *
@@ -103,7 +103,7 @@ public class SchemaRunColony implements SchemaRun {
     @Override
     public void runTask() {
         boosPresentation.addKeyAndValue("taskInfo", JSON.toJSON(this));
-        LogUtils.printLog("frist","一级任务");
+        LogUtils.printLog("frist", "一级任务");
         for (RunStaple runStaple : runStaples) {
             SchemaRunComputer computer = new SchemaRunComputer(runStaple, boosPresentation, schemaModels, apkInfo.getVersion(), screenshotPath);
             computer.runTask();
@@ -119,19 +119,19 @@ public class SchemaRunColony implements SchemaRun {
 
         runColony.runTask();
 
-        LogUtils.printLog("  result =======> 1  ",runColony.getResult());
+        LogUtils.printLog("  result =======> 1  ", runColony.getResult());
         Thread.sleep(10000);
-        LogUtils.printLog("  result =======> 2  ",runColony.getResult());
+        LogUtils.printLog("  result =======> 2  ", runColony.getResult());
         Thread.sleep(10000);
-        LogUtils.printLog("  result =======> 3  ",runColony.getResult());
+        LogUtils.printLog("  result =======> 3  ", runColony.getResult());
         Thread.sleep(30000);
-        LogUtils.printLog("  result =======> 4  ",runColony.getResult());
+        LogUtils.printLog("  result =======> 4  ", runColony.getResult());
         Thread.sleep(30000);
-        LogUtils.printLog("  result =======> 5  ",runColony.getResult());
+        LogUtils.printLog("  result =======> 5  ", runColony.getResult());
         Thread.sleep(100000);
-        LogUtils.printLog("  result =======> 5  ",runColony.getResult());
+        LogUtils.printLog("  result =======> 5  ", runColony.getResult());
         Thread.sleep(200000);
-        LogUtils.printLog("  result =======> 5  ",runColony.getResult());
+        LogUtils.printLog("  result =======> 5  ", runColony.getResult());
 
     }
 
@@ -146,19 +146,37 @@ public class SchemaRunColony implements SchemaRun {
         String path = "127.0.0.1";
 
         Map<String, Boolean> map = new HashMap<>();
-        map.put("4723", true);
-        map.put("4725", true);
         map.put("4727", true);
 
         AppiumServer server = new AppiumServer(path, map);
 
         List<String> udids = new ArrayList<>();
         udids.add("1267e25a");
-//        udids.add("ENU7N15A12003472");
+//        udids.add("a7366dea");
 
         List<RunStaple> runStaples = new ArrayList<>();
+
+
         RunStaple runStaple = new RunStaple(server, udids, taskPresentation);
-        runStaples.add(runStaple);
+//        runStaples.add(runStaple);
+
+
+        // 172.20.12.31
+        String path1 = "172.20.12.31";
+
+
+        Map<String, Boolean> map1 = new HashMap<>();
+        map1.put("4723", true);
+        map1.put("4724", true);
+
+        AppiumServer server1 = new AppiumServer(path1, map1);
+
+        List<String> ud = new ArrayList<>();
+        ud.add("a7366dea");
+        ud.add("1267e25a");
+
+        RunStaple runStaple1 = new RunStaple(server1, ud, taskPresentation);
+        runStaples.add(runStaple1);
 
         return runStaples;
     }
@@ -172,7 +190,7 @@ public class SchemaRunColony implements SchemaRun {
         String lifepay = prent + "lifepay/index";
 
         SchemaModel model = new SchemaModel("活钱宝",
-                 huoqianbao, true, "", "4.0.0", null, "活钱宝");
+                huoqianbao, true, "", "4.0.0", null, "活钱宝");
 
 
         SchemaModel assetsModel = new SchemaModel("assets",

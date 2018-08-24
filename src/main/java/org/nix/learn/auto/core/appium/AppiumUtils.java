@@ -32,7 +32,7 @@ public class AppiumUtils {
      * @param driver 需要获取的driver
      * @return 该driver操作的手机序列号
      */
-    public synchronized static String getPhoneId(final AppiumDriver driver) {
+    public String getPhoneId(final AppiumDriver driver) {
         return driver.getCapabilities().getCapability("udid").toString();
     }
 
@@ -43,7 +43,7 @@ public class AppiumUtils {
      * @param capabilityName 需要查找的信息
      * @return 如果没有这个键则返回null 否则返回对应的值
      */
-    public synchronized static String getCapabilities(final AppiumDriver driver, final String capabilityName) {
+    public String getCapabilities(final AppiumDriver driver, final String capabilityName) {
         Capabilities capabilities = driver.getCapabilities();
         if (capabilities.is(capabilityName)) {
             return capabilities.getCapability(capabilityName).toString();
@@ -51,7 +51,7 @@ public class AppiumUtils {
         return null;
     }
 
-    public synchronized static boolean checkWebView(final AppiumDriver driver, final String id) {
+    public boolean checkWebView(final AppiumDriver driver, final String id) {
         return checkWebView(driver, driver.getContextHandles().iterator(), id);
     }
 
@@ -64,7 +64,7 @@ public class AppiumUtils {
      * @param id       需要查询的id
      * @return 是否含有
      */
-    public synchronized static boolean checkWebView(final AppiumDriver driver, final Iterator<String> webviews, final String id) {
+    public boolean checkWebView(final AppiumDriver driver, final Iterator<String> webviews, final String id) {
         String web = "";
         try {
             if (webviews.hasNext()) {
@@ -87,7 +87,7 @@ public class AppiumUtils {
      * @param id     需要操作元素的ID
      * @throws NoSuchElementException 如果自动找这个ID对应的页面没有找到则抛出
      */
-    public synchronized static void clickElement(final AppiumDriver driver, final String id) throws NoSuchElementException {
+    public void clickElement(final AppiumDriver driver, final String id) throws NoSuchElementException {
         boolean isHave = checkWebView(driver, id);
         if (!isHave) {
             throw new NoSuchElementException(driver.getRemoteAddress() + "没有找到这个元素" + id);
@@ -104,7 +104,7 @@ public class AppiumUtils {
      * @param id      需要操作元素的ID
      * @throws NoSuchElementException 如果自动找这个ID对应的页面没有找到则抛出
      */
-    public synchronized static void clickElement(final AppiumDriver driver, final String context, final String id) throws NoSuchElementException {
+    public void clickElement(final AppiumDriver driver, final String context, final String id) throws NoSuchElementException {
 
         if (context == null) {
             clickElement(driver, id);
@@ -124,7 +124,7 @@ public class AppiumUtils {
      * @param sendKey 需要发送的字符串
      * @throws NoSuchElementException 如果自动找这个ID对应的页面没有找到则抛出
      */
-    public synchronized static void sendKeyElement(final String id, final AppiumDriver driver, final CharSequence... sendKey) throws NoSuchElementException {
+    public void sendKeyElement(final String id, final AppiumDriver driver, final CharSequence... sendKey) throws NoSuchElementException {
 
         boolean isHave = checkWebView(driver, id);
         if (!isHave) {
@@ -143,7 +143,7 @@ public class AppiumUtils {
      * @param sendKey 输入的信息
      * @throws NoSuchElementException 如果自动找这个ID对应的页面没有找到则抛出
      */
-    public synchronized static void sendKeyElement(final String context, final String id, final AppiumDriver driver, final CharSequence... sendKey) throws NoSuchElementException {
+    public void sendKeyElement(final String context, final String id, final AppiumDriver driver, final CharSequence... sendKey) throws NoSuchElementException {
         if (context == null) {
             sendKeyElement(id, driver, sendKey);
         } else {
@@ -155,29 +155,30 @@ public class AppiumUtils {
     /**
      * 保存手机截图
      * synchronized
-     *
+     * <p>
      * 同步问题暂时未检测出问题
+     *
      * @param driver 操作的driver
      * @param path   保存的路径
      * @return 保存的路径
-     * @throws IOException 写文件异常
+     * @throws IOException        写文件异常
      * @throws WebDriverException appium操作异常
      */
-    public  static Path screenshot(final AppiumDriver driver, Path path) throws IOException ,WebDriverException{
-            try {
-                File file = driver.getScreenshotAs(OutputType.FILE);
-                path = Paths.get(path.toString(), DateUtils.getCurrentDate(),file.getName());
-                Path prent = path.getParent();
-                if (!Files.exists(prent)) {
-                    Files.createDirectories(prent);
-                }
-                Files.write(path, Base64.readBytes(file));
-                return path;
-            } catch (IOException e) {
-                throw new IOException("写入文件失败");
-            }catch (WebDriverException e){
-                throw new WebDriverException("手机截图失败",e);
+    public Path screenshot(final AppiumDriver driver, Path path) throws IOException, WebDriverException {
+        try {
+            File file = driver.getScreenshotAs(OutputType.FILE);
+            path = Paths.get(path.toString(), DateUtils.getCurrentDate(), file.getName());
+            Path prent = path.getParent();
+            if (!Files.exists(prent)) {
+                Files.createDirectories(prent);
             }
+            Files.write(path, Base64.readBytes(file));
+            return path;
+        } catch (IOException e) {
+            throw new IOException("写入文件失败");
+        } catch (WebDriverException e) {
+            throw new WebDriverException("手机截图失败", e);
+        }
     }
 
 

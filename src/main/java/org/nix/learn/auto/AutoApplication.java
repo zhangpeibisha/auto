@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ComponentScan;
 /**
  * @author zhangpei
  */
-@ComponentScan("org.nix.learn.auto")
 @SpringBootApplication
 public class AutoApplication {
 

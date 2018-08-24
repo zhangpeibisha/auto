@@ -82,17 +82,17 @@ public class SchemaRunOne implements SchemaRun {
     @Override
     public void runTask() {
         Presentation taskPresentation = presentation.addSon("底层执行类",schemaModel.requestPath(apkVersion));
-
+        AppiumUtils appiumUtils = new AppiumUtils();
         // 核心运行部分
         try {
             AndroidDriver driver = (AndroidDriver) defaultAndroidDriver.getDriver();
             // 首先进入初始页面
             driver.startActivity(new Activity(FunctionsApk.APP_PACKAGE, FunctionsApk.APP_ACTIVITY));
-            AppiumUtils.sendKeyElement(FunctionsApk.SEND_KEY_ID, driver,
+            appiumUtils.sendKeyElement(FunctionsApk.SEND_KEY_ID, driver,
                     schemaModel.requestPath(apkVersion));
-            AppiumUtils.clickElement(driver, FunctionsApk.CLICK_ID);
+            appiumUtils.clickElement(driver, FunctionsApk.CLICK_ID);
             Thread.currentThread().sleep(10000);
-            Path savePath = AppiumUtils.screenshot(driver, screenshotPath);
+            Path savePath = appiumUtils.screenshot(driver, screenshotPath);
 
             // 开始手机信息进行保存，为报告生成做准备
             taskPresentation.addKeyAndValue("result","[运行成功]");

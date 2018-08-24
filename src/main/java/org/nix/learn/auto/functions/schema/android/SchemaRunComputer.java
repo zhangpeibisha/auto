@@ -67,6 +67,7 @@ public class SchemaRunComputer implements SchemaRun {
     @Override
     public void runTask() {
        List<DefaultAndroidDriver> list = runStaple.createDefaultAndroidDrivers();
+
         for (DefaultAndroidDriver defaultAndroidDriver : list) {
 
             Presentation son = prentPresentation.addSon("运行电脑",defaultAndroidDriver.getAppiumPath().toString());
