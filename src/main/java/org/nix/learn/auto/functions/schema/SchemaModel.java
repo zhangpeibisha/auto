@@ -1,7 +1,6 @@
 package org.nix.learn.auto.functions.schema;
 
 
-import com.alibaba.fastjson.JSONObject;
 import org.nix.learn.auto.utils.Base64;
 
 /**
