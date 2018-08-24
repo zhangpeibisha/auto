@@ -20,5 +20,32 @@ public interface Presentation{
      */
     void dataTo(Capabilities capabilities, String key);
 
+    /**
+     * 通过key value将数据装入本层信息
+     * @param key
+     * @param value
+     */
+    void addKeyAndValue(String key , Object value);
 
+
+    /**
+     * 子级报告内容加入本级内容
+     * @param son
+     */
+    void addPresentation(Presentation son);
+
+    /**
+     * 添加子级内容
+     * @param name
+     * @param description
+     * @return
+     */
+    Presentation addSon(String name,String description);
+
+    /**
+     * 添加子级内容
+     * @param name
+     * @return
+     */
+    Presentation addSon(String name);
 }

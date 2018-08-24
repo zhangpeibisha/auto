@@ -6,6 +6,7 @@ import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.entity.ApkInfo;
 import org.nix.learn.auto.functions.schema.*;
+import org.nix.learn.auto.utils.LogUtils;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.nio.file.Path;
@@ -41,7 +42,7 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
     /**
      * 父级报告类
      */
-    private TaskPresentation prentPresentation;
+    private Presentation prentPresentation;
 
     /**
      * 测试的apk版本
@@ -53,7 +54,7 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
      */
     private Path screenshotPath;
 
-    public SchemaRunPhone(List<SchemaModel> models, DefaultAndroidDriver defaultAndroidDriver, TaskPresentation prentPresentation, String apkVersion, Path screenshotPath) {
+    public SchemaRunPhone(List<SchemaModel> models, DefaultAndroidDriver defaultAndroidDriver, Presentation prentPresentation, String apkVersion, Path screenshotPath) {
         this.models = models;
         this.defaultAndroidDriver = defaultAndroidDriver;
         this.prentPresentation = prentPresentation;
@@ -70,9 +71,10 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
     @Override
     public void runTask() {
 
-        TaskPresentation son = new TaskPresentation("手机信息",
+        Presentation son = prentPresentation.addSon("手机信息",
                 JSON.toJSONString(defaultAndroidDriver.getDriver().getCapabilities().asMap()));
         prentPresentation.addPresentation(son);
+        LogUtils.printLog("three","手机信息", JSON.toJSONString(defaultAndroidDriver.getDriver().getCapabilities().asMap()));
 
         for (SchemaModel schemaModel : models) {
             SchemaRunOne runOne = new SchemaRunOne(schemaModel,defaultAndroidDriver,son,apkVersion,screenshotPath);

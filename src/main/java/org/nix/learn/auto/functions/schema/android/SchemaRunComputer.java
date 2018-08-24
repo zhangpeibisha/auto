@@ -2,10 +2,8 @@ package org.nix.learn.auto.functions.schema.android;
 
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
-import org.nix.learn.auto.functions.schema.SchemaModel;
-import org.nix.learn.auto.functions.schema.SchemaRun;
-import org.nix.learn.auto.functions.schema.SchemaThreadPool;
-import org.nix.learn.auto.functions.schema.TaskPresentation;
+import org.nix.learn.auto.functions.schema.*;
+import org.nix.learn.auto.utils.LogUtils;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -30,7 +28,7 @@ public class SchemaRunComputer implements SchemaRun {
     /**
      * 父级报告类
      */
-    private TaskPresentation prentPresentation;
+    private Presentation prentPresentation;
 
     /**
      * 需要执行的scheme
@@ -55,7 +53,7 @@ public class SchemaRunComputer implements SchemaRun {
      * @param apkVersion
      * @param screenshotPath
      */
-    public SchemaRunComputer(RunStaple runStaple, TaskPresentation prentPresentation, List<SchemaModel> models, String apkVersion, Path screenshotPath) {
+    public SchemaRunComputer(RunStaple runStaple, Presentation prentPresentation, List<SchemaModel> models, String apkVersion, Path screenshotPath) {
         this.runStaple = runStaple;
         this.prentPresentation = prentPresentation;
         this.models = models;
@@ -70,8 +68,11 @@ public class SchemaRunComputer implements SchemaRun {
     public void runTask() {
        List<DefaultAndroidDriver> list = runStaple.createDefaultAndroidDrivers();
         for (DefaultAndroidDriver defaultAndroidDriver : list) {
-            TaskPresentation son = new TaskPresentation("运行电脑",defaultAndroidDriver.getAppiumPath().toString());
+
+            Presentation son = prentPresentation.addSon("运行电脑",defaultAndroidDriver.getAppiumPath().toString());
             prentPresentation.addPresentation(son);
+            LogUtils.printLog("two","运行电脑",defaultAndroidDriver.getAppiumPath().toString());
+
             SchemaRunPhone runPhone = new SchemaRunPhone(models,defaultAndroidDriver,son,apkVersion,screenshotPath);
             SchemaThreadPool.put(runPhone);
         }

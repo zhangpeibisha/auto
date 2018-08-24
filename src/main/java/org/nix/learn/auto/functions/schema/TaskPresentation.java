@@ -13,6 +13,9 @@ import java.util.Map;
  * 报告解决方案，每层创建一个集合来保存下一级的报告
  * 而采用地址传递方式，回调任务结果
  *
+ * 该类为测试类，实际使用时将重新继承
+ * @see Presentation 接口实现业务实际需要的报告通知类
+ *
  * @author zhangpei341@pingan.cn.com 2018/8/23 下午3:02
  * @version 1.0
  */
@@ -76,6 +79,7 @@ public class TaskPresentation implements Presentation {
      *
      * @param presentation 子报告
      */
+    @Override
     public void addPresentation(Presentation presentation) {
         if (presentations == null) {
             presentations = new ArrayList<>();
@@ -83,11 +87,22 @@ public class TaskPresentation implements Presentation {
         presentations.add(presentation);
     }
 
+    @Override
+    public Presentation addSon(String name, String description) {
+        return new TaskPresentation(name,description);
+    }
+
+    @Override
+    public Presentation addSon(String name) {
+        return new TaskPresentation(name);
+    }
+
     /**
      * 在本级内容中添加一些自定义值来更清除的描述程序运行轨迹
      * @param key 键
      * @param value 值
      */
+    @Override
     public void addKeyAndValue(String key, Object value) {
         desiredCapabilities.setCapability(key,value);
     }

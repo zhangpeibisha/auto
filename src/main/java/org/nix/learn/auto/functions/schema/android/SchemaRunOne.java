@@ -1,5 +1,6 @@
 package org.nix.learn.auto.functions.schema.android;
 
+import com.alibaba.fastjson.JSON;
 import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
@@ -8,6 +9,7 @@ import org.nix.learn.auto.core.appium.create.AdditionalInfo;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.entity.ApkInfo;
 import org.nix.learn.auto.functions.schema.*;
+import org.nix.learn.auto.utils.LogUtils;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.remote.DesiredCapabilities;
 
@@ -49,7 +51,7 @@ public class SchemaRunOne implements SchemaRun {
     /**
      * 用来处理执行情况的报告类，提供报告处理功能
      */
-    private TaskPresentation presentation;
+    private Presentation presentation;
 
     /**
      * 测试的apk版本
@@ -69,7 +71,7 @@ public class SchemaRunOne implements SchemaRun {
      * @param apkVersion
      * @param screenshotPath
      */
-    public SchemaRunOne(SchemaModel schemaModel, DefaultAndroidDriver defaultAndroidDriver, TaskPresentation presentation, String apkVersion, Path screenshotPath) {
+    public SchemaRunOne(SchemaModel schemaModel, DefaultAndroidDriver defaultAndroidDriver, Presentation presentation, String apkVersion, Path screenshotPath) {
         this.schemaModel = schemaModel;
         this.defaultAndroidDriver = defaultAndroidDriver;
         this.presentation = presentation;
@@ -79,7 +81,7 @@ public class SchemaRunOne implements SchemaRun {
 
     @Override
     public void runTask() {
-        TaskPresentation taskPresentation = new TaskPresentation("底层执行类",schemaModel.requestPath(apkVersion));
+        Presentation taskPresentation = presentation.addSon("底层执行类",schemaModel.requestPath(apkVersion));
 
         // 核心运行部分
         try {
@@ -100,7 +102,10 @@ public class SchemaRunOne implements SchemaRun {
             taskPresentation.addKeyAndValue("msg",e.getMessage());
         }
 
+        taskPresentation.addKeyAndValue("schema",schemaModel);
         presentation.addPresentation(taskPresentation);
+
+        LogUtils.printLog("four","底层执行类", schemaModel);
     }
 
 }
