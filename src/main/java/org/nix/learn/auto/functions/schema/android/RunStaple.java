@@ -32,8 +32,8 @@ public class RunStaple {
     /**
      * 一台电脑上的任务部署
      *
-     * @param server 一台服务器的信息
-     * @param udids  链接在这台电脑上的手机
+     * @param server            一台服务器的信息
+     * @param udids             链接在这台电脑上的手机
      * @param prentPresentation 父级报告
      */
     public RunStaple(AppiumServer server, List<String> udids, TaskPresentation prentPresentation) {
@@ -69,8 +69,8 @@ public class RunStaple {
         }
 
         // 意味着将有部分手机不能使用，执行任务
-        if (max == udidsLen) {
-            prentPresentation.addKeyAndValue("不能执行任务的手机", udids.subList(min,max));
+        if (max == udidsLen && max != min) {
+            prentPresentation.addKeyAndValue("不能执行任务的手机", udids.subList(min+1, max));
         }
         return defaultAndroidDrivers;
     }
