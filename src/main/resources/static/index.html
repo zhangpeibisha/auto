@@ -7,98 +7,121 @@
     <script src="js/jquery-1.7.2.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/vue.js"></script>
+    <script type="text/javascript" src="js/utils.js" ></script>
     <script>
-          window.onload = function(){
-              new Vue({
-                  el:'#box',
-                  data:{
-                     myData:[],
-                     username:"",
-                     age:"",
-                     nowIndex:-100
-                  },
-                  methods:{
-                     add:function(){
-                          this.myData.push({
-                              username:this.username,
-                              age:this.age
-                          })
-                         this.username="",
-                         this.age=""
-                     },
-                      del:function(n){
-                          if(n ==-2){
-                              this.myData="";
-                          }{
-                              this.myData.splice(n,1);
-                          }
-                      }
-                  }
-              })
-          }
+        window.onload = function(){
+            new Vue({
+                el:'#box',
+                data:{
+                    myData:[],
+                    ip:"",
+                    port:"",
+                    udid:"",
+                    nowIndex:-100
+                },
+                methods:{
+                    add:function(){
+
+                        var data = this.myData;
+                        console.log("this",this);
+                        if(isPort(this.port)&&isValidIP(this.ip)){
+
+                            this.myData.push({
+                                ip:this.ip,
+                                port:this.port,
+                                udid:this.udid
+                            })
+                            this.ip=this.ip,
+                                this.port="",
+                                this.udid=""
+
+                        }else{
+                            if (!isValidIP(this.ip)) {
+                                alert("IP地址格式不正确:"+this.ip);
+                            }else{
+                                alert("端口号不符合要求，请填写1024-65534的端口号:"+this.port);
+                            }
+                        }
+                    },
+                    del:function(n){
+                        if(n ==-2){
+                            this.myData="";
+                        }{
+                            this.myData.splice(n,1);
+                        }
+                    }
+                }
+            })
+        }
     </script>
 </head>
 <body>
-     <div class="container" id="box">
-         <form role="form">
-             <div class="form-group">
-                 <label for="username">用户名：</label>
-                 <input type="text" id="username" class="form-control" v-model="username" placeholder="输入用户名"/>
-             </div>
-             <div class="form-group">
-                 <label for="age">年龄：</label>
-                 <input type="text" id="age" class="form-control"  v-model="age" placeholder="输入年龄"/>
-             </div>
-             <div class="form-group">
-                 <input type="button"  value="添加" class="btn btn-primary" v-on:click="add()"/>
-                 <input type="reset"  value="重置" class="btn btn-danger"/>
-             </div>
-         </form>
-         <hr/>
-         <table class="table table-bordered table-hover">
-              <caption class="h3 text-info">用户信息表</caption>
-             <tr>
-                 <th class="text-center">序号</th>
-                 <th class="text-center">姓名</th>
-                 <th class="text-center">年龄</th>
-                 <th class="text-center">操作</th>
-             </tr>
-             <tr class="text-center" v-for="item in myData">
-                 <td>{{$index+1}}</td>
-                 <td>{{item.username}}</td>
-                 <td>{{item.age}}</td>
-                 <td>
-                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#layer" v-on:click="nowIndex=$index">删除</button>
-                 </td>
-             </tr>
-             <tr v-show="myData.length!=0">
-                 <td colspan="4" class="text-right">
-                     <button class="btn btn-danger"  data-toggle="modal" data-target="#layer" v-on:click="nowIndex=-2">删除全部</button>
-                 </td>
-             </tr>
-             <tr v-show="myData.length==0">
-                 <td colspan="4" class="text-center text-info">
-                     <p>暂无数据...</p>
-                 </td>
-             </tr>
-         </table>
-         <!--模态框 弹出框-->
-         <div role="dialog" class="modal fade" id="layer" data-index="{{nowIndex}}">
-              <div class="modal-dialog">
-                  <div class="modal-content">
-                      <div class="modal-header">
-                          <button class="close" data-dismiss="modal">
-                              <span>&times;</span>
-                          </button>
-                          <h4 class="modal-title">确认删除吗？</h4>
-                      </div>
-                      <div class="modal-body text-right">
-                          <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
-                          <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="del(nowIndex)">确认</button>
-                      </div>
-                  </div>
-              </div>
-         </div>
-     </div>
+<div class="container" id="box">
+    <form role="form">
+        <div class="form-group">
+            <label for="ip">IP：</label>
+            <input type="text" id="ip" class="form-control" v-model="ip" placeholder="输入电脑IP"/>
+        </div>
+        <div class="form-group">
+            <label for="port">port：</label>
+            <input type="text" id="port" class="form-control"  v-model="port" placeholder="输入端口号"/>
+        </div>
+        <div class="form-group">
+            <label for="udid">udid：</label>
+            <input type="text" id="udid" class="form-control"  v-model="udid" placeholder="输入手机udid"/>
+        </div>
+        <div class="form-group">
+            <input type="button"  value="添加" class="btn btn-primary" v-on:click="add()"/>
+            <input type="reset"  value="重置" class="btn btn-danger"/>
+        </div>
+    </form>
+    <hr/>
+    <table class="table table-bordered table-hover">
+        <caption class="h3 text-info">测试信息</caption>
+        <tr>
+            <th class="text-center">序号</th>
+            <th class="text-center">电脑IP</th>
+            <th class="text-center">开放端口</th>
+            <th class="text-center">udid</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr class="text-center" v-for="item in myData">
+            <td>{{$index+1}}</td>
+            <td>{{item.ip}}</td>
+            <td>{{item.port}}</td>
+            <td>{{item.udid}}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#layer" v-on:click="nowIndex=$index">删除</button>
+            </td>
+        </tr>
+        <tr v-show="myData.length!=0">
+            <td colspan="5" class="text-right">
+                <button class="btn btn-danger"  data-toggle="modal" data-target="#layer" v-on:click="nowIndex=-2">删除全部</button>
+            </td>
+        </tr>
+        <tr v-show="myData.length==0">
+            <td colspan="5" class="text-center text-info">
+                <p>暂无数据...</p>
+            </td>
+        </tr>
+    </table>
+    <!--模态框 弹出框-->
+    <div role="dialog" class="modal fade" id="layer" data-index="{{nowIndex}}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">确认删除吗？</h4>
+                </div>
+                <div class="modal-body text-right">
+                    <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="del(nowIndex)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
