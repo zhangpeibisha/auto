@@ -1,56 +1,104 @@
 <!DOCTYPE html>
 <html>
-
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="maximum-scale=1.0,minimum-scale=1.0,width=device-width,initial-scale=1.0,user-scalable=no" />
-		<meta name="format-detection" content="telephone=no,email=no,date=no,address=no">
-		<title></title>
-		<link rel="stylesheet" type="text/css" href="css/public.css" />
-		<style type="text/css">
-			.category-box {
-				width: 100%;
-				overflow: hidden;
-			}
-			
-			.up-btn {
-				transition: transform .3s;
-				-webkit-transition: transform .3s;
-				-moz-transition: transform .3s;
-				-ms-transition: transform .3s;
-				-webkit-user-select: none;
-				-moz-user-select: none;
-				-ms-user-select: none;
-				user-select: none;
-			}
-			
-			.up-btn-on {
-				transform: rotate(-90deg);
-				-webkit-transform: rotate(-90deg);
-				-moz-transform: rotate(-90deg);
-				-ms-transform: rotate(-90deg);
-			}
-		</style>
-	</head>
-
-	<body>
-
-		<div id="content">
-
-		</div>
-
-	</body>
-
-	<script type="text/javascript" src="js/jquery.min.js"></script>
-	<script type="text/javascript" src="js/funaction.js"></script>
-	<script type="text/javascript">
-		$('.category-cont').on('click', '.up-btn', function() {
-			var _this = $(this);
-			_this.toggleClass('up-btn-on');
-			var category = _this.parents('.category');
-			category.parent().height('auto');
-			category.siblings('.category-box').stop().slideToggle(300);
-		})
-	</script>
-
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>table</title>
+    <link rel="stylesheet" href="css/bootstrap.min.css"/>
+    <script src="js/jquery-1.7.2.min.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/vue.js"></script>
+    <script>
+          window.onload = function(){
+              new Vue({
+                  el:'#box',
+                  data:{
+                     myData:[],
+                     username:"",
+                     age:"",
+                     nowIndex:-100
+                  },
+                  methods:{
+                     add:function(){
+                          this.myData.push({
+                              username:this.username,
+                              age:this.age
+                          })
+                         this.username="",
+                         this.age=""
+                     },
+                      del:function(n){
+                          if(n ==-2){
+                              this.myData="";
+                          }{
+                              this.myData.splice(n,1);
+                          }
+                      }
+                  }
+              })
+          }
+    </script>
+</head>
+<body>
+     <div class="container" id="box">
+         <form role="form">
+             <div class="form-group">
+                 <label for="username">用户名：</label>
+                 <input type="text" id="username" class="form-control" v-model="username" placeholder="输入用户名"/>
+             </div>
+             <div class="form-group">
+                 <label for="age">年龄：</label>
+                 <input type="text" id="age" class="form-control"  v-model="age" placeholder="输入年龄"/>
+             </div>
+             <div class="form-group">
+                 <input type="button"  value="添加" class="btn btn-primary" v-on:click="add()"/>
+                 <input type="reset"  value="重置" class="btn btn-danger"/>
+             </div>
+         </form>
+         <hr/>
+         <table class="table table-bordered table-hover">
+              <caption class="h3 text-info">用户信息表</caption>
+             <tr>
+                 <th class="text-center">序号</th>
+                 <th class="text-center">姓名</th>
+                 <th class="text-center">年龄</th>
+                 <th class="text-center">操作</th>
+             </tr>
+             <tr class="text-center" v-for="item in myData">
+                 <td>{{$index+1}}</td>
+                 <td>{{item.username}}</td>
+                 <td>{{item.age}}</td>
+                 <td>
+                     <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#layer" v-on:click="nowIndex=$index">删除</button>
+                 </td>
+             </tr>
+             <tr v-show="myData.length!=0">
+                 <td colspan="4" class="text-right">
+                     <button class="btn btn-danger"  data-toggle="modal" data-target="#layer" v-on:click="nowIndex=-2">删除全部</button>
+                 </td>
+             </tr>
+             <tr v-show="myData.length==0">
+                 <td colspan="4" class="text-center text-info">
+                     <p>暂无数据...</p>
+                 </td>
+             </tr>
+         </table>
+         <!--模态框 弹出框-->
+         <div role="dialog" class="modal fade" id="layer" data-index="{{nowIndex}}">
+              <div class="modal-dialog">
+                  <div class="modal-content">
+                      <div class="modal-header">
+                          <button class="close" data-dismiss="modal">
+                              <span>&times;</span>
+                          </button>
+                          <h4 class="modal-title">确认删除吗？</h4>
+                      </div>
+                      <div class="modal-body text-right">
+                          <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
+                          <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="del(nowIndex)">确认</button>
+                      </div>
+                  </div>
+              </div>
+         </div>
+     </div>
+</body>
 </html>
