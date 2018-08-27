@@ -104,7 +104,8 @@
                             data: JSON.stringify(sendInfo),
                             dataType: "json",
                             success: function (message) {
-                                    alert("请求已提交！请耐心等待测试结果"+message);
+                                    alert("请求已提交！查看结果请在结果页以此ID查询："+message);
+                                    window.location.href = "/json.html?presentationId="+message;
                             },
                             error: function (message) {
                                 $("#request-process-patent").html("提交数据失败！"+message);
