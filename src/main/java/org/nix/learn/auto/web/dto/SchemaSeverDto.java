@@ -14,83 +14,35 @@ public class SchemaSeverDto {
     private static final Logger logger = Logger.getLogger(SchemaSeverDto.class);
 
 
-    private List<Equipment> equipment;
+    private Set<EquipmentDto> phones;
 
-    private Set<String> schema;
+    private Set<String> schemas;
 
 
     public SchemaSeverDto() {
     }
 
-
-    public List<Equipment> getEquipment() {
-        return equipment;
+    public Set<EquipmentDto> getPhones() {
+        return phones;
     }
 
-    public void setEquipment(List<Equipment> equipment) {
-        this.equipment = equipment;
+    public void setPhones(Set<EquipmentDto> phones) {
+        this.phones = phones;
     }
 
-    public Set<String> getSchema() {
-        return schema;
+    public Set<String> getSchemas() {
+        return schemas;
     }
 
-    public void setSchema(Set<String> schema) {
-        this.schema = schema;
+    public void setSchemas(Set<String> schemas) {
+        this.schemas = schemas;
     }
-
 
     @Override
     public String toString() {
         return "SchemaSeverDto{" +
-                "equipment=" + equipment +
-                ", schema=" + schema +
+                "phones=" + phones +
+                ", schemas=" + schemas +
                 '}';
     }
-
-    static class Equipment{
-        private String ip;
-        private String port;
-        private String udid;
-
-        public Equipment(String ip, String port, String udid) {
-            this.ip = ip;
-            this.port = port;
-            this.udid = udid;
-        }
-
-        public String getIp() {
-            return ip;
-        }
-
-        public void setIp(String ip) {
-            this.ip = ip;
-        }
-
-        public String getPort() {
-            return port;
-        }
-
-        public void setPort(String port) {
-            this.port = port;
-        }
-
-        public String getUdid() {
-            return udid;
-        }
-
-        public void setUdid(String udid) {
-            this.udid = udid;
-        }
-
-        @Override
-        public String toString() {
-            return "Equipment{" +
-                    "ip='" + ip + '\'' +
-                    ", port='" + port + '\'' +
-                    ", udid='" + udid + '\'' +
-                    '}';
-        }
-    }
-
 }

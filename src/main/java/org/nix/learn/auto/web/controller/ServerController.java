@@ -21,8 +21,10 @@ import java.util.Map;
 public class ServerController {
 
     @PostMapping("schemaServer")
-    public String schemaServer(@RequestBody Map value){
+    public String schemaServer(@RequestBody SchemaSeverDto value){
         LogUtils.printLog("返回信息",value);
+        LogUtils.printLog("phoneInfo",value.getPhones());
+        LogUtils.printLog("schemas",value.getSchemas());
         return JSON.toJSONString(value);
     }
 
