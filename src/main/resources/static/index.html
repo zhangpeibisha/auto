@@ -49,6 +49,16 @@
                         }{
                             this.myData.splice(n,1);
                         }
+                    },
+                    submit:function(n){
+                        if (n==-3){
+                            console.log("提交信息",this)
+                            $.ajax({
+                                type:"get",
+                                url:"",
+                                async:true
+                            })
+                        }
                     }
                 }
             })
@@ -97,6 +107,7 @@
         <tr v-show="myData.length!=0">
             <td colspan="5" class="text-right">
                 <button class="btn btn-danger"  data-toggle="modal" data-target="#layer" v-on:click="nowIndex=-2">删除全部</button>
+                <button class="btn btn-danger"  data-toggle="modal" data-target="#submit" v-on:click="nowIndex=-3">提交测试</button>
             </td>
         </tr>
         <tr v-show="myData.length==0">
@@ -118,6 +129,24 @@
                 <div class="modal-body text-right">
                     <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
                     <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="del(nowIndex)">确认</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!--模态框 弹出框-->
+    <div role="dialog" class="modal fade" id="submit" data-index="{{nowIndex}}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">确认提交信息吗？</h4>
+                </div>
+                <div class="modal-body text-right">
+                    <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="submit(nowIndex)">确认</button>
                 </div>
             </div>
         </div>
