@@ -7,57 +7,123 @@
     <script src="js/jquery-1.7.2.min.js"></script>
     <script src="js/bootstrap.js"></script>
     <script src="js/vue.js"></script>
-    <script type="text/javascript" src="js/utils.js" ></script>
+    <script type="text/javascript" src="js/utils.js"></script>
     <script>
-        window.onload = function(){
+        window.onload = function () {
             new Vue({
-                el:'#box',
-                data:{
-                    myData:[],
-                    ip:"",
-                    port:"",
-                    udid:"",
-                    nowIndex:-100
+                el: '#box',
+                data: {
+                    myData: [],
+                    nowIndex: -100,
+                    schemaData: [],
+                    port: "",
+                    ip: "",
+                    udid: "",
+                    schemaValue: ""
                 },
-                methods:{
-                    add:function(){
+                methods: {
+                    add: function () {
 
                         var data = this.myData;
-                        console.log("this",this);
-                        if(isPort(this.port)&&isValidIP(this.ip)){
+                        console.log("this", this);
+                        if (isPort(this.port) && isValidIP(this.ip)) {
 
                             this.myData.push({
-                                ip:this.ip,
-                                port:this.port,
-                                udid:this.udid
+                                ip: this.ip,
+                                port: this.port,
+                                udid: this.udid
                             })
-                            this.ip=this.ip,
-                                this.port="",
-                                this.udid=""
+                            this.port = "",
+                                this.udid = ""
 
-                        }else{
+                        } else {
                             if (!isValidIP(this.ip)) {
-                                alert("IP地址格式不正确:"+this.ip);
-                            }else{
-                                alert("端口号不符合要求，请填写1024-65534的端口号:"+this.port);
+                                alert("IP地址格式不正确:" + this.ip);
+                            } else {
+                                alert("端口号不符合要求，请填写1024-65534的端口号:" + this.port);
                             }
                         }
                     },
-                    del:function(n){
-                        if(n ==-2){
-                            this.myData="";
-                        }{
-                            this.myData.splice(n,1);
+                    addSchema: function () {
+                        console.log("schema", this);
+                        this.schemaData.push({
+                            values: this.schemaValue
+                        })
+                        // this.schemaValue = "";
+                    },
+                    del: function (n) {
+                        if (n === -2) {
+                            this.myData = "";
+                        }
+                        {
+                            this.myData.splice(n, 1);
                         }
                     },
-                    submit:function(n){
-                        if (n==-3){
-                            console.log("提交信息",this)
-                            $.ajax({
-                                type:"get",
-                                url:"",
-                                async:true
+                    schemaDel: function (n) {
+                        if (n === -2) {
+                            this.schemaData = "";
+                        }
+                        {
+                            this.schemaData.splice(n, 1);
+                        }
+                    },
+                    submit: function () {
+                        console.log("提交信息", this);
+
+                        // 手机信息
+                        var phones = [];
+                        var data = this.myData;
+                        $.each(data, function (index, value) {
+                            phones.push({
+                                ip: value.ip,
+                                port: value.port,
+                                udid: value.udid
                             })
+                        });
+
+                        // schema信息
+                        var schemasInfo = [];
+                        var schemaDa = this.schemaData;
+                        $.each(schemaDa, function (index, value) {
+                            schemasInfo.push({
+                                schemasInfo: value.values
+                            })
+                        });
+                        // 发送信息
+                        var sendInfo = {};
+                        sendInfo.phones = phones;
+                        sendInfo.schemas = schemasInfo;
+
+                        console.log("发送信息为:", sendInfo);
+
+
+                        $.ajax({
+                            type: "POST",
+                            url: "/servers/schemaServer",
+                            contentType: "application/json; charset=utf-8",
+                            data: JSON.stringify(sendInfo),
+                            dataType: "json",
+                            success: function (message) {
+                                    alert("请求已提交！请耐心等待测试结果"+message);
+                            },
+                            error: function (message) {
+                                $("#request-process-patent").html("提交数据失败！"+message);
+                            }
+                        });
+
+                    },
+                    reset: function (n) {
+                        console.log("重置", n);
+                        if (n === -6) {
+                            this.ip = "",
+                                this.port = "",
+                                this.udid = ""
+                            // this.myData = ""
+                        }
+
+                        if (n === -7) {
+                            this.schemaValue = "";
+                            // this.schemaData = "";
                         }
                     }
                 }
@@ -67,27 +133,42 @@
 </head>
 <body>
 <div class="container" id="box">
-    <form role="form">
-        <div class="form-group">
-            <label for="ip">IP：</label>
-            <input type="text" id="ip" class="form-control" v-model="ip" placeholder="输入电脑IP"/>
-        </div>
-        <div class="form-group">
-            <label for="port">port：</label>
-            <input type="text" id="port" class="form-control"  v-model="port" placeholder="输入端口号"/>
-        </div>
-        <div class="form-group">
-            <label for="udid">udid：</label>
-            <input type="text" id="udid" class="form-control"  v-model="udid" placeholder="输入手机udid"/>
-        </div>
-        <div class="form-group">
-            <input type="button"  value="添加" class="btn btn-primary" v-on:click="add()"/>
-            <input type="reset"  value="重置" class="btn btn-danger"/>
-        </div>
-    </form>
+
+    <!--输入设备信息-->
+    <div class="form-group">
+        <label for="ip">IP：</label>
+        <input type="text" id="ip" class="form-control" v-model="ip" placeholder="输入电脑IP"/>
+    </div>
+    <div class="form-group">
+        <label for="port">port：</label>
+        <input type="text" id="port" class="form-control" v-model="port" placeholder="输入端口号"/>
+    </div>
+    <div class="form-group">
+        <label for="udid">udid：</label>
+        <input type="text" id="udid" class="form-control" v-model="udid" placeholder="输入手机udid"/>
+    </div>
+    <div class="form-group">
+        <input type="button" value="添加设备" class="btn btn-primary" v-on:click="add()"/>
+        <input type="reset" value="重置设备" class="btn btn-danger" v-on:click="reset(-6)"/>
+    </div>
+
+    <!--输入schema-->
+    <div class="form-group">
+        <label for="schemaValue">schema：</label>
+        <input type="text" id="schemaValue" class="form-control" v-model="schemaValue" placeholder="输入scheme"/>
+    </div>
+
+    <div class="form-group">
+        <input type="button" value="添加schema" class="btn btn-primary" v-on:click="addSchema()"/>
+        <input type="reset" value="重置schema" class="btn btn-danger" v-on:click="reset(-7)"/>
+        <button class="btn btn-danger" data-toggle="modal" data-target="#submit" v-on:click="nowIndex=-3">提交测试
+        </button>
+    </div>
     <hr/>
+
+    <!--设备-->
     <table class="table table-bordered table-hover">
-        <caption class="h3 text-info">测试信息</caption>
+        <caption class="h3 text-info">添加测试设备</caption>
         <tr>
             <th class="text-center">序号</th>
             <th class="text-center">电脑IP</th>
@@ -101,13 +182,15 @@
             <td>{{item.port}}</td>
             <td>{{item.udid}}</td>
             <td>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#layer" v-on:click="nowIndex=$index">删除</button>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#layer"
+                        v-on:click="nowIndex=$index">删除
+                </button>
             </td>
         </tr>
         <tr v-show="myData.length!=0">
             <td colspan="5" class="text-right">
-                <button class="btn btn-danger"  data-toggle="modal" data-target="#layer" v-on:click="nowIndex=-2">删除全部</button>
-                <button class="btn btn-danger"  data-toggle="modal" data-target="#submit" v-on:click="nowIndex=-3">提交测试</button>
+                <button class="btn btn-danger" data-toggle="modal" data-target="#layer" v-on:click="nowIndex=-2">删除全部
+                </button>
             </td>
         </tr>
         <tr v-show="myData.length==0">
@@ -116,7 +199,44 @@
             </td>
         </tr>
     </table>
-    <!--模态框 弹出框-->
+
+    <!--schema-->
+    <table class="table table-bordered table-hover">
+        <caption class="h3 text-info">添加schema</caption>
+        <tr>
+            <th class="text-center">序号</th>
+            <th class="text-center">schema</th>
+            <th class="text-center">操作</th>
+        </tr>
+        <tr class="text-center" v-for="item in schemaData">
+            <td>{{$index+1}}</td>
+            <td>{{item.values}}</td>
+            <td>
+                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#schemaDelete"
+                        v-on:click="nowIndex=$index">删除
+                </button>
+            </td>
+        </tr>
+        <tr v-show="schemaData.length!=0">
+            <td colspan="3" class="text-right">
+                <button class="btn btn-danger" data-toggle="modal" data-target="#schemaDelete" v-on:click="nowIndex=-2">
+                    删除全部
+                </button>
+
+            </td>
+        </tr>
+        <tr v-show="schemaData.length==0">
+            <td colspan="3" class="text-center text-info">
+                <p>暂无数据...</p>
+            </td>
+        </tr>
+    </table>
+
+
+    <!--弹框-->
+
+
+    <!--模态框 弹出框 重制设备信息-->
     <div role="dialog" class="modal fade" id="layer" data-index="{{nowIndex}}">
         <div class="modal-dialog">
             <div class="modal-content">
@@ -124,7 +244,7 @@
                     <button class="close" data-dismiss="modal">
                         <span>&times;</span>
                     </button>
-                    <h4 class="modal-title">确认删除吗？</h4>
+                    <h4 class="modal-title">确认删除测试设备信息吗？</h4>
                 </div>
                 <div class="modal-body text-right">
                     <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
@@ -134,7 +254,28 @@
         </div>
     </div>
 
-    <!--模态框 弹出框-->
+
+    <!--schema重置-->
+    <div role="dialog" class="modal fade" id="schemaDelete" data-index="{{nowIndex}}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button class="close" data-dismiss="modal">
+                        <span>&times;</span>
+                    </button>
+                    <h4 class="modal-title">确认删除schema信息吗？</h4>
+                </div>
+                <div class="modal-body text-right">
+                    <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
+                    <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="schemaDel(nowIndex)">确认
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--模态框 弹出框 提交信息-->
     <div role="dialog" class="modal fade" id="submit" data-index="{{nowIndex}}">
         <div class="modal-dialog">
             <div class="modal-content">
