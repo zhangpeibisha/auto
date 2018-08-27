@@ -19,7 +19,7 @@
                     port: "",
                     ip: "",
                     udid: "",
-                    schemaValue: ""
+                    schemaValue: "",
                 },
                 methods: {
                     add: function () {
@@ -91,7 +91,7 @@
                         });
                         // 发送信息
                         var sendInfo = {};
-                        sendInfo.phones = phones;
+                        sendInfo.equipmentDtos = phones;
                         sendInfo.schemas = schemasInfo;
 
                         console.log("发送信息为:", sendInfo);

@@ -102,7 +102,7 @@ public class SchemaRunColony implements SchemaRun {
 
     @Override
     public void runTask() {
-        boosPresentation.addKeyAndValue("taskInfo", JSON.toJSON(this));
+        boosPresentation.addKeyAndValue("schemaRunColony", JSON.toJSON(this));
         LogUtils.printLog("frist", "一级任务");
         for (RunStaple runStaple : runStaples) {
             SchemaRunComputer computer = new SchemaRunComputer(runStaple, boosPresentation, schemaModels, apkInfo.getVersion(), screenshotPath);
@@ -135,7 +135,7 @@ public class SchemaRunColony implements SchemaRun {
 
     }
 
-    private static ApkInfo createApkInfo() {
+    public static ApkInfo createApkInfo() {
         ApkInfo apkInfo = new ApkInfo();
         apkInfo.setVersion("6.0.1");
         return apkInfo;
@@ -181,7 +181,7 @@ public class SchemaRunColony implements SchemaRun {
         return runStaples;
     }
 
-    private static List<SchemaModel> createSchemaModels() {
+    public static List<SchemaModel> createSchemaModels() {
         List<SchemaModel> schemaModels = new ArrayList<>();
         String prent = "yqbnative://app.1qianbao.com/";
         String huoqianbao = prent + "huoqianbao/index";

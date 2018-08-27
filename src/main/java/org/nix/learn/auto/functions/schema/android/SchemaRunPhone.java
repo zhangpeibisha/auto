@@ -70,7 +70,7 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
     @Override
     public void runTask() {
 
-        Presentation son = prentPresentation.addSon("手机信息",
+        Presentation son = prentPresentation.addSon("schemaRunPhone",
                 JSON.toJSONString(defaultAndroidDriver.getDriver().getCapabilities().asMap()));
         prentPresentation.addPresentation(son);
         LogUtils.printLog("three","手机信息", JSON.toJSONString(defaultAndroidDriver.getDriver().getCapabilities().asMap()));

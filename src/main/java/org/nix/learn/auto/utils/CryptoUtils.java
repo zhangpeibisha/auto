@@ -1,13 +1,7 @@
 package org.nix.learn.auto.utils;
 
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.io.*;
 import java.net.URL;
 import java.util.zip.CRC32;
 import java.util.zip.CheckedInputStream;
@@ -263,6 +257,22 @@ public class CryptoUtils {
         } finally {
             IOUtils.closeQuietly(input);
         }
+    }
+
+    public static byte[] objectToByte(Object object) throws IOException {
+        byte[] bytes = null;
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(bos);
+            oos.writeObject(object);
+            oos.flush();
+            bytes = bos.toByteArray ();
+            oos.close();
+            bos.close();
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        return bytes;
     }
 
 }

@@ -81,7 +81,7 @@ public class SchemaRunOne implements SchemaRun {
 
     @Override
     public void runTask() {
-        Presentation taskPresentation = presentation.addSon("底层执行类",schemaModel.requestPath(apkVersion));
+        Presentation taskPresentation = presentation.addSon("schemaRunOne",schemaModel.requestPath(apkVersion));
         AppiumUtils appiumUtils = new AppiumUtils();
         // 核心运行部分
         try {

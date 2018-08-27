@@ -1,6 +1,7 @@
 package org.nix.learn.auto.web.dto;
 
 import org.apache.log4j.Logger;
+import org.nix.learn.auto.core.appium.server.AppiumServer;
 
 /**
  * @author zhangpei341@pingan.cn.com 2018/8/27 下午4:07

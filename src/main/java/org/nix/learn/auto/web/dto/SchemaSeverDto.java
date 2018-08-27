@@ -1,9 +1,10 @@
 package org.nix.learn.auto.web.dto;
 
 import org.apache.log4j.Logger;
+import org.nix.learn.auto.core.appium.server.AppiumServer;
+import org.nix.learn.auto.functions.schema.android.RunStaple;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 /**
  * @author zhangpei341@pingan.cn.com 2018/8/27 下午1:38
@@ -14,20 +15,20 @@ public class SchemaSeverDto {
     private static final Logger logger = Logger.getLogger(SchemaSeverDto.class);
 
 
-    private Set<EquipmentDto> phones;
+    private Set<EquipmentDto> equipmentDtos;
 
     private Set<String> schemas;
 
-
-    public SchemaSeverDto() {
+    public static Logger getLogger() {
+        return logger;
     }
 
-    public Set<EquipmentDto> getPhones() {
-        return phones;
+    public Set<EquipmentDto> getEquipmentDtos() {
+        return equipmentDtos;
     }
 
-    public void setPhones(Set<EquipmentDto> phones) {
-        this.phones = phones;
+    public void setEquipmentDtos(Set<EquipmentDto> equipmentDtos) {
+        this.equipmentDtos = equipmentDtos;
     }
 
     public Set<String> getSchemas() {
@@ -41,7 +42,7 @@ public class SchemaSeverDto {
     @Override
     public String toString() {
         return "SchemaSeverDto{" +
-                "phones=" + phones +
+                "equipmentDtos=" + equipmentDtos +
                 ", schemas=" + schemas +
                 '}';
     }

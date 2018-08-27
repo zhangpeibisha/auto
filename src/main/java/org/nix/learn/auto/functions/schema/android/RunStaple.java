@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.core.appium.server.AppiumServer;
+import org.nix.learn.auto.functions.schema.Presentation;
 import org.nix.learn.auto.functions.schema.TaskPresentation;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class RunStaple {
     /**
      * 父级报告集合
      */
-    private TaskPresentation prentPresentation;
+    private Presentation prentPresentation;
 
 
     /**
@@ -36,7 +37,7 @@ public class RunStaple {
      * @param udids             链接在这台电脑上的手机
      * @param prentPresentation 父级报告
      */
-    public RunStaple(AppiumServer server, List<String> udids, TaskPresentation prentPresentation) {
+    public RunStaple(AppiumServer server, List<String> udids, Presentation prentPresentation) {
         this.server = server;
         this.udids = udids;
         this.prentPresentation = prentPresentation;

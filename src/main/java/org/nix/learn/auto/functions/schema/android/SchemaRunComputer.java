@@ -11,8 +11,9 @@ import java.util.Set;
 
 /**
  * 在一台电脑上运行多个手机
- *
+ * <p>
  * 层次等级：2
+ *
  * @author zhangpei341@pingan.cn.com 2018/8/23 下午12:47
  * @version 1.0
  */
@@ -46,7 +47,6 @@ public class SchemaRunComputer implements SchemaRun {
     private Path screenshotPath;
 
     /**
-     *
      * @param runStaple
      * @param prentPresentation
      * @param models
@@ -66,16 +66,19 @@ public class SchemaRunComputer implements SchemaRun {
      */
     @Override
     public void runTask() {
-       List<DefaultAndroidDriver> list = runStaple.createDefaultAndroidDrivers();
-
-        for (DefaultAndroidDriver defaultAndroidDriver : list) {
-
-            Presentation son = prentPresentation.addSon("运行电脑",defaultAndroidDriver.getAppiumPath().toString());
+        List<DefaultAndroidDriver> list = runStaple.createDefaultAndroidDrivers();
+        Presentation son;
+        son = prentPresentation.addSon("schemaRunComputer");
+        if (list!=null){
             prentPresentation.addPresentation(son);
-            LogUtils.printLog("two","运行电脑",defaultAndroidDriver.getAppiumPath().toString());
-
-            SchemaRunPhone runPhone = new SchemaRunPhone(models,defaultAndroidDriver,son,apkVersion,screenshotPath);
-            SchemaThreadPool.put(runPhone);
+            for (DefaultAndroidDriver defaultAndroidDriver : list) {
+                son.addSon("ip", String.valueOf(defaultAndroidDriver.getAppiumPath()));
+                SchemaRunPhone runPhone = new SchemaRunPhone(models, defaultAndroidDriver, son, apkVersion, screenshotPath);
+                SchemaThreadPool.put(runPhone);
+            }
+        }else{
+            prentPresentation.addPresentation(son);
         }
+
     }
 }
