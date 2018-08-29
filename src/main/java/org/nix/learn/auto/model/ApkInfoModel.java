@@ -1,6 +1,7 @@
-package org.nix.learn.auto.entity;
+package org.nix.learn.auto.model;
 
 import org.apache.log4j.Logger;
+import org.nix.learn.auto.model.base.BaseModel;
 
 import java.nio.file.Path;
 import java.util.Date;
@@ -10,9 +11,9 @@ import java.util.Date;
  * @author zhangpei341@pingan.cn.com 2018/8/22 下午6:16
  * @version 1.0
  */
-public class ApkInfo {
+public class ApkInfoModel extends BaseModel {
 
-    private static final Logger logger = Logger.getLogger(ApkInfo.class);
+    private static final Logger logger = Logger.getLogger(ApkInfoModel.class);
 
     /**
      * apk版本号
@@ -44,7 +45,7 @@ public class ApkInfo {
      */
     private Date createTime;
 
-    public ApkInfo() {
+    public ApkInfoModel() {
     }
 
     /**
@@ -55,7 +56,7 @@ public class ApkInfo {
      * @param appActivity
      * @param createTime
      */
-    public ApkInfo(String version, String runEnvironment, String appPackage, String appActivity, Date createTime) {
+    public ApkInfoModel(String version, String runEnvironment, String appPackage, String appActivity, Date createTime) {
         this.version = version;
         this.runEnvironment = runEnvironment;
         this.appPackage = appPackage;
@@ -70,7 +71,7 @@ public class ApkInfo {
      * @param installPath
      * @param createTime
      */
-    public ApkInfo(String version, String runEnvironment, Path installPath, Date createTime) {
+    public ApkInfoModel(String version, String runEnvironment, Path installPath, Date createTime) {
         this.version = version;
         this.runEnvironment = runEnvironment;
         this.installPath = installPath;

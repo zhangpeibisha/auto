@@ -3,9 +3,9 @@ package org.nix.learn.auto.functions.schema.android;
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.server.AppiumServer;
-import org.nix.learn.auto.entity.ApkInfo;
+import org.nix.learn.auto.model.ApkInfoModel;
 import org.nix.learn.auto.functions.schema.Presentation;
-import org.nix.learn.auto.functions.schema.SchemaModel;
+import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.SchemaRun;
 import org.nix.learn.auto.functions.schema.TaskPresentation;
 import org.nix.learn.auto.utils.LogUtils;
@@ -46,7 +46,7 @@ public class SchemaRunColony implements SchemaRun {
     /**
      * 本次执行任务执行的apk信息
      */
-    private ApkInfo apkInfo;
+    private ApkInfoModel apkInfo;
 
     /**
      * 截图需要保存的地址目录，需要检测这个目录是否存在，且是否为目录
@@ -62,7 +62,7 @@ public class SchemaRunColony implements SchemaRun {
      * @param apkInfo
      * @param screenshotPath
      */
-    public SchemaRunColony(List<RunStaple> runStaples, List<SchemaModel> schemaModels, Presentation boosPresentation, ApkInfo apkInfo, Path screenshotPath) {
+    public SchemaRunColony(List<RunStaple> runStaples, List<SchemaModel> schemaModels, Presentation boosPresentation, ApkInfoModel apkInfo, Path screenshotPath) {
         this.runStaples = runStaples;
         this.schemaModels = schemaModels;
         this.boosPresentation = boosPresentation;
@@ -135,8 +135,8 @@ public class SchemaRunColony implements SchemaRun {
 
     }
 
-    public static ApkInfo createApkInfo() {
-        ApkInfo apkInfo = new ApkInfo();
+    public static ApkInfoModel createApkInfo() {
+        ApkInfoModel apkInfo = new ApkInfoModel();
         apkInfo.setVersion("6.0.1");
         return apkInfo;
     }
@@ -230,11 +230,11 @@ public class SchemaRunColony implements SchemaRun {
         this.schemaModels = schemaModels;
     }
 
-    public ApkInfo getApkInfo() {
+    public ApkInfoModel getApkInfo() {
         return apkInfo;
     }
 
-    public void setApkInfo(ApkInfo apkInfo) {
+    public void setApkInfo(ApkInfoModel apkInfo) {
         this.apkInfo = apkInfo;
     }
 

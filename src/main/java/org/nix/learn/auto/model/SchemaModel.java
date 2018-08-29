@@ -1,6 +1,8 @@
-package org.nix.learn.auto.functions.schema;
+package org.nix.learn.auto.model;
 
 
+import org.nix.learn.auto.functions.schema.SchemaException;
+import org.nix.learn.auto.model.base.BaseModel;
 import org.nix.learn.auto.utils.Base64;
 
 /**
@@ -10,7 +12,7 @@ import org.nix.learn.auto.utils.Base64;
  * @author zhangpei341@pingan.cn.com 2018/8/22 下午3:12
  * @version 1.0
  */
-public class SchemaModel {
+public class SchemaModel  extends BaseModel {
 
     /**
      * scheme的中文含义

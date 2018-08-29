@@ -2,12 +2,10 @@ package org.nix.learn.auto.functions.schema.android;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
-import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
-import org.nix.learn.auto.entity.ApkInfo;
+import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.*;
 import org.nix.learn.auto.utils.LogUtils;
-import org.openqa.selenium.remote.DesiredCapabilities;
 
 import java.nio.file.Path;
 import java.util.List;
