@@ -70,6 +70,8 @@ public class ServerController {
 
     @GetMapping("getResult")
     public Presentation getResult(@RequestParam("presentationId")String presentationId){
+        LogUtils.printLog("请求信息:",presentationId);
+        System.out.println();
         return results.get(presentationId);
     }
 

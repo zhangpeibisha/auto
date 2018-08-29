@@ -17,26 +17,12 @@
 <div class="jq22-container">
     <div class="container" style="margin-top: 1em;">
         <div class="row">
-      <textarea class="form-control" id="json-input" rows="15">
-{
-  "id": 1001,
-  "type": "donut",
-  "name": "Cake",
-  "description": "http://www.jq22.com",
-  "price": 2.55,
-  "available": {
-    store: 42,
-    warehouse: 600
-  },
-  "topping": [
-    { "id": 5001, "type": "None" },
-    { "id": 5002, "type": "Glazed" },
-    { "id": 5005, "type": "Sugar" },
-    { "id": 5003, "type": "Chocolate" },
-    { "id": 5004, "type": "Maple" }
-  ]
-}					
-				</textarea>
+            <div class="form-group" style="padding: 1em 0;">
+                报告ID：<input id="presentationId" style="outline: none;width: 250px;height: 32px"
+                            placeholder="请输入需要查询的报告ID"/>
+                <button id="search" class="btn btn-info" style="outline: none" title="run jsonViewer()">查询报告</button>
+            </div>
+            <textarea class="form-control" id="json-input" rows="15" placeholder="请输入需要查询的json"></textarea>
             <label class="checkbox-inline">
                 <input type="checkbox" id="collapsed">
                 收缩所有的节点 </label>
@@ -44,13 +30,13 @@
                 <input type="checkbox" id="with-quotes">
                 为Key添加双引号 </label>
             <div class="form-group" style="padding: 1em 0;">
-                <button id="btn-json-viewer" class="btn btn-info" title="run jsonViewer()">转换Json数据</button>
+                <button id="btn-json-viewer" class="btn btn-info" title="run jsonViewer()" style="outline: none">转换Json数据</button>
             </div>
             <pre id="json-renderer"></pre>
         </div>
     </div>
 </div>
-<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+<script src="js/jquery-1.7.2.min.js"></script>
 <script src="js/jquery.json-viewer.js"></script>
 <script type="text/javascript">
     $(function () {
@@ -59,7 +45,7 @@
                 var input = eval('(' + $('#json-input').val() + ')');
             }
             catch (error) {
-                return alert("Cannot eval JSON: " + error);
+                return alert("不能转化为json数据: ");
             }
             var options = {
                 collapsed: $('#collapsed').is(':checked'),
@@ -68,44 +54,51 @@
             $('#json-renderer').jsonViewer(input, options);
         });
 
-        // Display JSON sample on load
-        $('#btn-json-viewer').click();
     });
 
-    (function($){
-        $.getUrlParam
-            = function(name)
-        {
-            var reg
-                = new RegExp("(^|&)"+
-                name +"=([^&]*)(&|$)");
-            var r
-                = window.location.search.substr(1).match(reg);
-            if (r!=null) return unescape(r[2]); return null;
-        }
-    })(jQuery);
-
-    window.location = function () {
-        var par = $.getUrlParam("presentationId");
-        console.log("接收到信息",par);
-        if (par!=null){
-            $.ajax({
-                type: "GET",
-                url: "/servers/getResult",
-                data: {
-                    presentationId:par
-                },
-                dataType: "json",
-                success: function (message) {
-                    console.log("返回结果",message);
-                    $("#json-input").val(message);
-                },
-                error: function (message) {
-                    $("#request-process-patent").html("提交数据失败！"+message);
-                }
-            });
-        }
+    //获取url中的参数
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)"); //构造一个含有目标参数的正则表达式对象
+        var r = window.location.search.substr(1).match(reg);  //匹配目标参数
+        if (r != null) return unescape(r[2]);
+        return null; //返回参数值
     }
+
+    // 加载时运行
+    $(document).ready(function () {
+        var par = getUrlParam("presentationId").replace("\"", "").replace("\"", "");
+        console.log("接收到信息", par);
+        if (par != null) {
+            // 输入输入框里
+            $("#presentationId").val(par);
+            search();
+        }
+    });
+
+    // 点击查询
+    function search(){
+        var value = $("#presentationId").val();
+        $.ajax({
+            type: "GET",
+            url: "/servers/getResult",
+            data: {
+                presentationId: value
+            },
+            dataType: "json",
+            success: function (message) {
+                console.log("返回结果", message);
+                $("#json-input").val(JSON.stringify(message));
+            },
+            error: function (message) {
+                $("#request-process-patent").html("提交数据失败！" + message);
+            }
+        });
+    }
+
+    // 点击查询
+    $("#search").click(function(){
+        search();
+    });
 
 </script>
 </body>
