@@ -22,6 +22,9 @@ public class PersentationModel  extends BaseModel {
      */
     private String value;
 
+    public PersentationModel() {
+    }
+
     public PersentationModel(String persentationId, String value) {
         this.persentationId = persentationId;
         this.value = value;

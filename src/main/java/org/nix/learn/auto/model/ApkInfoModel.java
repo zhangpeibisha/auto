@@ -40,11 +40,6 @@ public class ApkInfoModel extends BaseModel {
      */
     private String appActivity;
 
-    /**
-     * 生成时间
-     */
-    private Date createTime;
-
     public ApkInfoModel() {
     }
 

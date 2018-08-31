@@ -54,6 +54,10 @@ public class SchemaModel  extends BaseModel {
      */
     private String remarks;
 
+
+    public SchemaModel() {
+    }
+
     /**
      * 包含了所有参数的schema
      *
