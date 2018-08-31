@@ -2,6 +2,7 @@ package org.nix.learn.auto.model.base;
 
 import org.apache.log4j.Logger;
 
+import javax.persistence.Id;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -16,6 +17,7 @@ public class BaseModel {
 
     private static final Logger logger = Logger.getLogger(BaseModel.class);
 
+    @Id
     protected String id;
 
     protected Date createTime;

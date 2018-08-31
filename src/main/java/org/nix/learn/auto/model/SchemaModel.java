@@ -253,7 +253,6 @@ public class SchemaModel  extends BaseModel {
         this.maxUseVersion = maxUseVersion;
     }
 
-
     @Override
     public String toString() {
         return "SchemaModel{" +
@@ -264,6 +263,10 @@ public class SchemaModel  extends BaseModel {
                 ", eg='" + eg + '\'' +
                 ", useVersion='" + useVersion + '\'' +
                 ", maxUseVersion='" + maxUseVersion + '\'' +
+                ", remarks='" + remarks + '\'' +
+                ", id='" + id + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

@@ -51,6 +51,9 @@ public class PersentationModel  extends BaseModel {
         return "PersentationModel{" +
                 "persentationId='" + persentationId + '\'' +
                 ", value='" + value + '\'' +
+                ", id='" + id + '\'' +
+                ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }

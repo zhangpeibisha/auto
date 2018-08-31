@@ -3,6 +3,7 @@ package org.nix.learn.auto.model;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.model.base.BaseModel;
 
+import javax.persistence.Table;
 import java.nio.file.Path;
 import java.util.Date;
 
@@ -11,6 +12,7 @@ import java.util.Date;
  * @author zhangpei341@pingan.cn.com 2018/8/22 下午6:16
  * @version 1.0
  */
+@Table(name = "apk_info")
 public class ApkInfoModel extends BaseModel {
 
     private static final Logger logger = Logger.getLogger(ApkInfoModel.class);
@@ -127,13 +129,15 @@ public class ApkInfoModel extends BaseModel {
 
     @Override
     public String toString() {
-        return "ApkInfo{" +
+        return "ApkInfoModel{" +
                 "version='" + version + '\'' +
                 ", runEnvironment='" + runEnvironment + '\'' +
                 ", installPath=" + installPath +
                 ", appPackage='" + appPackage + '\'' +
                 ", appActivity='" + appActivity + '\'' +
+                ", id='" + id + '\'' +
                 ", createTime=" + createTime +
+                ", updateTime=" + updateTime +
                 '}';
     }
 }
