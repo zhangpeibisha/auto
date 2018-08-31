@@ -30,7 +30,7 @@ public class ApkInfoModel extends BaseModel {
     /**
      * apk安装路径
      */
-    private Path installPath;
+    private String installPath;
 
     /**
      * apk的包名
@@ -68,7 +68,7 @@ public class ApkInfoModel extends BaseModel {
      * @param installPath
      * @param createTime
      */
-    public ApkInfoModel(String version, String runEnvironment, Path installPath, Date createTime) {
+    public ApkInfoModel(String version, String runEnvironment, String installPath, Date createTime) {
         this.version = version;
         this.runEnvironment = runEnvironment;
         this.installPath = installPath;
@@ -95,11 +95,11 @@ public class ApkInfoModel extends BaseModel {
         this.runEnvironment = runEnvironment;
     }
 
-    public Path getInstallPath() {
+    public String getInstallPath() {
         return installPath;
     }
 
-    public void setInstallPath(Path installPath) {
+    public void setInstallPath(String installPath) {
         this.installPath = installPath;
     }
 
