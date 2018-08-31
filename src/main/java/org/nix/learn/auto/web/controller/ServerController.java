@@ -39,10 +39,6 @@ public class ServerController {
 
     @PostMapping("schemaServer")
     public String schemaServer(@RequestBody SchemaSeverDto value, HttpServletRequest request){
-        LogUtils.printLog("返回信息",value);
-        LogUtils.printLog("phoneInfo",value.getEquipmentDtos());
-        LogUtils.printLog("schemas",value.getSchemas());
-
 
         String path =  getClass().getResource("/").toString().replace("file:","");
         Path keepPath = Paths.get(path,"static","keep");

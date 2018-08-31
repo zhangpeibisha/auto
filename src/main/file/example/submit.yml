@@ -1,0 +1,28 @@
+task:
+  computer:
+    ip:
+    - 127.0.0.1
+    ports:
+    - 4037
+    - 4038
+    udids:
+    - sfja3132
+    - 32rfsfja
+  shcemas:
+    schema:
+      parent:
+       - yqbnative://app.1qianbao.com/
+      url:
+       - huoqianbao/index
+      parmarent:
+       -
+      use:
+        - true
+      useVersion:
+        - 4.0.0
+      maxUseVersion:
+        - 6.0.0.1
+      remarks:
+        - 活钱宝跳转url
+      name:
+        - 活钱宝

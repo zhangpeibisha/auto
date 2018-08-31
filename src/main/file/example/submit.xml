@@ -1,0 +1,56 @@
+<task>
+    <!--定义任务执行后需要处理结果的一些参数-->
+    <result>
+        <!--需要存储为文件形式的文件的存储地址-->
+        <path>/Users/mac/IdeaProjects/auto_git/src/main/file/test</path>
+    </result>
+    <!--需要执行任务的电脑服务器-->
+    <computers>
+        <computer>
+            <ip>127.0.0.1</ip>
+            <ports>
+                <port>4723</port>
+                <port>4724</port>
+                <port>4725</port>
+                <port>4726</port>
+            </ports>
+            <phones>
+                <udid>sadfa1234</udid>
+                <udid>sdf243542</udid>
+                <udid>sdf243542</udid>
+                <udid>sdf243542</udid>
+                <udid>sdf243542</udid>
+            </phones>
+        </computer>
+        <computer>
+            <ip>127.0.0.2</ip>
+            <ports>
+                <port>4723</port>
+                <port>4724</port>
+                <port>4725</port>
+                <port>4726</port>
+            </ports>
+            <phones>
+                <udid>sadfa1234</udid>
+                <udid>sdf243542</udid>
+                <udid>sdf243542</udid>
+                <udid>sdf243542</udid>
+            </phones>
+        </computer>
+    </computers>
+    <!--任务中需要使用的schema信息-->
+    <schemas>
+        <parent id = "yqb">yqbnative://app.1qianbao.com/</parent>
+        <schema ref = "yqb">
+            <name>活钱宝</name>
+            <url>huoqianbao/index</url>
+            <useVersion>4.0</useVersion>
+            <maxUseVersion>6.0.1</maxUseVersion>
+            <use>true</use>
+            <remarks>登陆态跳转到用户活钱宝页面</remarks>
+            <parameters>
+                <parmaeter>{}</parmaeter>
+            </parameters>
+        </schema>
+    </schemas>
+</task>
