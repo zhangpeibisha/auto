@@ -2,7 +2,10 @@ package org.nix.learn.auto.functions.schema.android;
 
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
+import org.nix.learn.auto.core.appium.AppiumUtils;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
+import org.nix.learn.auto.functions.presentation.Presentation;
+import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.*;
 import org.nix.learn.auto.utils.LogUtils;
@@ -13,11 +16,11 @@ import java.util.List;
 
 /**
  * 一个手机运行多个scheme
- *
+ * <p>
  * 该层次需要进行并发执行任务，加快任务执行，且避免执行不成功的手机异常退出执行
- *
+ * <p>
  * 下一层单元运行需要串型运行，因为是检测一个手机的多个页面的兼容性
- *
+ * <p>
  * 层次等级：3
  *
  * @author zhangpei341@pingan.cn.com 2018/8/23 下午12:47
@@ -60,6 +63,21 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
         this.screenshotPath = screenshotPath;
     }
 
+    /**
+     * 不用报告
+     *
+     * @param models
+     * @param defaultAndroidDriver
+     * @param apkVersion
+     * @param screenshotPath
+     */
+    public SchemaRunPhone(List<SchemaModel> models, DefaultAndroidDriver defaultAndroidDriver, String apkVersion, Path screenshotPath) {
+        this.models = models;
+        this.defaultAndroidDriver = defaultAndroidDriver;
+        this.apkVersion = apkVersion;
+        this.screenshotPath = screenshotPath;
+    }
+
     @Override
     public void run() {
         runTask();
@@ -67,15 +85,19 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
 
     @Override
     public void runTask() {
-
-        Presentation son = prentPresentation.addSon("schemaRunPhone",
-                JSON.toJSONString(defaultAndroidDriver.getDriver().getCapabilities().asMap()));
-        prentPresentation.addPresentation(son);
-        LogUtils.printLog("three","手机信息", JSON.toJSONString(defaultAndroidDriver.getDriver().getCapabilities().asMap()));
-
+        prentPresentation.putCurr("phoneInfo", defaultAndroidDriver.getDriver().getCapabilities().asMap());
+        int index = 0;
         for (SchemaModel schemaModel : models) {
-            SchemaRunOne runOne = new SchemaRunOne(schemaModel,defaultAndroidDriver,son,apkVersion,screenshotPath);
+            AppiumUtils appiumUtils = new AppiumUtils();
+            SchemaRunOne runOne = new SchemaRunOne(
+                    schemaModel,
+                    defaultAndroidDriver,
+                    prentPresentation.addNext(index + " :schema", (long) models.size()),
+                    apkVersion,
+                    screenshotPath,
+                    appiumUtils);
             runOne.runTask();
+            index++;
         }
     }
 

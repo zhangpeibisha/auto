@@ -2,6 +2,8 @@ package org.nix.learn.auto.functions.schema.android;
 
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
+import org.nix.learn.auto.functions.presentation.Presentation;
+import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.*;
 
@@ -66,17 +68,20 @@ public class SchemaRunComputer implements SchemaRun {
     @Override
     public void runTask() {
         List<DefaultAndroidDriver> list = runStaple.createDefaultAndroidDrivers();
-        Presentation son;
-        son = prentPresentation.addSon("schemaRunComputer");
-        if (list!=null){
-            prentPresentation.addPresentation(son);
+        if (list != null) {
+            int index = 0;
+            prentPresentation.putCurr("current phones",list.size());
             for (DefaultAndroidDriver defaultAndroidDriver : list) {
-                son.addSon("ip", String.valueOf(defaultAndroidDriver.getAppiumPath()));
-                SchemaRunPhone runPhone = new SchemaRunPhone(models, defaultAndroidDriver, son, apkVersion, screenshotPath);
+                SchemaRunPhone runPhone = new SchemaRunPhone(
+                        models,
+                        defaultAndroidDriver,
+                        prentPresentation.addNext(index + " :phone", (long) list.size()),
+                        apkVersion, screenshotPath);
                 SchemaThreadPool.put(runPhone);
+                index++;
             }
-        }else{
-            prentPresentation.addPresentation(son);
+        } else {
+            prentPresentation.putCurr("current phones","null");
         }
 
     }

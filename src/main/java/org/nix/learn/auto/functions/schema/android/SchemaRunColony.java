@@ -3,11 +3,11 @@ package org.nix.learn.auto.functions.schema.android;
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.server.AppiumServer;
+import org.nix.learn.auto.functions.presentation.Presentation;
+import org.nix.learn.auto.functions.presentation.TaskPresentation;
 import org.nix.learn.auto.model.ApkInfoModel;
-import org.nix.learn.auto.functions.schema.Presentation;
 import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.SchemaRun;
-import org.nix.learn.auto.functions.schema.TaskPresentation;
 import org.nix.learn.auto.utils.LogUtils;
 
 import java.nio.file.Path;
@@ -41,7 +41,7 @@ public class SchemaRunColony implements SchemaRun {
     /**
      * 顶级报告类
      */
-    private Presentation boosPresentation;
+    private Presentation presentation;
 
     /**
      * 本次执行任务执行的apk信息
@@ -62,10 +62,10 @@ public class SchemaRunColony implements SchemaRun {
      * @param apkInfo
      * @param screenshotPath
      */
-    public SchemaRunColony(List<RunStaple> runStaples, List<SchemaModel> schemaModels, Presentation boosPresentation, ApkInfoModel apkInfo, Path screenshotPath) {
+    public SchemaRunColony(List<RunStaple> runStaples, List<SchemaModel> schemaModels, Presentation presentation, ApkInfoModel apkInfo, Path screenshotPath) {
         this.runStaples = runStaples;
         this.schemaModels = schemaModels;
-        this.boosPresentation = boosPresentation;
+        this.presentation = presentation;
         this.apkInfo = apkInfo;
         this.screenshotPath = screenshotPath;
     }
@@ -102,18 +102,20 @@ public class SchemaRunColony implements SchemaRun {
 
     @Override
     public void runTask() {
-        boosPresentation.addKeyAndValue("schemaRunColony", JSON.toJSON(this));
-        LogUtils.printLog("frist", "一级任务");
+        presentation.putCurr("task info", JSON.toJSON(this));
+        int index = 0;
         for (RunStaple runStaple : runStaples) {
-            SchemaRunComputer computer = new SchemaRunComputer(runStaple, boosPresentation, schemaModels, apkInfo.getVersion(), screenshotPath);
+            SchemaRunComputer computer = new SchemaRunComputer(runStaple, presentation.addNext(index + " :computer", (long) runStaples.size())
+                    , schemaModels, apkInfo.getVersion(), screenshotPath);
             computer.runTask();
+            index++;
         }
     }
 
 
     public static void main(String[] args) throws InterruptedException {
 
-        TaskPresentation boos = new TaskPresentation("顶级任务管理", "任务创建区域");
+        Presentation boos = new TaskPresentation();
         SchemaRunColony runColony = new SchemaRunColony(createRunStaples(boos), createSchemaModels(), boos, createApkInfo(),
                 Paths.get("/Users/mac/IdeaProjects/auto_git/src/main/file"));
 
@@ -141,7 +143,7 @@ public class SchemaRunColony implements SchemaRun {
         return apkInfo;
     }
 
-    private static List<RunStaple> createRunStaples(TaskPresentation taskPresentation) {
+    private static List<RunStaple> createRunStaples(Presentation taskPresentation) {
 
         String path = "127.0.0.1";
 
@@ -247,10 +249,10 @@ public class SchemaRunColony implements SchemaRun {
     }
 
     public Presentation getResult() {
-        return boosPresentation;
+        return presentation;
     }
 
-    public void setBoosPresentation(Presentation boosPresentation) {
-        this.boosPresentation = boosPresentation;
+    public void setpresentation(Presentation presentation) {
+        this.presentation = presentation;
     }
 }

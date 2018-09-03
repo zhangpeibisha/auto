@@ -1,26 +1,20 @@
 package org.nix.learn.auto.web.controller;
 
 import com.alibaba.fastjson.JSON;
-import org.apache.log4j.Logger;
-import org.nix.learn.auto.core.appium.server.AppiumServer;
-import org.nix.learn.auto.functions.schema.Presentation;
-import org.nix.learn.auto.functions.schema.TaskPresentation;
-import org.nix.learn.auto.functions.schema.android.RunStaple;
+import org.nix.learn.auto.functions.presentation.Presentation;
+import org.nix.learn.auto.functions.presentation.PresentationContent;
+import org.nix.learn.auto.functions.presentation.AbstractPresentationContent;
+import org.nix.learn.auto.functions.presentation.TaskPresentation;
 import org.nix.learn.auto.functions.schema.android.SchemaRunColony;
 import org.nix.learn.auto.utils.CryptoUtils;
 import org.nix.learn.auto.utils.LogUtils;
-import org.nix.learn.auto.web.dto.EquipmentDto;
 import org.nix.learn.auto.web.dto.SchemaServerDtoSon;
 import org.nix.learn.auto.web.dto.SchemaSeverDto;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -34,7 +28,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServerController {
 
 
-    private static final Map<String,Presentation> results = new ConcurrentHashMap<>();
+    private static final Map<String, PresentationContent> results = new ConcurrentHashMap<>();
 
 
     @PostMapping("schemaServer")
@@ -48,7 +42,7 @@ public class ServerController {
         schemaSeverDto.setSchemas(value.getSchemas());
         schemaSeverDto.setEquipmentDtos(value.getEquipmentDtos());
 
-        Presentation presentation = new TaskPresentation("报告");
+        Presentation presentation = new TaskPresentation();
 
         SchemaServerDtoSon schemaServerDtoSon = new SchemaServerDtoSon(schemaSeverDto,presentation);
 
@@ -65,7 +59,7 @@ public class ServerController {
     }
 
     @GetMapping("getResult")
-    public Presentation getResult(@RequestParam("presentationId")String presentationId){
+    public PresentationContent getResult(@RequestParam("presentationId")String presentationId){
         LogUtils.printLog("请求信息:",presentationId);
         System.out.println();
         return results.get(presentationId);

@@ -1,8 +1,7 @@
 package org.nix.learn.auto.web.dto;
 
-import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.server.AppiumServer;
-import org.nix.learn.auto.functions.schema.Presentation;
+import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.functions.schema.android.RunStaple;
 
 import java.util.*;
@@ -15,9 +14,9 @@ public class SchemaServerDtoSon {
 
     private SchemaSeverDto schemaSeverDto;
 
-    private Presentation presentation;
+    private PresentationContent presentation;
 
-    public SchemaServerDtoSon(SchemaSeverDto schemaSeverDto, Presentation presentation) {
+    public SchemaServerDtoSon(SchemaSeverDto schemaSeverDto, PresentationContent presentation) {
         this.schemaSeverDto = schemaSeverDto;
         this.presentation = presentation;
     }

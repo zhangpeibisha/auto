@@ -4,8 +4,7 @@ import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.core.appium.server.AppiumServer;
-import org.nix.learn.auto.functions.schema.Presentation;
-import org.nix.learn.auto.functions.schema.TaskPresentation;
+import org.nix.learn.auto.functions.presentation.PresentationContent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +26,7 @@ public class RunStaple {
     /**
      * 父级报告集合
      */
-    private Presentation prentPresentation;
+    private PresentationContent prentPresentation;
 
 
     /**
@@ -37,7 +36,7 @@ public class RunStaple {
      * @param udids             链接在这台电脑上的手机
      * @param prentPresentation 父级报告
      */
-    public RunStaple(AppiumServer server, List<String> udids, Presentation prentPresentation) {
+    public RunStaple(AppiumServer server, List<String> udids, PresentationContent prentPresentation) {
         this.server = server;
         this.udids = udids;
         this.prentPresentation = prentPresentation;
@@ -71,7 +70,7 @@ public class RunStaple {
 
         // 意味着将有部分手机不能使用，执行任务
         if (max == udidsLen && max != min) {
-            prentPresentation.addKeyAndValue("不能执行任务的手机", udids.subList(min+1, max));
+            prentPresentation.putCurr("the phones can't run ", udids.subList(min+1, max));
         }
         return defaultAndroidDrivers;
     }

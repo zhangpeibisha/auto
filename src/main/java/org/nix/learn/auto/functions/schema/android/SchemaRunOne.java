@@ -5,6 +5,8 @@ import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.AppiumUtils;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
+import org.nix.learn.auto.functions.presentation.Presentation;
+import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.*;
 import org.nix.learn.auto.utils.LogUtils;
@@ -60,26 +62,41 @@ public class SchemaRunOne implements SchemaRun {
      */
     private Path screenshotPath;
 
+    private AppiumUtils appiumUtils;
     /**
-     *
+     * 需要生成报告
      * @param schemaModel
      * @param defaultAndroidDriver
      * @param presentation
      * @param apkVersion
      * @param screenshotPath
      */
-    public SchemaRunOne(SchemaModel schemaModel, DefaultAndroidDriver defaultAndroidDriver, Presentation presentation, String apkVersion, Path screenshotPath) {
+    public SchemaRunOne(SchemaModel schemaModel, DefaultAndroidDriver defaultAndroidDriver, Presentation presentation, String apkVersion, Path screenshotPath,AppiumUtils appiumUtils) {
         this.schemaModel = schemaModel;
         this.defaultAndroidDriver = defaultAndroidDriver;
         this.presentation = presentation;
         this.apkVersion = apkVersion;
         this.screenshotPath = screenshotPath;
+        this.appiumUtils = appiumUtils;
+    }
+
+    /**
+     * 不需要生成报告
+     * @param schemaModel
+     * @param defaultAndroidDriver
+     * @param apkVersion
+     * @param screenshotPath
+     */
+    public SchemaRunOne(SchemaModel schemaModel, DefaultAndroidDriver defaultAndroidDriver, String apkVersion, Path screenshotPath,AppiumUtils appiumUtils) {
+        this.schemaModel = schemaModel;
+        this.defaultAndroidDriver = defaultAndroidDriver;
+        this.apkVersion = apkVersion;
+        this.screenshotPath = screenshotPath;
+        this.appiumUtils = appiumUtils;
     }
 
     @Override
     public void runTask() {
-        Presentation taskPresentation = presentation.addSon("schemaRunOne",schemaModel.requestPath(apkVersion));
-        AppiumUtils appiumUtils = new AppiumUtils();
         // 核心运行部分
         try {
             AndroidDriver driver = (AndroidDriver) defaultAndroidDriver.getDriver();
@@ -92,17 +109,12 @@ public class SchemaRunOne implements SchemaRun {
             Path savePath = appiumUtils.screenshot(driver, screenshotPath);
 
             // 开始手机信息进行保存，为报告生成做准备
-            taskPresentation.addKeyAndValue("result","[运行成功]");
-            taskPresentation.addKeyAndValue("screenshotPath",savePath);
+            presentation.setSuccess();
+            presentation.putCurr("savePath",savePath);
         } catch (WebDriverException | SchemaException | InterruptedException | IOException e) {
-            taskPresentation.addKeyAndValue("result","[运行失败]");
-            taskPresentation.addKeyAndValue("msg",e.getMessage());
+            presentation.setFail();
+            presentation.putCurr("fail msg",e.getMessage());
         }
-
-        taskPresentation.addKeyAndValue("schema",schemaModel);
-        presentation.addPresentation(taskPresentation);
-
-        LogUtils.printLog("four","底层执行类", schemaModel);
     }
 
 }
