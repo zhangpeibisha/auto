@@ -54,6 +54,10 @@ public class SchemaModel  extends BaseModel {
      */
     private String remarks;
 
+    /**
+     * json参数示例
+     */
+    private String tpl;
 
     public SchemaModel() {
     }
@@ -196,14 +200,6 @@ public class SchemaModel  extends BaseModel {
     }
 
 
-    public String getPath() {
-        return path;
-    }
-
-    public void setPath(String path) {
-        this.path = path;
-    }
-
     public String getName() {
         return name;
     }
@@ -212,6 +208,13 @@ public class SchemaModel  extends BaseModel {
         this.name = name;
     }
 
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
 
     public String getParameter() {
         return parameter;
@@ -253,6 +256,22 @@ public class SchemaModel  extends BaseModel {
         this.maxUseVersion = maxUseVersion;
     }
 
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public String getTpl() {
+        return tpl;
+    }
+
+    public void setTpl(String tpl) {
+        this.tpl = tpl;
+    }
+
     @Override
     public String toString() {
         return "SchemaModel{" +
@@ -264,6 +283,7 @@ public class SchemaModel  extends BaseModel {
                 ", useVersion='" + useVersion + '\'' +
                 ", maxUseVersion='" + maxUseVersion + '\'' +
                 ", remarks='" + remarks + '\'' +
+                ", tpl='" + tpl + '\'' +
                 ", id='" + id + '\'' +
                 ", createTime=" + createTime +
                 ", updateTime=" + updateTime +

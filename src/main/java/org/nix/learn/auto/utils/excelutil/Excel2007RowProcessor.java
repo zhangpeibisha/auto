@@ -10,6 +10,7 @@ import org.apache.poi.openxml4j.opc.OPCPackage;
 import org.apache.poi.xssf.eventusermodel.XSSFReader;
 import org.apache.poi.xssf.model.SharedStringsTable;
 import org.apache.poi.xssf.usermodel.XSSFRichTextString;
+import org.nix.learn.auto.utils.LogUtils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -184,7 +185,6 @@ public abstract class Excel2007RowProcessor implements ExcelRowProcessor {
                         row.addCell(cell);
                     }
                     //optRows(sheetIndex, curRow, rowlist);
-
                     if (!isBlankRow(row)) {
                         processRow(row);
                     } else {
