@@ -1,41 +1,41 @@
 package org.nix.learn.auto.model;
 
-import org.apache.log4j.Logger;
 import org.nix.learn.auto.model.base.BaseModel;
+
+import javax.persistence.Table;
 
 /**
  * 存储在数据库中的运行文本报告
  * @author zhangpei341@pingan.cn.com 2018/8/29 上午11:34
  * @version 1.0
  */
-public class PersentationModel  extends BaseModel {
-
-    private static final Logger logger = Logger.getLogger(PersentationModel.class);
+@Table(name = "presentation_model")
+public class PresentationModel extends BaseModel {
 
     /**
      * 报告生成唯一编码
      */
-    private String persentationId;
+    private String presentationId;
 
     /**
      * 报告的json文本
      */
     private String value;
 
-    public PersentationModel() {
+    public PresentationModel() {
     }
 
-    public PersentationModel(String persentationId, String value) {
-        this.persentationId = persentationId;
+    public PresentationModel(String presentationId, String value) {
+        this.presentationId = presentationId;
         this.value = value;
     }
 
-    public String getPersentationId() {
-        return persentationId;
+    public String getpresentationId() {
+        return presentationId;
     }
 
-    public void setPersentationId(String persentationId) {
-        this.persentationId = persentationId;
+    public void setPresentationId(String presentationId) {
+        this.presentationId = presentationId;
     }
 
     public String getValue() {
@@ -48,8 +48,8 @@ public class PersentationModel  extends BaseModel {
 
     @Override
     public String toString() {
-        return "PersentationModel{" +
-                "persentationId='" + persentationId + '\'' +
+        return "PresentationModel{" +
+                "presentationId='" + presentationId + '\'' +
                 ", value='" + value + '\'' +
                 ", id='" + id + '\'' +
                 ", createTime=" + createTime +

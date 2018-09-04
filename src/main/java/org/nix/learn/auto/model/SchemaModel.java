@@ -5,6 +5,8 @@ import org.nix.learn.auto.functions.schema.SchemaException;
 import org.nix.learn.auto.model.base.BaseModel;
 import org.nix.learn.auto.utils.Base64;
 
+import javax.persistence.Table;
+
 /**
  * schema实体类
  * 装载类schema的具体信息
@@ -12,6 +14,7 @@ import org.nix.learn.auto.utils.Base64;
  * @author zhangpei341@pingan.cn.com 2018/8/22 下午3:12
  * @version 1.0
  */
+@Table(name = "schema_model")
 public class SchemaModel  extends BaseModel {
 
     /**
@@ -26,6 +29,7 @@ public class SchemaModel  extends BaseModel {
 
     /**
      * schema需要添加参数
+     * 不序列化到数据库中
      */
     private String parameter;
 

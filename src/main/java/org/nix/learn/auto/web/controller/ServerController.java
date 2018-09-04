@@ -27,42 +27,18 @@ import java.util.concurrent.ConcurrentHashMap;
 @RestController
 public class ServerController {
 
-
-    private static final Map<String, PresentationContent> results = new ConcurrentHashMap<>();
-
-
     @PostMapping("schemaServer")
     public String schemaServer(@RequestBody SchemaSeverDto value, HttpServletRequest request){
 
-        String path =  getClass().getResource("/").toString().replace("file:","");
-        Path keepPath = Paths.get(path,"static","keep");
-        LogUtils.printLog("path",keepPath);
-
-        SchemaSeverDto schemaSeverDto = new SchemaSeverDto();
-        schemaSeverDto.setSchemas(value.getSchemas());
-        schemaSeverDto.setEquipmentDtos(value.getEquipmentDtos());
-
-        Presentation presentation = new TaskPresentation();
-
-        SchemaServerDtoSon schemaServerDtoSon = new SchemaServerDtoSon(schemaSeverDto,presentation);
 
 
-        SchemaRunColony colony = new
-                SchemaRunColony(schemaServerDtoSon.getRunStaple(),SchemaRunColony.createSchemaModels(),presentation,SchemaRunColony.createApkInfo(),keepPath);
-        colony.runTask();
-
-        String preId = CryptoUtils.encodeMD5(JSON.toJSONBytes(presentation));
-        LogUtils.printLog("preId",preId);
-        results.put(preId,presentation);
-
-        return JSON.toJSONString(preId);
+        return null;
     }
 
     @GetMapping("getResult")
     public PresentationContent getResult(@RequestParam("presentationId")String presentationId){
-        LogUtils.printLog("请求信息:",presentationId);
-        System.out.println();
-        return results.get(presentationId);
+
+        return null;
     }
 
 }

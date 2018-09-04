@@ -1,6 +1,7 @@
 package org.nix.learn.auto.model;
 
 import org.apache.log4j.Logger;
+import org.hibernate.validator.constraints.Length;
 import org.nix.learn.auto.model.base.BaseModel;
 
 import javax.persistence.Table;
@@ -75,10 +76,7 @@ public class ApkInfoModel extends BaseModel {
         this.createTime = createTime;
     }
 
-    public static Logger getLogger() {
-        return logger;
-    }
-
+    @Length(max = 20,min = 1,message = "版本号格式不正确")
     public String getVersion() {
         return version;
     }
