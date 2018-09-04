@@ -11,6 +11,7 @@ import org.nix.learn.auto.model.ApkInfoModel;
 import org.nix.learn.auto.model.PresentationModel;
 import org.nix.learn.auto.utils.CryptoUtils;
 import org.nix.learn.auto.utils.DateUtils;
+import org.nix.learn.auto.utils.LogUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -63,11 +64,19 @@ public class AutoApplicationTests {
     @Test
     public void PresentationInsertTest(){
 
-        PresentationModel model = new PresentationModel();
-        model.setPresentationId("1332223");
-        model.setValue("fsafasfsafja");
-
-        modelMapper.insert(model);
+        PresentationModel model;
+//        model = new PresentationModel();
+//        model.setPresentationId("1332223");
+//        model.setValue("fsafasfsafja");
+//        modelMapper.insert(model);
+//        model = modelMapper.findPresentationByPresentationId("1332223");
+//        LogUtils.printLog("model", model.getUpdateTime());
+        model = modelMapper.findPresentationByPresentationId("bisha");
+        model.setValue("zhangpei");
+        model.setUpdateTime(null);
+        modelMapper.updateByPrimaryKey(model);
+        model = modelMapper.findPresentationByPresentationId("bisha");
+        LogUtils.printLog("model", model.getUpdateTime());
     }
 
     @Resource
@@ -76,8 +85,10 @@ public class AutoApplicationTests {
     @Test
     public void set() {
 
-        redisDao.set("name","张沛");
-
+        PresentationModel model = new PresentationModel();
+        model.setValue("zhangpei");
+        redisDao.set("name",model);
+        model.setValue("bisha");
     }
 
     @Test

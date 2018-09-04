@@ -17,7 +17,6 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
  * @version 1.0
  */
 @Configuration
-@EnableCaching//开启缓存
 public class RedisConfig extends CachingConfigurerSupport {
     /**
      * redisTemplate 序列化使用的jdkSerializeable, 存储二进制字节码, 所以自定义序列化类
