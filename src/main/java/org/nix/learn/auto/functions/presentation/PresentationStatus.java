@@ -23,4 +23,5 @@ public interface PresentationStatus<R> {
      */
     R runSchedule();
 
+    Boolean isOk();
 }

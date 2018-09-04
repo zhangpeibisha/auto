@@ -46,6 +46,11 @@ public class AtomicLongPresentationStatus implements PresentationStatus<Double>{
         return result*1.0/all.get();
     }
 
+    @Override
+    public Boolean isOk() {
+        return runSchedule() == 1;
+    }
+
     public AtomicLong getSuccess() {
         return success;
     }
