@@ -49,7 +49,6 @@ public class AutoApplicationTests {
         model.setUpdateTime(new Date());
         model.setRunEnvironment("2tg");
         model.setInstallPath("/Users/mac/IdeaProjects/auto_git/src/main/apk");
-        model.setId(CryptoUtils.encodeMD5(DateUtils.getCurrentDateTime()));
         apkInfoModelMapper.insert(model);
         System.out.println(model);
     }

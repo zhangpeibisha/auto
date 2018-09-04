@@ -49,27 +49,31 @@ public class ReadSchemaExcel extends ExcelProcessor {
     @Override
     public void processRow(XRow row) {
         int cellSize = row.getCellsSize();
+        if (row.getRowIndex() == 1){
+            return;
+        }
         if (cellSize!=8){
             processRowResult(true);
             return;
         }
-        if (row.getRowIndex() == 1){
-            return;
-        }
         SchemaModel model = new SchemaModel();
-        model.setPath(row.getCell(0).getValue());
-        model.setName(row.getCell(1).getValue());
+        model.setPath(getValue(row,0));
+        model.setName(getValue(row,1));
         model.setUse("1".equals(row.getCell(2).getValue()));
-        model.setTpl(row.getCell(3).getValue());
-        model.setRemarks(row.getCell(4).getValue());
-        model.setUseVersion(row.getCell(5).getValue());
-        model.setMaxUseVersion(row.getCell(6).getValue());
-        model.setEg(row.getCell(7).getValue());
+        model.setTpl(getValue(row,3));
+        model.setRemarks(getValue(row,4));
+        model.setUseVersion(getValue(row,5));
+        model.setMaxUseVersion(getValue(row,6));
+        model.setEg(getValue(row,7));
         if (models == null){
             models = new HashSet<>();
         }
         models.add(model);
 
+    }
+
+    private String getValue(XRow row,int index){
+        return "-".equals(row.getCell(index).getValue())?"":row.getCell(index).getValue();
     }
 
     @Override
@@ -95,5 +99,7 @@ public class ReadSchemaExcel extends ExcelProcessor {
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
+
+        System.out.println("ebd1b6e0afe811e8957f9825f24eae7e".length());
     }
 }

@@ -2,11 +2,10 @@ package org.nix.learn.auto.model.base;
 
 import org.apache.log4j.Logger;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Vector;
 
 /**
  * 数据库基础类型，其中包含了系统流水号，创建时间，修改时间
@@ -18,6 +17,7 @@ public class BaseModel {
     private static final Logger logger = Logger.getLogger(BaseModel.class);
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "select replace(uuid(), '-', '') as id from dual")
     protected String id;
 
     protected Date createTime;
