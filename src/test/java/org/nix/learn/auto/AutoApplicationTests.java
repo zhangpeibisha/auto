@@ -6,6 +6,7 @@ import org.nix.learn.auto.core.obtain.AndroidCommand;
 import org.nix.learn.auto.core.obtain.PhoneCommandUtils;
 import org.nix.learn.auto.dao.mybatis.mapper.ApkInfoModelMapper;
 import org.nix.learn.auto.dao.mybatis.mapper.PresentationModelMapper;
+import org.nix.learn.auto.dao.redis.RedisDao;
 import org.nix.learn.auto.model.ApkInfoModel;
 import org.nix.learn.auto.model.PresentationModel;
 import org.nix.learn.auto.utils.CryptoUtils;
@@ -67,5 +68,20 @@ public class AutoApplicationTests {
         model.setValue("fsafasfsafja");
 
         modelMapper.insert(model);
+    }
+
+    @Resource
+    private RedisDao redisDao;
+
+    @Test
+    public void set() {
+
+        redisDao.set("name","张沛");
+
+    }
+
+    @Test
+    public void get() {
+        System.out.println(redisDao.get("name"));
     }
 }

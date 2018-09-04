@@ -118,6 +118,11 @@ public class TaskPresentation extends AbstractPresentationContent implements Pre
     }
 
     @Override
+    public Boolean isOk() {
+        return runSchedule() == 1;
+    }
+
+    @Override
     public Map<String, Object> getInfo() {
         info.put("runSchedule", JSON.toJSON(status));
         return super.getInfo();
