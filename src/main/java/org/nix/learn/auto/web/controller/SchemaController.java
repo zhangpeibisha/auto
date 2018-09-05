@@ -1,5 +1,6 @@
 package org.nix.learn.auto.web.controller;
 
+import com.github.pagehelper.PageInfo;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.functions.presentation.mange.PresentationCache;
 import org.nix.learn.auto.model.SchemaModel;
@@ -53,8 +54,9 @@ public class SchemaController {
      * @return schema数量
      */
     @GetMapping("findSchemaList/pagination")
-    public List<SchemaModel> findSchemaList(Integer curr,Integer quantity){
-        return null;
+    public PageInfo findSchemaList(Integer curr, Integer quantity){
+        return schemaServerImp.findSchemaList(curr,quantity);
     }
+
 
 }
