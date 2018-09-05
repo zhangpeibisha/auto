@@ -15,7 +15,7 @@ import java.util.List;
 public class SchemaServerImpTest extends AutoApplicationTests {
 
     @Resource
-    private SchemaServerImp schemaServerImp;
+    private SchemaServerImpl schemaServerImp;
 
     @Resource
     private SchemaModelMapper modelMapper;

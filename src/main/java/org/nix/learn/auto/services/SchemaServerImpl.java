@@ -3,7 +3,6 @@ package org.nix.learn.auto.services;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
-import org.nix.learn.auto.core.appium.server.AppiumServer;
 import org.nix.learn.auto.dao.mybatis.mapper.ApkInfoModelMapper;
 import org.nix.learn.auto.dao.mybatis.mapper.SchemaModelMapper;
 import org.nix.learn.auto.functions.presentation.Presentation;
@@ -28,7 +27,7 @@ import java.util.List;
  * @version 1.0
  */
 @Service
-public class SchemaServerImp {
+public class SchemaServerImpl {
 
     @Resource
     private PresentationCache presentationCache;
@@ -39,7 +38,7 @@ public class SchemaServerImp {
     @Resource
     public SchemaModelMapper schemaModelMapper;
 
-    private static final Logger logger = Logger.getLogger(SchemaServerImp.class);
+    private static final Logger logger = Logger.getLogger(SchemaServerImpl.class);
 
     /**
      * @param schemaSubmitDto 用户提交的信息
@@ -47,8 +46,7 @@ public class SchemaServerImp {
      */
     public String schemaCompatibilityRun(SchemaSubmitDto schemaSubmitDto) {
         // 将报告加入缓存
-        TaskPresentation taskPresentation = new TaskPresentation();
-        String id = presentationCache.put(taskPresentation);
+        TaskPresentation taskPresentation = new TaskPresentation((long) schemaSubmitDto.getIp().size());
 
         // 整理信息准备测试
         List<RunStaple> servers = schemaSubmitDto.getRunStaples(taskPresentation);
@@ -57,20 +55,28 @@ public class SchemaServerImp {
         if (models.size() == 0) {
             throw new ServerException("schema信息为空，不可测试");
         }
-        ApkInfoModel apkInfoModel = apkInfoModelMapper.selectByPrimaryKey(schemaSubmitDto.getApkId());
+        ApkInfoModel apkInfoModel;
+        apkInfoModel = new ApkInfoModel();
+        apkInfoModel.setId(schemaSubmitDto.getApkId());
+        apkInfoModel = apkInfoModelMapper.selectByPrimaryKey(apkInfoModel);
         if (apkInfoModel == null) {
             throw new ServerException("apk信息为空，不可测试");
         }
 
-        SchemaRunColony colony = new SchemaRunColony(servers, models, taskPresentation, apkInfoModel, Paths.get(""));
+        SchemaRunColony colony = new SchemaRunColony(servers, models, taskPresentation, apkInfoModel, Paths.get("/Users/mac/IdeaProjects/auto_git/src/main/file/test/"));
         colony.runTask();
+
+        String id = presentationCache.put(taskPresentation);
         return id;
     }
 
     private List<SchemaModel> findSchemaModelsByIds(List<String> schemaIds) {
         List<SchemaModel> schemaModels = new ArrayList<>();
         for (String id : schemaIds) {
-            SchemaModel model = schemaModelMapper.selectByPrimaryKey(id);
+            SchemaModel model;
+            model = new SchemaModel();
+            model.setId(id);
+            model = schemaModelMapper.selectByPrimaryKey(model);
             if (model != null) {
                 schemaModels.add(model);
             }

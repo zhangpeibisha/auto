@@ -72,7 +72,7 @@ public class SchemaSubmitDto {
     /**
      * @return 找到有多少台电脑
      */
-    private Set<String> getIp(){
+    public Set<String> getIp(){
         Set<String> ips = new HashSet<>();
         for (ComputerDto dto : computers) {
             ips.add(dto.getIp());

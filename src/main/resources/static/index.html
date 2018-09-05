@@ -10,7 +10,7 @@
     <script type="text/javascript" src="js/utils.js"></script>
     <script>
         window.onload = function () {
-            new Vue({
+           var vue = new Vue({
                 el: '#box',
                 data: {
                     myData: [],
@@ -20,6 +20,7 @@
                     ip: "",
                     udid: "",
                     schemaValue: "",
+                    submitValue:[]
                 },
                 methods: {
                     add: function () {
@@ -59,20 +60,22 @@
                             this.myData.splice(n, 1);
                         }
                     },
-                    schemaDel: function (n) {
+                    schemaSubmit: function (n) {
                         if (n === -2) {
-                            this.schemaData = "";
+                            $.each(this.schemaData,function (index,item) {
+                                this.submitValue.push(item.id)
+                            })
+                        }else {
+                            this.submitValue.push(this.schemaData[n].id)
                         }
-                        {
-                            this.schemaData.splice(n, 1);
-                        }
+                        console.log("schema submit",this.submitValue)
                     },
                     submit: function () {
                         console.log("提交信息", this);
 
                         // 手机信息
-                        var phones = [];
-                        var data = this.myData;
+                        const phones = [];
+                        const data = this.myData;
                         $.each(data, function (index, value) {
                             phones.push({
                                 ip: value.ip,
@@ -81,25 +84,18 @@
                             })
                         });
 
-                        // schema信息
-                        var schemasInfo = [];
-                        var schemaDa = this.schemaData;
-                        $.each(schemaDa, function (index, value) {
-                            schemasInfo.push({
-                                schemasInfo: value.values
-                            })
-                        });
                         // 发送信息
                         var sendInfo = {};
-                        sendInfo.equipmentDtos = phones;
-                        sendInfo.schemas = schemasInfo;
+                        sendInfo.computers = phones;
+                        sendInfo.schemas = this.submitValue;
+                        sendInfo.apkId = "080ea698b0dd11e8b6e4964180be38dc";
 
                         console.log("发送信息为:", sendInfo);
 
 
                         $.ajax({
                             type: "POST",
-                            url: "/servers/schemaServer",
+                            url: "/schema/schemaServer",
                             contentType: "application/json; charset=utf-8",
                             data: JSON.stringify(sendInfo),
                             dataType: "json",
@@ -129,6 +125,41 @@
                     }
                 }
             })
+
+            console.log("vue",vue);
+
+            // 加载时运行
+            $(document).ready(function () {
+                $.ajax({
+                    type:"GET",
+                    url:"/schema/findSchemaList/pagination",
+                    data:{
+                        curr:1,
+                        quantity:10
+                    },
+                    dataType:"json",
+                    success:function (e) {
+                        console.log("反馈信息",e)
+                        $.each(e.list,function (index,item) {
+                            console.log("轮询",index,item)
+                            vue.schemaData.push({
+                                id:item.id,
+                                name:item.name,
+                                path:item.path,
+                                create:item.createTime,
+                                update:item.updateTime,
+                                isUse:item.use,
+                                remarks:item.remarks
+
+                            })
+                        })
+                    },
+                    error:function (e) {
+                        console.log("错误信息",e)
+                    }
+                })
+            });
+
         }
     </script>
 </head>
@@ -151,17 +182,6 @@
     <div class="form-group">
         <input type="button" value="添加设备" class="btn btn-primary" v-on:click="add()"/>
         <input type="reset" value="重置设备" class="btn btn-danger" v-on:click="reset(-6)"/>
-    </div>
-
-    <!--输入schema-->
-    <div class="form-group">
-        <label for="schemaValue">schema：</label>
-        <input type="text" id="schemaValue" class="form-control" v-model="schemaValue" placeholder="输入scheme"/>
-    </div>
-
-    <div class="form-group">
-        <input type="button" value="添加schema" class="btn btn-primary" v-on:click="addSchema()"/>
-        <input type="reset" value="重置schema" class="btn btn-danger" v-on:click="reset(-7)"/>
         <button class="btn btn-danger" data-toggle="modal" data-target="#submit" v-on:click="nowIndex=-3">提交测试
         </button>
     </div>
@@ -203,39 +223,52 @@
 
     <!--schema-->
     <table class="table table-bordered table-hover">
-        <caption class="h3 text-info">添加schema</caption>
+        <caption class="h3 text-info">schema列表</caption>
         <tr>
             <th class="text-center">序号</th>
-            <th class="text-center">schema</th>
+            <th class="text-center">id</th>
+            <th class="text-center">含义</th>
+            <th class="text-center">路径</th>
+            <th class="text-center">创建时间</th>
+            <th class="text-center">修改时间</th>
+            <th class="text-center">是否可用</th>
+            <th class="text-center">备注</th>
             <th class="text-center">操作</th>
         </tr>
         <tr class="text-center" v-for="item in schemaData">
             <td>{{$index+1}}</td>
-            <td>{{item.values}}</td>
+            <td>{{item.id}}</td>
+            <td>{{item.name}}</td>
+            <td>{{item.path}}</td>
+            <td>{{item.create}}</td>
+            <td>{{item.update}}</td>
+            <td>{{item.isUse}}</td>
+            <td>{{item.remarks}}</td>
             <td>
-                <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#schemaDelete"
-                        v-on:click="nowIndex=$index">删除
+                <button class="btn btn-primary btn-sm" data-target="#schemaSubmit"
+                        v-on:click="schemaSubmit($index)">选中
                 </button>
             </td>
         </tr>
         <tr v-show="schemaData.length!=0">
-            <td colspan="3" class="text-right">
-                <button class="btn btn-danger" data-toggle="modal" data-target="#schemaDelete" v-on:click="nowIndex=-2">
-                    删除全部
+            <td colspan="10" class="text-right">
+                <button class="btn btn-danger" data-target="#schemaSubmit" v-on:click="schemaSubmit(-2)">
+                    全部选中
                 </button>
 
             </td>
         </tr>
         <tr v-show="schemaData.length==0">
-            <td colspan="3" class="text-center text-info">
+            <td colspan="10" class="text-center text-info">
                 <p>暂无数据...</p>
             </td>
         </tr>
     </table>
 
+    <!--apkInfo 暂时不用-->
+
 
     <!--弹框-->
-
 
     <!--模态框 弹出框 重制设备信息-->
     <div role="dialog" class="modal fade" id="layer" data-index="{{nowIndex}}">
@@ -255,27 +288,6 @@
         </div>
     </div>
 
-
-    <!--schema重置-->
-    <div role="dialog" class="modal fade" id="schemaDelete" data-index="{{nowIndex}}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button class="close" data-dismiss="modal">
-                        <span>&times;</span>
-                    </button>
-                    <h4 class="modal-title">确认删除schema信息吗？</h4>
-                </div>
-                <div class="modal-body text-right">
-                    <button class="btn btn-primary btn-sm" data-dismiss="modal">取消</button>
-                    <button class="btn btn-danger btn-sm" data-dismiss="modal" v-on:click="schemaDel(nowIndex)">确认
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
     <!--模态框 弹出框 提交信息-->
     <div role="dialog" class="modal fade" id="submit" data-index="{{nowIndex}}">
         <div class="modal-dialog">
@@ -293,6 +305,8 @@
             </div>
         </div>
     </div>
+
 </div>
 </body>
+
 </html>

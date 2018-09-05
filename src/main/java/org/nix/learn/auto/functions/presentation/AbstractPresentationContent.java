@@ -5,6 +5,7 @@ import org.apache.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @see PresentationContent 接口实现业务实际需要的报告通知类
@@ -16,7 +17,7 @@ public abstract class AbstractPresentationContent implements PresentationContent
 
     private static final Logger logger = Logger.getLogger(AbstractPresentationContent.class);
 
-    protected Map<String,Object> info = new HashMap<>();
+    protected Map<String,Object> info = new ConcurrentHashMap<>();
 
     /**
      * 存入当前层级信息的子信息
@@ -38,7 +39,9 @@ public abstract class AbstractPresentationContent implements PresentationContent
      * @return 一个以map存储的报告
      */
     public Map<String, Object> getInfo() {
-        info.put("sons",sons);
+        if (sons!=null){
+            info.put("sons",sons);
+        }
         return info;
     }
 }
