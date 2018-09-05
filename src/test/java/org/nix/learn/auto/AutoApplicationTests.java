@@ -44,7 +44,7 @@ public class AutoApplicationTests {
     private ApkInfoModelMapper apkInfoModelMapper;
 
     @Test
-    public void testApkInfo(){
+    public void testApkInfo() {
         ApkInfoModel model = new ApkInfoModel();
         model.setVersion("1.0");
         model.setAppActivity("io.dcloud.PandoraEntryActivity");
@@ -62,21 +62,21 @@ public class AutoApplicationTests {
     private PresentationModelMapper modelMapper;
 
     @Test
-    public void PresentationInsertTest(){
+    public void PresentationInsertTest() {
 
         PresentationModel model;
-//        model = new PresentationModel();
-//        model.setPresentationId("1332223");
-//        model.setValue("fsafasfsafja");
-//        modelMapper.insert(model);
-//        model = modelMapper.findPresentationByPresentationId("1332223");
-//        LogUtils.printLog("model", model.getUpdateTime());
-        model = modelMapper.findPresentationByPresentationId("bisha");
-        model.setValue("zhangpei");
-        model.setUpdateTime(null);
-        modelMapper.updateByPrimaryKey(model);
-        model = modelMapper.findPresentationByPresentationId("bisha");
+        model = new PresentationModel();
+        model.setId("52f9a8b6b02311e8957f9825f24eae7e");
+        model.setPresentationId("1332223");
+        model.setValue("fsafasfsafja");
+        modelMapper.insert(model);
         LogUtils.printLog("model", model.getUpdateTime());
+//        model = modelMapper.findPresentationByPresentationId("bisha");
+//        model.setValue("zhangpei");
+//        model.setUpdateTime(null);
+//        modelMapper.updateByPrimaryKey(model);
+//        model = modelMapper.findPresentationByPresentationId("bisha");
+//        LogUtils.printLog("model", model.getUpdateTime());
     }
 
     @Resource
@@ -87,7 +87,7 @@ public class AutoApplicationTests {
 
         PresentationModel model = new PresentationModel();
         model.setValue("zhangpei");
-        redisDao.set("name",model);
+        redisDao.set("name", model);
         model.setValue("bisha");
     }
 

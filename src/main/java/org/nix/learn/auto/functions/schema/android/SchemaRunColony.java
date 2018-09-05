@@ -70,36 +70,6 @@ public class SchemaRunColony implements SchemaRun {
         this.screenshotPath = screenshotPath;
     }
 
-    /**
-     * 向下级分发任务执行
-     */
-    private void distributionTask() {
-
-    }
-
-    /**
-     * 初始化报告信息，用于状态实时更新
-     */
-    private void initPresentation() {
-
-    }
-
-    /**
-     * 初始化任务环境
-     * 1。比如检测软件是否存在，否则安装
-     * 2。检测手机是否都解锁成功，如果没有则解锁动作
-     */
-    private void initEnvironmental() {
-
-    }
-
-    /**
-     * 初始化schema
-     */
-    private void initSchemaModel() {
-
-    }
-
     @Override
     public void runTask() {
         presentation.putCurr("task info", JSON.toJSON(this));

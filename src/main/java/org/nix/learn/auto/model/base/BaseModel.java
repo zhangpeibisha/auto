@@ -1,5 +1,6 @@
 package org.nix.learn.auto.model.base;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import org.apache.log4j.Logger;
 
 import javax.persistence.GeneratedValue;
@@ -20,8 +21,10 @@ public class BaseModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY,generator = "select replace(uuid(), '-', '') as id from dual")
     protected String id;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     protected Date createTime;
 
+    @JSONField(format="yyyy-MM-dd HH:mm:ss")
     protected Date updateTime;
 
     public String getId() {

@@ -116,6 +116,11 @@
             <artifactId>mapper</artifactId>
             <version>4.0.4</version>
         </dependency>
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper-spring-boot-starter</artifactId>
+            <version>1.2.6</version>
+        </dependency>
 
         <!--poi-->
         <dependency>
@@ -143,6 +148,7 @@
             <artifactId>openxml4j</artifactId>
             <version>1.0-beta</version>
         </dependency>
+
         <!--版本不兼容，不可升级-->
         <dependency>
             <groupId>xml-apis</groupId>

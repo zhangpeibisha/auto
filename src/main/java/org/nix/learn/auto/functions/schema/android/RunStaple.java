@@ -7,6 +7,7 @@ import org.nix.learn.auto.core.appium.server.AppiumServer;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -28,6 +29,15 @@ public class RunStaple {
      */
     private PresentationContent prentPresentation;
 
+    /**
+     * 暂时没有手机测试时创建
+     * @param server
+     * @param prentPresentation
+     */
+    public RunStaple(AppiumServer server, PresentationContent prentPresentation) {
+        this.server = server;
+        this.prentPresentation = prentPresentation;
+    }
 
     /**
      * 一台电脑上的任务部署
@@ -73,5 +83,16 @@ public class RunStaple {
             prentPresentation.putCurr("the phones can't run ", udids.subList(min+1, max));
         }
         return defaultAndroidDrivers;
+    }
+
+    /**
+     * 向该电脑添加要测试的手机
+     * @param udid
+     */
+    public void addUdid(String udid){
+        if (udids == null){
+            udids = new ArrayList<>();
+        }
+        udids.add(udid);
     }
 }

@@ -1,23 +1,22 @@
 package org.nix.learn.auto.web.dto;
 
-import org.apache.log4j.Logger;
-import org.nix.learn.auto.core.appium.server.AppiumServer;
-
 /**
+ * 电脑信息
  * @author zhangpei341@pingan.cn.com 2018/8/27 下午4:07
  * @version 1.0
  */
-public class EquipmentDto {
+public class ComputerDto {
 
     private String ip;
     private String port;
     private String udid;
 
-    public EquipmentDto(String ip, String port, String udid) {
+    public ComputerDto(String ip, String port, String udid) {
         this.ip = ip;
         this.port = port;
         this.udid = udid;
     }
+
 
     public String getIp() {
         return ip;

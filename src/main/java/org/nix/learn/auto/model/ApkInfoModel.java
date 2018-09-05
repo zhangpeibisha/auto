@@ -13,7 +13,7 @@ import java.util.Date;
  * @author zhangpei341@pingan.cn.com 2018/8/22 下午6:16
  * @version 1.0
  */
-@Table(name = "apk_info")
+@Table(name = "apk_info_model")
 public class ApkInfoModel extends BaseModel {
 
     private static final Logger logger = Logger.getLogger(ApkInfoModel.class);

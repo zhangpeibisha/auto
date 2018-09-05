@@ -1,11 +1,15 @@
 package org.nix.learn.auto.model;
 
 
+import org.apache.ibatis.type.BooleanTypeHandler;
+import org.apache.ibatis.type.JdbcType;
 import org.nix.learn.auto.functions.schema.SchemaException;
 import org.nix.learn.auto.model.base.BaseModel;
 import org.nix.learn.auto.utils.Base64;
+import tk.mybatis.mapper.annotation.ColumnType;
 
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 /**
  * schema实体类
@@ -15,7 +19,7 @@ import javax.persistence.Table;
  * @version 1.0
  */
 @Table(name = "schema_model")
-public class SchemaModel  extends BaseModel {
+public class SchemaModel extends BaseModel {
 
     /**
      * scheme的中文含义
@@ -31,11 +35,16 @@ public class SchemaModel  extends BaseModel {
      * schema需要添加参数
      * 不序列化到数据库中
      */
+    @Transient
     private String parameter;
 
     /**
      * 是否还能使用
      */
+    @ColumnType(
+            column = "`use`",
+            typeHandler = BooleanTypeHandler.class,
+            jdbcType = JdbcType.TINYINT)
     private Boolean use;
 
     /**
@@ -110,37 +119,38 @@ public class SchemaModel  extends BaseModel {
 
     /**
      * 得到请求地址
+     *
      * @param apkVersion 需要使用该地址的apk
      * @return 实际需要请求的地址
      * @throws SchemaException schema使用异常
      */
-    public String requestPath(String apkVersion) throws SchemaException{
-        if (use){
-            if (parameter!=null){
+    public String requestPath(String apkVersion) throws SchemaException {
+        if (use) {
+            if (parameter != null) {
                 int[] use = version(useVersion);
                 int[] apk = version(apkVersion);
-                int useR = versionCompare(use,apk,0);
+                int useR = versionCompare(use, apk, 0);
 
                 // 1.判断是否是低版本使用
-                if (apk[0]>0&&apk[0]<4){
-                    if (versionCompare(use,apk,0)<=0){
-                        return path+"?_tpl="+Base64.encode(parameter);
+                if (apk[0] > 0 && apk[0] < 4) {
+                    if (versionCompare(use, apk, 0) <= 0) {
+                        return path + "?_tpl=" + Base64.encode(parameter);
                     }
                     throw new SchemaException("版本不支持该scheme");
                 }
 
                 // 2.判断高版本使用情况
-                if (maxUseVersion!=null){
+                if (maxUseVersion != null) {
                     int[] max = version(maxUseVersion);
-                    if (apk[0]>=4&&versionCompare(max,apk,0)>=0){
-                        return path+"?_tpl="+Base64.encode(parameter)+"&closeWebkit=Y";
+                    if (apk[0] >= 4 && versionCompare(max, apk, 0) >= 0) {
+                        return path + "?_tpl=" + Base64.encode(parameter) + "&closeWebkit=Y";
                     }
                     throw new SchemaException("版本不支持该scheme");
                 }
-                return path+"?_tpl="+Base64.encode(parameter)+"&closeWebkit=Y";
+                return path + "?_tpl=" + Base64.encode(parameter) + "&closeWebkit=Y";
             }
             return path;
-        }else {
+        } else {
             throw new SchemaException("schema不再使用");
         }
 
@@ -148,59 +158,61 @@ public class SchemaModel  extends BaseModel {
 
     /**
      * 比较版本大小
+     *
      * @param versionOne 比较版本
      * @param versionTwo 被比较版本
-     * @param index 当前比较位子
+     * @param index      当前比较位子
      * @return 0 相等 1大于 -1小于
      */
-    private static int versionCompare(int[] versionOne,int[] versionTwo,int index){
+    private static int versionCompare(int[] versionOne, int[] versionTwo, int index) {
         int one = versionOne.length;
         int two = versionTwo.length;
-        int len = Math.min(one,two);
-        if (index>=len){
-            if (one == two){
+        int len = Math.min(one, two);
+        if (index >= len) {
+            if (one == two) {
                 return 0;
             }
-            if (one>two){
+            if (one > two) {
                 return 1;
-            }else {
+            } else {
                 return -1;
             }
         }
-        if (versionOne[index]==versionTwo[index]){
+        if (versionOne[index] == versionTwo[index]) {
             ++index;
             return versionCompare(versionOne, versionTwo, index);
         }
-        return versionOne[index]>versionTwo[index]?1:-1;
+        return versionOne[index] > versionTwo[index] ? 1 : -1;
     }
 
     public static void main(String[] args) {
-        int[] a = {6,0,01};
-        int[] b = {6,0,00};
-        System.out.println(versionCompare(b,a,0));
+        int[] a = {6, 0, 01};
+        int[] b = {6, 0, 00};
+        System.out.println(versionCompare(b, a, 0));
     }
 
     /**
      * 检测和获取版本号
+     *
      * @param checkVersion 需要检测的版本号
      * @return 版本号的数字形式
      * @throws SchemaException 如果版本号不能转化成数字则异常抛出
      */
-    private int[] version(String checkVersion) throws SchemaException{
+    private int[] version(String checkVersion) throws SchemaException {
         String[] version = checkVersion.split("\\.");
         int len = version.length;
         int[] ver = new int[len];
         try {
-            for (int i = 0; i <len ; i++) {
+            for (int i = 0; i < len; i++) {
                 int value = Integer.parseInt(version[i]);
-                if (value<0){
-                    throw new SchemaException("版本号格式错误,"+ checkVersion);
+                if (value < 0) {
+                    throw new SchemaException("版本号格式错误," + checkVersion);
                 }
             }
-        }catch (NumberFormatException e){
-            throw new SchemaException("版本号格式错误",e);
+        } catch (NumberFormatException e) {
+            throw new SchemaException("版本号格式错误", e);
         }
-       return ver;
+        return ver;
     }
 
 
