@@ -138,7 +138,7 @@ public class PresentationCache implements PresentationManger {
     private PresentationModel save(String id, Presentation presentation) {
         PresentationModel model = new PresentationModel();
         model.setPresentationId(id);
-        model.setPresentationId(JSON.toJSONString(presentation));
+        model.setValue(JSON.toJSONString(presentation));
         return model;
     }
 

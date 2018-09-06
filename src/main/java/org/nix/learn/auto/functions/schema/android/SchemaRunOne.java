@@ -1,5 +1,6 @@
 package org.nix.learn.auto.functions.schema.android;
 
+import com.alibaba.fastjson.JSON;
 import io.appium.java_client.android.Activity;
 import io.appium.java_client.android.AndroidDriver;
 import org.apache.log4j.Logger;
@@ -97,6 +98,7 @@ public class SchemaRunOne implements SchemaRun {
 
     @Override
     public void runTask() {
+        presentation.putCurr("schema", JSON.toJSON(schemaModel));
         // 核心运行部分
         try {
             AndroidDriver driver = (AndroidDriver) defaultAndroidDriver.getDriver();

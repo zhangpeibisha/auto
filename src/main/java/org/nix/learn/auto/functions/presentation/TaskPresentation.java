@@ -89,8 +89,7 @@ public class TaskPresentation extends AbstractPresentationContent implements Pre
             status.setSuccess();
         }
 
-        Double result = runSchedule();
-        if (result != null && result == 1) {
+        if (isOk() && father!=null) {
             // 当状态为1时，表示任务完成，将传给上级成功完成标记
             father.setSuccess();
         }
@@ -102,8 +101,7 @@ public class TaskPresentation extends AbstractPresentationContent implements Pre
             status.setFail();
         }
 
-        Double result = runSchedule();
-        if (result != null && result == 1) {
+        if (isOk()  && father!=null) {
             // 当状态为1时，表示任务完成，将传给上级成功完成标记
             father.setSuccess();
         }
@@ -124,7 +122,7 @@ public class TaskPresentation extends AbstractPresentationContent implements Pre
 
     @Override
     public Map<String, Object> getInfo() {
-        info.put("runSchedule", JSON.toJSON(status));
+        info.put("run status", JSON.toJSON(status));
         return super.getInfo();
     }
 

@@ -41,7 +41,7 @@ public class SchemaRunColony implements SchemaRun {
     /**
      * 顶级报告类
      */
-    private Presentation presentation;
+    private transient Presentation presentation;
 
     /**
      * 本次执行任务执行的apk信息
@@ -74,6 +74,10 @@ public class SchemaRunColony implements SchemaRun {
     public void runTask() {
         presentation.putCurr("task info", JSON.toJSON(this));
         int index = 0;
+        if (runStaples.size() == 0){
+            presentation.setFail();
+            return;
+        }
         for (RunStaple runStaple : runStaples) {
             SchemaRunComputer computer = new SchemaRunComputer(runStaple, presentation.addNext(index + " :computer", (long) runStaples.size())
                     , schemaModels, apkInfo.getVersion(), screenshotPath);

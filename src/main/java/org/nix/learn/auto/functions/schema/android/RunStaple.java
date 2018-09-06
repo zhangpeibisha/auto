@@ -4,6 +4,7 @@ import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.config.AndroidPhoneConfig;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.core.appium.server.AppiumServer;
+import org.nix.learn.auto.functions.presentation.Presentation;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
 
 import java.util.ArrayList;
@@ -27,14 +28,14 @@ public class RunStaple {
     /**
      * 父级报告集合
      */
-    private PresentationContent prentPresentation;
+    private Presentation prentPresentation;
 
     /**
      * 暂时没有手机测试时创建
      * @param server
      * @param prentPresentation
      */
-    public RunStaple(AppiumServer server, PresentationContent prentPresentation) {
+    public RunStaple(AppiumServer server, Presentation prentPresentation) {
         this.server = server;
         this.prentPresentation = prentPresentation;
     }
@@ -46,7 +47,7 @@ public class RunStaple {
      * @param udids             链接在这台电脑上的手机
      * @param prentPresentation 父级报告
      */
-    public RunStaple(AppiumServer server, List<String> udids, PresentationContent prentPresentation) {
+    public RunStaple(AppiumServer server, List<String> udids, Presentation prentPresentation) {
         this.server = server;
         this.udids = udids;
         this.prentPresentation = prentPresentation;
@@ -86,7 +87,7 @@ public class RunStaple {
     }
 
     /**
-     * 向该电脑添加要测试的手机
+     * 添加udid
      * @param udid
      */
     public void addUdid(String udid){

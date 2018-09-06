@@ -1,7 +1,9 @@
 package org.nix.learn.auto.functions.schema.android;
 
 import com.alibaba.fastjson.JSON;
+import io.appium.java_client.AppiumDriver;
 import org.apache.log4j.Logger;
+import org.nix.learn.auto.core.appium.AppiumException;
 import org.nix.learn.auto.core.appium.AppiumUtils;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.functions.presentation.Presentation;
@@ -85,10 +87,21 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
 
     @Override
     public void runTask() {
-        prentPresentation.putCurr("phoneInfo", defaultAndroidDriver.getDriver().getCapabilities().asMap());
+        AppiumDriver driver;
+        try {
+            driver = defaultAndroidDriver.getDriver();
+        } catch (AppiumException e) {
+            int size = models.size();
+            for (int i = 0; i < size; i++) {
+                prentPresentation.setFail();
+            }
+            prentPresentation.putCurr("run fail", defaultAndroidDriver.getAppiumPath());
+            return;
+        }
+        prentPresentation.putCurr("phone info", driver.getCapabilities().asMap());
         int index = 0;
+        AppiumUtils appiumUtils = new AppiumUtils();
         for (SchemaModel schemaModel : models) {
-            AppiumUtils appiumUtils = new AppiumUtils();
             SchemaRunOne runOne = new SchemaRunOne(
                     schemaModel,
                     defaultAndroidDriver,
@@ -97,8 +110,12 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
                     screenshotPath,
                     appiumUtils);
             runOne.runTask();
+
             index++;
         }
     }
 
+    public static void main(String[] args) {
+        System.out.println("8fc523073544270f60d8cf12fc8d0a1b".length());
+    }
 }

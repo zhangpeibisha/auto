@@ -45,8 +45,11 @@ public class SchemaServerImpl {
      * @return 该测试信息的查询报告的ID信息
      */
     public String schemaCompatibilityRun(SchemaSubmitDto schemaSubmitDto) {
+
+        long taskValue = (long) schemaSubmitDto.getIp().size();
+
         // 将报告加入缓存
-        TaskPresentation taskPresentation = new TaskPresentation((long) schemaSubmitDto.getIp().size());
+        TaskPresentation taskPresentation = new TaskPresentation(taskValue);
 
         // 整理信息准备测试
         List<RunStaple> servers = schemaSubmitDto.getRunStaples(taskPresentation);

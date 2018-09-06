@@ -1,11 +1,14 @@
 package org.nix.learn.auto.functions.schema.android;
 
+import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
+import org.nix.learn.auto.core.appium.AppiumException;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
 import org.nix.learn.auto.functions.presentation.Presentation;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.*;
+import org.nix.learn.auto.utils.LogUtils;
 
 import java.nio.file.Path;
 import java.util.List;
@@ -77,6 +80,7 @@ public class SchemaRunComputer implements SchemaRun {
                         defaultAndroidDriver,
                         prentPresentation.addNext(index + " :phone", (long) list.size()),
                         apkVersion, screenshotPath);
+
                 SchemaThreadPool.put(runPhone);
                 index++;
             }
