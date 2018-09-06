@@ -100,15 +100,13 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
         }
         prentPresentation.putCurr("phone info", driver.getCapabilities().asMap());
         int index = 0;
-        AppiumUtils appiumUtils = new AppiumUtils();
         for (SchemaModel schemaModel : models) {
             SchemaRunOne runOne = new SchemaRunOne(
                     schemaModel,
                     defaultAndroidDriver,
                     prentPresentation.addNext(index + " :schema", (long) models.size()),
                     apkVersion,
-                    screenshotPath,
-                    appiumUtils);
+                    screenshotPath);
             runOne.runTask();
 
             index++;

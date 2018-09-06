@@ -89,7 +89,7 @@ public class SchemaRunColony implements SchemaRun {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Presentation boos = new TaskPresentation();
+        Presentation boos = new TaskPresentation((long) 4);
         SchemaRunColony runColony = new SchemaRunColony(createRunStaples(boos), createSchemaModels(), boos, createApkInfo(),
                 Paths.get("/Users/mac/IdeaProjects/auto_git/src/main/file"));
 
@@ -122,38 +122,37 @@ public class SchemaRunColony implements SchemaRun {
         String path = "127.0.0.1";
 
         Map<String, Boolean> map = new HashMap<>();
-        map.put("4727", true);
+        map.put("4723", true);
 
         AppiumServer server = new AppiumServer(path, map);
 
         List<String> udids = new ArrayList<>();
-        udids.add("1267e25a");
+        udids.add("4df71c85438611e1");
 //        udids.add("a7366dea");
 
         List<RunStaple> runStaples = new ArrayList<>();
-
-
         RunStaple runStaple = new RunStaple(server, udids, taskPresentation);
-//        runStaples.add(runStaple);
+
 
 
         // 172.20.12.31
-        String path1 = "172.20.12.31";
+//        String path1 = "172.20.12.31";
+//
+//
+//        Map<String, Boolean> map1 = new HashMap<>();
+//        map1.put("4723", true);
+//        map1.put("4724", true);
+//
+//        AppiumServer server1 = new AppiumServer(path1, map1);
+//
+//        List<String> ud = new ArrayList<>();
+//        ud.add("a7366dea");
+//        ud.add("1267e25a");
 
+//        RunStaple runStaple1 = new RunStaple(server1, ud, taskPresentation);
+//        runStaples.add(runStaple1);
 
-        Map<String, Boolean> map1 = new HashMap<>();
-        map1.put("4723", true);
-        map1.put("4724", true);
-
-        AppiumServer server1 = new AppiumServer(path1, map1);
-
-        List<String> ud = new ArrayList<>();
-        ud.add("a7366dea");
-        ud.add("1267e25a");
-
-        RunStaple runStaple1 = new RunStaple(server1, ud, taskPresentation);
-        runStaples.add(runStaple1);
-
+        runStaples.add(runStaple);
         return runStaples;
     }
 

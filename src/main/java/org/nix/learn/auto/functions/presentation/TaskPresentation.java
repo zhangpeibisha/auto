@@ -122,7 +122,9 @@ public class TaskPresentation extends AbstractPresentationContent implements Pre
 
     @Override
     public Map<String, Object> getInfo() {
-        info.put("run status", JSON.toJSON(status));
+        if (status!=null){
+            info.put("run status", JSON.toJSON(status));
+        }
         return super.getInfo();
     }
 

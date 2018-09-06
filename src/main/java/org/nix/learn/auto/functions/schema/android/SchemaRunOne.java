@@ -82,6 +82,23 @@ public class SchemaRunOne implements SchemaRun {
     }
 
     /**
+     * 默认使用appiumUtils工具类
+     * @param schemaModel
+     * @param defaultAndroidDriver
+     * @param presentation
+     * @param apkVersion
+     * @param screenshotPath
+     */
+    public SchemaRunOne(SchemaModel schemaModel, DefaultAndroidDriver defaultAndroidDriver, Presentation presentation, String apkVersion, Path screenshotPath) {
+        this.schemaModel = schemaModel;
+        this.defaultAndroidDriver = defaultAndroidDriver;
+        this.presentation = presentation;
+        this.apkVersion = apkVersion;
+        this.screenshotPath = screenshotPath;
+        this.appiumUtils = new AppiumUtils();
+    }
+
+    /**
      * 不需要生成报告
      * @param schemaModel
      * @param defaultAndroidDriver
