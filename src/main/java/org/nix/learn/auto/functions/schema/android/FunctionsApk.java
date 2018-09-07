@@ -11,11 +11,11 @@ public class FunctionsApk {
 
     private static final Logger logger = Logger.getLogger(FunctionsApk.class);
 
-    public static final String APP_PACKAGE = "io.dcloud.H5462000D";
+    public static final String APP_PACKAGE = "com.yqb.pingan.yqb";
 
-    public static final String APP_ACTIVITY = "io.dcloud.PandoraEntryActivity";
+    public static final String APP_ACTIVITY = ".MainActivity";
 
-    public static final String SEND_KEY_ID = "writerURI";
+    public static final String SEND_KEY_ID = "com.yqb.pingan.yqb:id/input_schema";
 
-    public static final String CLICK_ID = "clickRun";
+    public static final String CLICK_ID = "com.yqb.pingan.yqb:id/submit";
 }

@@ -127,7 +127,7 @@ public class SchemaRunColony implements SchemaRun {
         AppiumServer server = new AppiumServer(path, map);
 
         List<String> udids = new ArrayList<>();
-        udids.add("4df71c85438611e1");
+        udids.add("1267e25a");
 //        udids.add("a7366dea");
 
         List<RunStaple> runStaples = new ArrayList<>();
