@@ -91,6 +91,7 @@ public class PresentationCache implements PresentationManger {
                     ids.add(value.getKey());
                     // 移除在map中的信息
                     SAVE.remove(value.getKey());
+                    LogUtils.printLog("清理 @org.nix.learn.auto.functions.presentation.mange.PresentationCache 中map的值：",value.getKey(),value.getValue());
                 }
             } catch (Exception e) {
                 LogUtils.printLog("清理@org.nix.learn.auto.functions.presentation.mange.PresentationCache 中map的值："
@@ -100,7 +101,6 @@ public class PresentationCache implements PresentationManger {
                         + JSON.toJSONString(value.getValue()));
             }
         }
-        LogUtils.printLog("清理@org.nix.learn.auto.functions.presentation.mange.PresentationCache 中map的值：" + ids);
     }
 
     /**
