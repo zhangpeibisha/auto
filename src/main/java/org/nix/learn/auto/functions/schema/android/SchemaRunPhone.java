@@ -99,13 +99,13 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
             return;
         }
         prentPresentation.putCurr("phone info", driver.getCapabilities().asMap());
-        Presentation son =  prentPresentation.addNext("schemas", (long) models.size());
+//        Presentation son =  prentPresentation.addNext("schemas", (long) models.size());
         int index = 0;
         for (SchemaModel schemaModel : models) {
             SchemaRunOne runOne = new SchemaRunOne(
                     schemaModel,
                     defaultAndroidDriver,
-                    son,
+                    prentPresentation.addNext(index+" :schemas", (long) 1),
                     apkVersion,
                     screenshotPath);
             runOne.runTask();

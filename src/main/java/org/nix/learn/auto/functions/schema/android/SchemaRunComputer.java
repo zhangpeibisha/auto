@@ -78,7 +78,8 @@ public class SchemaRunComputer implements SchemaRun {
                 SchemaRunPhone runPhone = new SchemaRunPhone(
                         models,
                         defaultAndroidDriver,
-                        prentPresentation.addNext(index + " :phone", (long) list.size()),
+                        // 下一级报告应该是针对于schema生成报告
+                        prentPresentation.addNext(index + " :phone", (long) models.size()),
                         apkVersion, screenshotPath);
 
                 SchemaThreadPool.put(runPhone);

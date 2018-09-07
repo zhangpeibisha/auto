@@ -115,8 +115,7 @@ public class SchemaRunOne implements SchemaRun {
 
     @Override
     public void runTask() {
-        Presentation son =  presentation.addNext(schemaModel.getPath(), (long) 1);
-        son.putCurr("schema", JSON.toJSON(schemaModel));
+        presentation.putCurr("schema", JSON.toJSON(schemaModel));
         // 核心运行部分
         try {
             AndroidDriver driver = (AndroidDriver) defaultAndroidDriver.getDriver();
@@ -129,11 +128,11 @@ public class SchemaRunOne implements SchemaRun {
             Path savePath = appiumUtils.screenshot(driver, screenshotPath);
 
             // 开始手机信息进行保存，为报告生成做准备
-            son.setSuccess();
-            son.putCurr("savePath",savePath);
+            presentation.setSuccess();
+            presentation.putCurr("savePath",savePath);
         } catch (WebDriverException | SchemaException | InterruptedException | IOException e) {
-            son.setFail();
-            son.putCurr("fail msg",e.getMessage());
+            presentation.setFail();
+            presentation.putCurr("fail msg",e.getMessage());
         }
     }
 
