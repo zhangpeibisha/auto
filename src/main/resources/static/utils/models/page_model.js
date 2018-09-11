@@ -1,6 +1,5 @@
 // 整个界面的模板信息
 
-
 // 创建内容区域
 function create_conten(content) {
 	return `<div class="layui-body">${content}<div>`;
@@ -24,6 +23,7 @@ function create_body(hearder, muen, bottom) {
 		</div>`;
 }
 
+// 测试内容
 function getContent() {
 	return `<!-- 内容主体区域 -->
 				<div style="padding: 15px;">
@@ -103,39 +103,6 @@ function getContent() {
 			</div>`;
 }
 
-// 页面完整的json数据组合
-var page = {
-	"title": "YQB测试工具平台",
-	"bottom": "© yqb.com - 平安付",
-	"header": {
-		"name": "YQB测试平台",
-		"user": {
-			"img": "http://t.cn/RCzsdCq",
-			"name": "张沛341",
-			"user_center": [{
-				"url": "选项跳转的页面",
-				"name": "我的测试"
-			}, {
-				"url": "选项跳转的页面",
-				"name": "我好帅"
-			}],
-			"controller": "退出"
-		}
-	},
-	"menu": [{
-		"name": "用户管理"
-	}, {
-		"name": "测试资源",
-		"son": [{
-			"url": "rule.html",
-			"name": "schema信息"
-		}, {
-			"url": "adminRole.html",
-			"name": "服务器信息"
-		}]
-	}]
-}
-
 function create_page(page) {
 	var header = create_hearder(page.header).toString();
 	var menu = create_menu_ul(page.menu).toString();
@@ -144,12 +111,20 @@ function create_page(page) {
 	// 创建实体
 	return create_body(header, menu, page.bottom);
 }
-$("#body").html(create_page(page))
-
-
-$("#content").html(getContent())
 
 // 该方法主要用于更换内容信息
-function updateContetn(content){
+function updateContent(content) {
 	$("#content").html(content)
 }
+
+//$("#body").html(create_page(page))
+//
+//// 测试展示效果
+//updateContent(getContent());
+//// 测试分页表格效果
+//bodys = [{
+//	"id": 3,
+//	"name": "张沛",
+//	"face": "帅"
+//}]
+//updateContent(body("张沛帅哥", serch("请输入schema", "runTest()"), ""));
