@@ -3,12 +3,16 @@ package org.nix.learn.auto.web.controller;
 import com.alibaba.fastjson.JSON;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.model.SchemaModel;
+import org.nix.learn.auto.utils.CryptoUtils;
+import org.nix.learn.auto.utils.DateUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * @author zhangpei341@pingan.cn.com 2018/9/12 下午1:59
@@ -20,52 +24,31 @@ public class TestController {
 
     private static final Logger logger = Logger.getLogger(TestController.class);
 
-    @GetMapping("/getSchemaJson")
-    public Object getSchemaJson(){
-        SchemaModel huoqianbao = new SchemaModel();
-        huoqianbao.setUse(true);
-        huoqianbao.setUseVersion("3.0.0");
-        huoqianbao.setName("活钱宝");
-        huoqianbao.setPath("yqbnative://app.1qianbao.com/huoqianbao/index");
-        huoqianbao.setRemarks("测试数据");
-//        modelMapper.insert(huoqianbao);
+    private List<SchemaModel> models;
 
-        SchemaModel assets = new SchemaModel();
-        assets.setUse(true);
-        assets.setUseVersion("3.0.0");
-        assets.setName("assets");
-        assets.setPath("yqbnative://app.1qianbao.com/assets/integral");
-        assets.setRemarks("测试数据");
-
-
-        SchemaModel setting = new SchemaModel();
-        setting.setUse(true);
-        setting.setUseVersion("3.0.0");
-        setting.setName("设置");
-        setting.setPath("yqbnative://app.1qianbao.com/setting/index");
-        setting.setRemarks("测试数据");
-
-
-
-        SchemaModel lifepay = new SchemaModel();
-        lifepay.setUse(true);
-        lifepay.setUseVersion("3.0.0");
-        lifepay.setName("生活支付");
-        lifepay.setPath("yqbnative://app.1qianbao.com/lifepay/index");
-        lifepay.setRemarks("测试数据");
-
-
-        List<SchemaModel> models = new ArrayList<>();
-        models.add(huoqianbao);
-        models.add(assets);
-        models.add(setting);
-        models.add(lifepay);
-
-        System.out.println(JSON.toJSONString(models));
-        return new Result(models.size(),JSON.toJSON(models));
+    {
+        models = new ArrayList<>();
+        for (int i = 0; i < 100; i++) {
+            SchemaModel huoqianbao = new SchemaModel();
+            huoqianbao.setId(String.valueOf(i));
+            huoqianbao.setUse(true);
+            huoqianbao.setUseVersion("3.0.0");
+            huoqianbao.setName("活钱宝");
+            huoqianbao.setPath(JSON.toJSONString(CryptoUtils.encodeMD5(DateUtils.getCurrentDateTime() + Math.random()*10000)));
+            huoqianbao.setRemarks("测试数据");
+            models.add(huoqianbao);
+        }
     }
 
-    class Result{
+    @GetMapping("/getSchemaJson")
+    public Object getSchemaJson(@RequestParam("page")Integer page,@RequestParam("limit")Integer limit) {
+        System.out.println(page+" "+limit);
+        int start = (page-1)*limit;
+        int end = start+limit;
+        return new Result(models.size(), JSON.toJSON(models.subList(start,end)));
+    }
+
+    class Result {
         private Integer code = 0;
         private String msg = "获取成功";
         private Integer count;
