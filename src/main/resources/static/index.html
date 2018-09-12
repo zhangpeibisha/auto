@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<title>layout 后台大布局 - Layui</title>
+		<link rel="stylesheet" href="resources/css/layui.css">
+		<!--配置vue-->
+		<!-- 开发环境版本，包含了有帮助的命令行警告 -->
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+	</head>
+
+	<body class="layui-layout-body">
+		<div class="layui-layout layui-layout-admin">
+			<div class="layui-header" id="header">
+				<div class="layui-logo">{{logo}}</div>
+
+				<!-- 头部区域（可配合layui已有的水平导航） -->
+				<ul class="layui-nav layui-layout-left">
+					<li class="layui-nav-item" v-for="item in navbar">
+						<a href="javascript:;">{{item.name}}	</a>
+						<dl v-if="item.sons!=null" class="layui-nav-child">
+							<dd v-for="son in item.sons">
+								<a href="">{{son.name}}</a>
+							</dd>
+						</dl>
+					</li>
+				</ul>
+				
+				
+				<ul class="layui-nav layui-layout-right">
+					<li class="layui-nav-item">
+						<a href="javascript:;">
+							<img v-bind="{src:user.img}" class="layui-nav-img"> {{user.name}}
+						</a>
+						<dl class="layui-nav-child">
+							<dd v-for="permission in user.permission">
+								<a href="">{{permission.name}}</a>
+							</dd>					
+						</dl>
+					</li>
+					<li class="layui-nav-item">
+						<a href="">{{login.value}}</a>
+					</li>
+				</ul>
+			</div>
+
+			<div class="layui-side layui-bg-black" id="menu">
+				<div class="layui-side-scroll">
+					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
+					<ul class="layui-nav layui-nav-tree" lay-filter="test">
+						<li class="layui-nav-item layui-nav-itemed" v-for="item in menu">
+							<a class="" href="javascript:;">{{item.name}}</a>
+							<dl class="layui-nav-child" v-if="item.sons!=null">
+								<dd v-for="son in item.sons">
+									<a href="javascript:;">{{son.name}}</a>
+								</dd>				
+							</dl>
+						</li>						
+					</ul>
+				</div>
+			</div>
+
+			<div class="layui-body" id="content">
+				<!-- 内容主体区域 -->
+				
+			</div>
+
+			<div class="layui-footer">
+				<!-- 底部固定区域 -->
+				© yqb.com - YQB-UI测试
+			</div>
+		</div>
+		<script src="resources/jquery-2.1.0.js"></script>
+		<script src="resources/layui.js"></script>
+		<script src="resources/tools/menu.js"></script>
+		<script>
+			//JavaScript代码区域
+			layui.use('element', function() {
+				var element = layui.element;
+
+			});
+		</script>
+	</body>
+
+</html>
