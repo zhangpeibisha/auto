@@ -2,12 +2,12 @@
 var tableVue = new Vue({
     el: "#content",
     data: {
-        checkValue:new Map(),
-        currPageData:[]
+        checkValue: new Map(),
+        currPageData: []
     }
 });
 
-console.log("table vue",tableVue);
+console.log("table vue", tableVue);
 
 /**
  * 文档URL：https://www.layui.com/doc/modules/table.html#cols
@@ -33,7 +33,7 @@ console.log("table vue",tableVue);
  * @param initTable 初始化table
  * @param done 当获取到数据后到回调函数
  */
-function showTable(id, url, toolbar, title, totalrow, cols, page,loading,initTable,done) {
+function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initTable, done) {
     // 初始化表格
     updateContent(initTable);
 
@@ -41,19 +41,19 @@ function showTable(id, url, toolbar, title, totalrow, cols, page,loading,initTab
         var table = layui.table;
 
         table.render({
-            elem: '#'+id,
+            elem: '#' + id,
             url: url,
             toolbar: toolbar,
             title: title,
             totalRow: totalrow,
             cols: cols,
             page: page,
-            loading:loading,
-            done:done
+            loading: loading,
+            done: done
         });
 
         //工具栏事件
-        table.on('toolbar('+id+')', function (obj) {
+        table.on('toolbar(' + id + ')', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'getCheckData':
@@ -67,31 +67,40 @@ function showTable(id, url, toolbar, title, totalrow, cols, page,loading,initTab
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选' : '未全选')
                     break;
-            };
+            }
+            ;
         });
 
         // 做跨页选取的缓存处理
-        table.on('checkbox('+id+')',function (obj) {
-            console.log("选中监听",obj);
+        table.on('checkbox(' + id + ')', function (obj) {
+            console.log("选中监听", obj);
             var data = obj.data;
-            if (obj.checked){
-                if (obj.type==='one'){
-                    tableVue.checkValue.set(md5(data.path),JSON.stringify(data));
+            if (obj.checked) {
+                if (obj.type === 'one') {
+                    tableVue.checkValue.set(md5(data.path), JSON.stringify(data));
                 }
                 if (obj.type === 'all') {
-
+                    var tempData = tableVue.currPageData;
+                    var len = tempData.length;
+                    for (var i = 0; i < len; i++) {
+                        tableVue.checkValue.set(md5(tempData[i].path), JSON.stringify(data));
+                    }
                 }
 
             } else {
-                if (obj.type === 'one'){
+                if (obj.type === 'one') {
                     tableVue.checkValue.delete(md5(data.path), JSON.stringify(data));
                 }
                 if (obj.type === 'all') {
-
+                    var tempData = tableVue.currPageData;
+                    var len = tempData.length;
+                    for (var i = 0; i < len; i++) {
+                        tableVue.checkValue.delete(md5(tempData[i].path), JSON.stringify(data));
+                    }
                 }
             }
 
-            console.log("监听复选框",tableVue.checkValue)
+            console.log("监听复选框", tableVue.checkValue)
         });
 
 
@@ -120,7 +129,7 @@ var cols = [
     [{
         type: 'checkbox',
         fixed: 'left',
-        event:"choose"
+        event: "choose"
     }, {
         field: "id",
         title: "ID"
@@ -149,6 +158,24 @@ var page = true;
 var id = "test";
 var loading = true;
 // 示例
-showTable(id, url, toolbar, title, totalrow, cols, page, loading,setTableFunction(id),function () {
-    
+showTable(id, url, toolbar, title, totalrow, cols, page, loading, setTableFunction(id), function (res, curr, count) {
+    tableVue.currPageData = res.data;
+    console.log("获取信息", res)
+    console.log("赋值信息", tableVue.currPageData)
+    //配置当前页的选中状态
+    var temp = tableVue.checkValue;
+    var len = tableVue.currPageData.length;
+    for (var i = 0; i < len; i++) {
+        var tempValue = temp.has(md5(tableVue.currPageData[i].path));
+        console.log("tempValue",tempValue);
+        console.log("md5",md5(tableVue.currPageData[i].path));
+        if (tempValue){
+            //这里才是真正的有效勾选
+            res.data[i]["LAY_CHECKED"]='true';
+            //找到对应数据改变勾选样式，呈现出选中效果
+            var index= res.data[i]['LAY_TABLE_INDEX'];
+            $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+            $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+        }
+    }
 });
