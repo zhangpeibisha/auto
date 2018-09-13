@@ -49,6 +49,12 @@ var menu = new Vue({
             }, {
                 name: "computer",
                 jump: "jump(this)"
+            },{
+                name:"submit",
+                jump:"jump(this)"
+            },{
+                name:"result",
+                jump:"jump(this)"
             }]
         }]
     }
@@ -65,9 +71,14 @@ function updateContent(content) {
 updateContent("zhangpei")
 
 function jump(obj) {
-    console.log("jump",obj);
+    console.log("jump", obj);
     var value = $(obj).text();
     switch (value) {
-        case 'schema':showSchemaTable();
+        case 'schema':
+            showSchemaTable();
+            break;
+        case  'computer':
+            addPhoneInfo();
+            break;
     }
 }
