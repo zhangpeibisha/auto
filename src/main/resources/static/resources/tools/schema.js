@@ -39,10 +39,19 @@ function showSchemaTable() {
         }, {
             field: "useVersion",
             title: "最低使用版本"
+        },{
+            field:"maxUseVersion",
+            title:"最高使用版本"
+        },{
+            field:"createTime",
+            title:"创建时间"
+        },{
+            field:"updateTime",
+            title:"更新时间"
         }]
     ];
     // 请求地址
-    var url = "/test/getSchemaJson";
+    var url = "/schema/findSchemaList/pagination";
     // 工具ID
     var toolbar = "#toolbarDemo";
     // 导出文件时的文件名字
@@ -155,25 +164,25 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
             var data = obj.data;
             if (obj.checked) {
                 if (obj.type === 'one') {
-                    schemaVue.checkValue.set(md5(data.path), JSON.stringify(data));
+                    schemaVue.checkValue.set(md5(data), JSON.stringify(data));
                 }
                 if (obj.type === 'all') {
                     var tempData = schemaVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        schemaVue.checkValue.set(md5(tempData[i].path), JSON.stringify(tempData[i]));
+                        schemaVue.checkValue.set(md5(tempData[i]), JSON.stringify(tempData[i]));
                     }
                 }
 
             } else {
                 if (obj.type === 'one') {
-                    schemaVue.checkValue.delete(md5(data.path), JSON.stringify(data));
+                    schemaVue.checkValue.delete(md5(data), JSON.stringify(data));
                 }
                 if (obj.type === 'all') {
                     var tempData = schemaVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        schemaVue.checkValue.delete(md5(tempData[i].path), JSON.stringify(tempData[i]));
+                        schemaVue.checkValue.delete(md5(tempData[i]), JSON.stringify(tempData[i]));
                     }
                 }
             }

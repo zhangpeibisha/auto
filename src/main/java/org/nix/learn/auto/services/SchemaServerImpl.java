@@ -12,6 +12,7 @@ import org.nix.learn.auto.functions.schema.android.RunStaple;
 import org.nix.learn.auto.functions.schema.android.SchemaRunColony;
 import org.nix.learn.auto.model.ApkInfoModel;
 import org.nix.learn.auto.model.SchemaModel;
+import org.nix.learn.auto.services.comment.ResultPage;
 import org.nix.learn.auto.web.dto.SchemaSubmitDto;
 import org.springframework.stereotype.Service;
 
@@ -89,23 +90,26 @@ public class SchemaServerImpl {
 
     /**
      * 通过报告ID查询到报告信息
+     *
      * @param prId 报告ID
      * @return 报告信息
      */
-    public Presentation findPresentationByPrId(String prId){
+    public Presentation findPresentationByPrId(String prId) {
         return presentationCache.get(prId);
     }
 
     /**
      * 分页查询schema信息
-     * @param curr 当前页码
+     *
+     * @param curr     当前页码
      * @param quantity 查询数量
      * @return schema列表
      */
-    public PageInfo findSchemaList(Integer curr,Integer quantity){
-        PageHelper.startPage(curr,quantity);
-        PageInfo<SchemaModel> infos = new PageInfo<>(schemaModelMapper.selectAll());
-        return infos;
+    public ResultPage findSchemaList(Integer curr, Integer quantity) {
+        int currP = (curr - 1) * quantity;
+        int end = currP + quantity;
+        List<SchemaModel> models = schemaModelMapper.findSchemaListPagination(currP,end);
+        return new ResultPage(schemaModelMapper.selectCount(new SchemaModel()),models);
     }
 
 }

@@ -2,4 +2,9 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.nix.learn.auto.dao.mybatis.mapper.SchemaModelMapper">
 
+
+    <select id="findSchemaListPagination" parameterType="org.nix.learn.auto.services.comment.Page" resultType="org.nix.learn.auto.model.SchemaModel">
+        select * from schema_model limit #{curr},#{limit}
+    </select>
+
 </mapper>

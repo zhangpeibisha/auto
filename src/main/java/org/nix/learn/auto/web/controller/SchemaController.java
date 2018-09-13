@@ -3,6 +3,7 @@ package org.nix.learn.auto.web.controller;
 import com.github.pagehelper.PageInfo;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.services.SchemaServerImpl;
+import org.nix.learn.auto.services.comment.ResultPage;
 import org.nix.learn.auto.web.dto.SchemaSubmitDto;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -51,7 +52,7 @@ public class SchemaController {
      * @return schema数量
      */
     @GetMapping("findSchemaList/pagination")
-    public PageInfo findSchemaList(@RequestParam("curr") Integer curr,@RequestParam("quantity") Integer quantity){
+    public ResultPage findSchemaList(@RequestParam("page") Integer curr, @RequestParam("limit") Integer quantity){
         return schemaServerImp.findSchemaList(curr,quantity);
     }
 

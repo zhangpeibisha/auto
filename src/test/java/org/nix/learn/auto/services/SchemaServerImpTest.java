@@ -74,8 +74,11 @@ public class SchemaServerImpTest extends AutoApplicationTests {
 
     }
 
+    @Resource
+    private SchemaModelMapper schemaModelMapper;
+
     @Test
     public void findSchemaList() {
-        LogUtils.printLog("schema page",schemaServerImp.findSchemaList(0,10));
+        LogUtils.printLog("schema page",schemaModelMapper.findSchemaListPagination(0,2));
     }
 }
