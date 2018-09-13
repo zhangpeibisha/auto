@@ -8,26 +8,26 @@ var header = new Vue({
             name: "zhangpei341@pingan.com.cn",
             permission: [{
                 name: "个人中心",
-                jump: ""
+                jump: "jump(this)"
             }, {
                 name: "工作台",
-                jump: ""
+                jump: "jump(this)"
             }]
         },
         login: {
             isLogin: true,
             value: "退出",
-            jump: ""
+            jump: "jump(this)"
         },
         navbar: [{
             name: "控制台",
-            jump: ""
+            jump: "jump(this)"
         }, {
             name: "其它系统",
-            jump: "",
+            jump: "jump(this)",
             sons: [{
                 name: "邮件管理",
-                jump: ""
+                jump: "jump(this)"
             }]
         }]
     }
@@ -39,16 +39,16 @@ var menu = new Vue({
     data: {
         menu: [{
             name: "提交记录",
-            jump: ""
+            jump: "jump(this)"
         }, {
             name: "兼容性测试",
-            jump: "",
+            jump: "jump(this)",
             sons: [{
                 name: "schema",
-                jump: ""
+                jump: "jump(this)"
             }, {
                 name: "computer",
-                jump: ""
+                jump: "jump(this)"
             }]
         }]
     }
@@ -64,4 +64,10 @@ function updateContent(content) {
 
 updateContent("zhangpei")
 
-
+function jump(obj) {
+    console.log("jump",obj);
+    var value = $(obj).text();
+    switch (value) {
+        case 'schema':showSchemaTable();
+    }
+}

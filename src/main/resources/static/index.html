@@ -19,7 +19,7 @@
 				<!-- 头部区域（可配合layui已有的水平导航） -->
 				<ul class="layui-nav layui-layout-left">
 					<li class="layui-nav-item" v-for="item in navbar">
-						<a href="javascript:;">{{item.name}}	</a>
+						<a href="javascript:;">{{item.name}}</a>
 						<dl v-if="item.sons!=null" class="layui-nav-child">
 							<dd v-for="son in item.sons">
 								<a href="">{{son.name}}</a>
@@ -28,7 +28,7 @@
 					</li>
 				</ul>
 				
-				
+				<!--用户功能菜单-->
 				<ul class="layui-nav layui-layout-right">
 					<li class="layui-nav-item">
 						<a href="javascript:;">
@@ -46,15 +46,16 @@
 				</ul>
 			</div>
 
+            <!--菜单信息-->
 			<div class="layui-side layui-bg-black" id="menu">
 				<div class="layui-side-scroll">
 					<!-- 左侧导航区域（可配合layui已有的垂直导航） -->
 					<ul class="layui-nav layui-nav-tree" lay-filter="test">
 						<li class="layui-nav-item layui-nav-itemed" v-for="item in menu">
-							<a class="" href="javascript:;">{{item.name}}</a>
+							<a class="" href="javascript:;" v-bind="{onclick:item.jump}">{{item.name}}</a>
 							<dl class="layui-nav-child" v-if="item.sons!=null">
 								<dd v-for="son in item.sons">
-									<a href="javascript:;">{{son.name}}</a>
+									<a href="javascript:;" v-bind="{onclick:son.jump}">{{son.name}}</a>
 								</dd>				
 							</dl>
 						</li>						

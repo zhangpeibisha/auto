@@ -7,8 +7,6 @@ var tableVue = new Vue({
     }
 });
 
-console.log("table vue", tableVue);
-
 /**
  * 文档URL：https://www.layui.com/doc/modules/table.html#cols
  *
@@ -54,15 +52,19 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
 
         //工具栏事件
         table.on('toolbar(' + id + ')', function (obj) {
+            console.log("工具栏事件", obj);
             var checkStatus = table.checkStatus(obj.config.id);
             switch (obj.event) {
                 case 'getCheckData':
-                    var data = checkStatus.data;
-                    layer.alert(JSON.stringify(data));
+                    var str = "";
+                    var i = 0;
+                    for (let value of tableVue.checkValue.values()) {
+                        str += ++i + ": " + value + "<hr>"
+                    }
+                    layer.alert(str);
                     break;
                 case 'getCheckLength':
-                    var data = checkStatus.data;
-                    layer.msg('选中了：' + data.length + ' 个');
+                    layer.msg('选中了：' + tableVue.checkValue.size + ' 个');
                     break;
                 case 'isAll':
                     layer.msg(checkStatus.isAll ? '全选' : '未全选')
@@ -71,7 +73,7 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
             ;
         });
 
-        // 做跨页选取的缓存处理
+        // 做跨页选取的缓存处理，作为key值的键需要后续更改策略
         table.on('checkbox(' + id + ')', function (obj) {
             console.log("选中监听", obj);
             var data = obj.data;
@@ -83,7 +85,7 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
                     var tempData = tableVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        tableVue.checkValue.set(md5(tempData[i].path), JSON.stringify(data));
+                        tableVue.checkValue.set(md5(tempData[i].path), JSON.stringify(tempData[i]));
                     }
                 }
 
@@ -95,7 +97,7 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
                     var tempData = tableVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        tableVue.checkValue.delete(md5(tempData[i].path), JSON.stringify(data));
+                        tableVue.checkValue.delete(md5(tempData[i].path), JSON.stringify(tempData[i]));
                     }
                 }
             }
@@ -113,69 +115,152 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
  * @param id 表格ID
  * @returns {string} 拼装的表格h5字符串
  */
-function setTableFunction(id) {
-    return `<table class="layui-hide" id="test" lay-filter=${id}></table>
-                <script type="text/html" id="toolbarDemo">
-                  <div class="layui-btn-container">
-                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
-                  </div>
-                </script>`;
-}
+// function setTableFunction(id) {
+//     return `<table class="layui-hide" id="test" lay-filter=${id}></table>
+//                 <script type="text/html" id="toolbarDemo">
+//                   <div class="layui-btn-container">
+//                     <button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
+//                     <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
+//                     <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>
+//                   </div>
+//                 </script>`;
+// }
 
 // 示例表头
-var cols = [
-    [{
-        type: 'checkbox',
-        fixed: 'left',
-        event: "choose"
-    }, {
-        field: "id",
-        title: "ID"
-    }, {
-        field: "name",
-        title: "含义"
-    }, {
-        field: "path",
-        title: "请求URL"
-    }, {
-        field: "remarks",
-        title: "备注"
-    }, {
-        field: "use",
-        title: "是否使用"
-    }, {
-        field: "useVersion",
-        title: "最低使用版本"
-    }]
-];
-var url = "/test/getSchemaJson";
-var toolbar = "#toolbarDemo";
-var title = "test";
-var totalrow = false;
-var page = true;
-var id = "test";
-var loading = true;
-// 示例
-showTable(id, url, toolbar, title, totalrow, cols, page, loading, setTableFunction(id), function (res, curr, count) {
-    tableVue.currPageData = res.data;
-    console.log("获取信息", res)
-    console.log("赋值信息", tableVue.currPageData)
-    //配置当前页的选中状态
-    var temp = tableVue.checkValue;
-    var len = tableVue.currPageData.length;
-    for (var i = 0; i < len; i++) {
-        var tempValue = temp.has(md5(tableVue.currPageData[i].path));
-        console.log("tempValue",tempValue);
-        console.log("md5",md5(tableVue.currPageData[i].path));
-        if (tempValue){
-            //这里才是真正的有效勾选
-            res.data[i]["LAY_CHECKED"]='true';
-            //找到对应数据改变勾选样式，呈现出选中效果
-            var index= res.data[i]['LAY_TABLE_INDEX'];
-            $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
-            $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+// var cols = [
+//     [{
+//         type: 'checkbox',
+//         fixed: 'left',
+//         event: "choose"
+//     }, {
+//         field: "id",
+//         title: "ID"
+//     }, {
+//         field: "name",
+//         title: "含义"
+//     }, {
+//         field: "path",
+//         title: "请求URL"
+//     }, {
+//         field: "remarks",
+//         title: "备注"
+//     }, {
+//         field: "use",
+//         title: "是否使用"
+//     }, {
+//         field: "useVersion",
+//         title: "最低使用版本"
+//     }]
+// ];
+// var url = "/test/getSchemaJson";
+// var toolbar = "#toolbarDemo";
+// var title = "test";
+// var totalrow = false;
+// var page = true;
+// var id = "test";
+// var loading = true;
+// // 示例
+// showTable(id, url, toolbar, title, totalrow, cols, page, loading, setTableFunction(id), function (res, curr, count) {
+//     tableVue.currPageData = res.data;
+//     console.log("获取信息", res)
+//     console.log("赋值信息", tableVue.currPageData)
+//     //配置当前页的选中状态
+//     var temp = tableVue.checkValue;
+//     var len = tableVue.currPageData.length;
+//     for (var i = 0; i < len; i++) {
+//         var tempValue = temp.has(md5(tableVue.currPageData[i].path));
+//         console.log("tempValue",tempValue);
+//         console.log("md5",md5(tableVue.currPageData[i].path));
+//         if (tempValue){
+//             //这里才是真正的有效勾选
+//             res.data[i]["LAY_CHECKED"]='true';
+//             //找到对应数据改变勾选样式，呈现出选中效果
+//             var index= res.data[i]['LAY_TABLE_INDEX'];
+//             $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+//             $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+//         }
+//     }
+// });
+
+
+//========================================================各种表格定制======================================================================
+//==================================schema表
+
+function showSchemaTable() {
+    // 设置参数
+// 设置表头
+    var schemaCols = [
+        [{
+            type: 'checkbox',
+            fixed: 'left',
+            event: "choose"
+        }, {
+            field: "id",
+            title: "ID"
+        }, {
+            field: "name",
+            title: "含义"
+        }, {
+            field: "path",
+            title: "请求URL"
+        }, {
+            field: "remarks",
+            title: "备注"
+        }, {
+            field: "use",
+            title: "是否使用"
+        }, {
+            field: "useVersion",
+            title: "最低使用版本"
+        }]
+    ];
+    // 请求地址
+    var url = "/test/getSchemaJson";
+    // 工具ID
+    var toolbar = "#toolbarDemo";
+    // 导出文件时的文件名字
+    var title = "schemaList";
+    // 是否需要统计
+    var totalrow = false;
+    // 是否分页
+    var page = true;
+    // 表格ID
+    var id = "test";
+    // 是否显示加载
+    var loading = true;
+
+    var toolsStr = `<table class="layui-hide" id="test" lay-filter=${id}></table>
+                <script type="text/html" id="toolbarDemo">
+                  <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">查看选中的数据</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">查看选中数据的数量</button>
+                  </div>
+                </script>`;
+
+    showTable(id,url,toolbar,title,totalrow,schemaCols,page,loading,toolsStr,function(res, curr, count){
+        tableVue.currPageData = res.data;
+        //配置当前页的选中状态
+        var temp = tableVue.checkValue;
+        var len = tableVue.currPageData.length;
+        for (var i = 0; i < len; i++) {
+            var tempValue = temp.has(md5(tableVue.currPageData[i].path));
+            if (tempValue){
+                //这里才是真正的有效勾选
+                res.data[i]["LAY_CHECKED"]='true';
+                //找到对应数据改变勾选样式，呈现出选中效果
+                var index= res.data[i]['LAY_TABLE_INDEX'];
+                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+            }
         }
-    }
-});
+    })
+}
+
+
+//==================================schema表
+
+
+//==================================手机信息填写表
+
+
+//==================================报告查看表
