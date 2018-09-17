@@ -153,7 +153,7 @@ function showSchemaTable() {
                     var str = "";
                     var i = 0;
                     for (let value of schemaVue.checkValue.values()) {
-                        str += ++i + ": " + value + "<hr>"
+                        str += ++i + ": " + JSON.stringify(value) + "<hr>"
                     }
                     layer.alert(str);
                     break;
@@ -170,25 +170,25 @@ function showSchemaTable() {
             var data = obj.data;
             if (obj.checked) {
                 if (obj.type === 'one') {
-                    schemaVue.checkValue.set(data.id, JSON.stringify(data));
+                    schemaVue.checkValue.set(data.id, data);
                 }
                 if (obj.type === 'all') {
                     var tempData = schemaVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        schemaVue.checkValue.set(tempData[i].id, JSON.stringify(tempData[i]));
+                        schemaVue.checkValue.set(tempData[i].id, tempData[i]);
                     }
                 }
 
             } else {
                 if (obj.type === 'one') {
-                    schemaVue.checkValue.delete(data.id, JSON.stringify(data));
+                    schemaVue.checkValue.delete(data.id, data);
                 }
                 if (obj.type === 'all') {
                     var tempData = schemaVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        schemaVue.checkValue.delete(tempData[i].id, JSON.stringify(tempData[i]));
+                        schemaVue.checkValue.delete(tempData[i].id, tempData[i]);
                     }
                 }
             }
@@ -408,7 +408,7 @@ function submitSchemaTest() {
     submit.computers = mapToArr(schemaVue.phoneInfo);
     submit.schemas = getSchemasId();
     submit.apkId = schemaVue.apk;
-    if (submit.computers == null) {
+    if (submit.computers == null || submit.computers.length === 0) {
         alert("你的设备信息未添加，无法提交测试请求");
         return;
     }
@@ -416,7 +416,7 @@ function submitSchemaTest() {
         alert("你的schema信息未选择，无法提交测试请求")
         return;
     }
-    if (submit.apkId == null) {
+    if (submit.apkId == null || submit.apkId === "") {
         alert("你的apk信息提交不完整，无法提交测试请求")
         return;
     }
@@ -427,10 +427,12 @@ function submitSchemaTest() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (res) {
-            console.log("正确反馈信息", res)
+            console.log("正确反馈信息", res);
+            layer.alert("查看测试报告ID:"+res);
         },
         error: function (res) {
             console.log("异常反馈信息", res)
+            layer.alert("错误:"+res.status);
         }
     })
 }
@@ -438,10 +440,14 @@ function submitSchemaTest() {
 function getSchemasId() {
     var schemaId = [];
     var schemaArr = mapToArr(schemaVue.checkValue);
+    console.log("arr:",schemaArr);
+    console.log("arr-id:",schemaArr[0].id);
+    console.log("map:",schemaVue.checkValue);
     var len = schemaArr.length;
     for (var i = 0; i < len; i++) {
         schemaId.push(schemaArr[i].id);
     }
+    console.log("提交schemaid:",schemaId);
     return schemaId;
 }
 
