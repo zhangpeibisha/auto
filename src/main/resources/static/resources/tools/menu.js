@@ -90,5 +90,8 @@ function jump(obj) {
         case 'submit':
             submitSchemaTest();
             break;
+        case 'result':
+            viewSchemaTestResult();
+            break;
     }
 }
