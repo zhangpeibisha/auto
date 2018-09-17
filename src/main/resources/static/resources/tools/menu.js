@@ -49,12 +49,16 @@ var menu = new Vue({
             }, {
                 name: "computer",
                 jump: "jump(this)"
-            },{
-                name:"submit",
+            }, {
+                name:"apk",
                 jump:"jump(this)"
-            },{
-                name:"result",
-                jump:"jump(this)"
+            },
+            {
+                name: "submit",
+                jump: "jump(this)"
+            }, {
+                name: "result",
+                jump: "jump(this)"
             }]
         }]
     }

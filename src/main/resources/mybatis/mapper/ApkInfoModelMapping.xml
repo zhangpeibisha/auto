@@ -2,4 +2,13 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="org.nix.learn.auto.dao.mybatis.mapper.ApkInfoModelMapper">
 
+
+    <select id="findApk" resultType="org.nix.learn.auto.model.ApkInfoModel">
+        select * from apk_info_model
+           <if test="where!=null">
+              where ${where}
+           </if>
+           limit #{curr},#{limit}
+    </select>
+
 </mapper>

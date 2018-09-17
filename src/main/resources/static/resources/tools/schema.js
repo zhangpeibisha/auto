@@ -4,11 +4,13 @@ var schemaVue = new Vue({
     data: {
         checkValue: new Map(),
         currPageData: [],
-        phoneInfo: new Map()
+        phoneInfo: new Map(),
+        apk:""
     }
 });
 
 //========================================================各种表格定制======================================================================
+
 //==================================schema表
 /**
  * 展示schema的信息
@@ -396,6 +398,11 @@ function mapToArr(map) {
  * 提交这一次的提交信息
  */
 function sbumitSchemaTest() {
+    var submit = {
+        computers:[],
+        schemas:[],
+        apkId:""
+    }
     $.ajax({
         
     })
@@ -404,6 +411,92 @@ function sbumitSchemaTest() {
 
 
 //==================================提交数据
+
+
+
+//==================================apk
+function showApkInfo() {
+    // 设置参数
+// 设置表头
+    var schemaCols = [
+        [{
+            type: 'checkbox',
+            fixed: 'left',
+            event: "choose"
+        }, {
+            field: "id",
+            title: "ID"
+        }, {
+            field: "name",
+            title: "含义"
+        }, {
+            field: "path",
+            title: "请求URL"
+        }, {
+            field: "remarks",
+            title: "备注"
+        }, {
+            field: "use",
+            title: "是否使用"
+        }, {
+            field: "useVersion",
+            title: "最低使用版本"
+        },{
+            field:"maxUseVersion",
+            title:"最高使用版本"
+        },{
+            field:"createTime",
+            title:"创建时间"
+        },{
+            field:"updateTime",
+            title:"更新时间"
+        }]
+    ];
+    // 请求地址
+    var url = "/schema/findSchemaList/pagination";
+    // 工具ID
+    var toolbar = "#toolbarDemo";
+    // 导出文件时的文件名字
+    var title = "schemaList";
+    // 是否需要统计
+    var totalrow = false;
+    // 是否分页
+    var page = true;
+    // 表格ID
+    var id = "test";
+    // 是否显示加载
+    var loading = true;
+
+    var toolsStr = `<table class="layui-hide" id="test" lay-filter=${id}></table>
+                <script type="text/html" id="toolbarDemo">
+                  <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">查看选中的数据</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">查看选中数据的数量</button>
+                  </div>
+                </script>`;
+
+    showTable(id, url, toolbar, title, totalrow, schemaCols, page, loading, toolsStr, function (res, curr, count) {
+        schemaVue.currPageData = res.data;
+        //配置当前页的选中状态
+        var temp = schemaVue.checkValue;
+        var len = schemaVue.currPageData.length;
+        for (var i = 0; i < len; i++) {
+            var tempValue = temp.has(md5(schemaVue.currPageData[i].path));
+            if (tempValue) {
+                //这里才是真正的有效勾选
+                res.data[i]["LAY_CHECKED"] = 'true';
+                //找到对应数据改变勾选样式，呈现出选中效果
+                var index = res.data[i]['LAY_TABLE_INDEX'];
+                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+            }
+        }
+    })
+}
+
+
+
+//==================================apk
 
 
 

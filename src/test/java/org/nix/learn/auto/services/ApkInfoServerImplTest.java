@@ -1,6 +1,7 @@
 package org.nix.learn.auto.services;
 
 
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.nix.learn.auto.AutoApplicationTests;
 import org.nix.learn.auto.dao.mybatis.mapper.ApkInfoModelMapper;
@@ -42,6 +43,6 @@ public class ApkInfoServerImplTest extends AutoApplicationTests {
 
     @Test
     public void selectOneTest(){
-
+       LogUtils.printLog("apk",apkInfoModelMapper.findApk("version = '6.0'",0,10));
     }
 }

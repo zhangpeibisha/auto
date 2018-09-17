@@ -2,6 +2,7 @@ package org.nix.learn.auto.web.controller;
 
 import com.github.pagehelper.PageInfo;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
+import org.nix.learn.auto.services.ApkInfoServerImpl;
 import org.nix.learn.auto.services.SchemaServerImpl;
 import org.nix.learn.auto.services.comment.ResultPage;
 import org.nix.learn.auto.web.dto.SchemaSubmitDto;
@@ -19,9 +20,15 @@ import javax.annotation.Resource;
 @RestController
 public class SchemaController {
 
-
+    /**
+     * schema的服务类
+     */
     @Resource
     private SchemaServerImpl schemaServerImp;
+
+
+    @Resource
+    private ApkInfoServerImpl apkInfoServerImpl;
 
     /**
      * 提交测试信息
@@ -56,4 +63,8 @@ public class SchemaController {
         return schemaServerImp.findSchemaList(curr,quantity);
     }
 
+    @GetMapping("findApkList/pagination")
+    public ResultPage findApkList(@RequestParam("page") Integer curr, @RequestParam("limit") Integer quantity){
+        return apkInfoServerImpl.findApkList(curr,quantity);
+    }
 }
