@@ -1,5 +1,6 @@
 package org.nix.learn.auto;
 
+import com.alibaba.fastjson.JSON;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.nix.learn.auto.core.obtain.AndroidCommand;
@@ -19,6 +20,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import javax.annotation.Resource;
 import java.nio.file.Paths;
 import java.util.Date;
+import java.util.Map;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -99,7 +101,5 @@ public class AutoApplicationTests {
     }
 
 
-    public static void main(String[] args) {
 
-    }
 }
