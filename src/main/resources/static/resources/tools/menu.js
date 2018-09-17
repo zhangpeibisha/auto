@@ -52,14 +52,13 @@ var menu = new Vue({
             }, {
                 name: "apk",
                 jump: "jump(this)"
-            },
-                {
-                    name: "submit",
-                    jump: "jump(this)"
-                }, {
-                    name: "result",
-                    jump: "jump(this)"
-                }]
+            }, {
+                name: "submit",
+                jump: "jump(this)"
+            }, {
+                name: "result",
+                jump: "jump(this)"
+            }]
         }]
     }
 })
@@ -72,7 +71,8 @@ function updateContent(content) {
     $("#content").html(content);
 }
 
-updateContent("zhangpei")
+// 开始展示提交记录
+showSubmitRecording();
 
 function jump(obj) {
     console.log("jump", obj);
@@ -92,6 +92,9 @@ function jump(obj) {
             break;
         case 'result':
             viewSchemaTestResult();
+            break;
+        case '提交记录':
+            showSubmitRecording();
             break;
     }
 }

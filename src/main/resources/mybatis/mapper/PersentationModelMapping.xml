@@ -7,4 +7,12 @@
         select * from presentation_model where presentation_id=#{presentationId}
     </select>
 
+    <select id="findPresentationPage" resultType="org.nix.learn.auto.model.PresentationModel">
+        select * from presentation_model
+        <if test="where!=null">
+            where ${where}
+        </if>
+        limit #{curr},#{limit}
+    </select>
+
 </mapper>

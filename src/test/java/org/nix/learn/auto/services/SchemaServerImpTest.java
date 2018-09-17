@@ -148,10 +148,10 @@ public class SchemaServerImpTest extends AutoApplicationTests {
 
 
         List<SchemaModel> models = new ArrayList<>();
-//        models.add(huoqianbao);
-//        models.add(assets);
-//        models.add(setting);
-//        models.add(lifepay);
+        models.add(huoqianbao);
+        models.add(assets);
+        models.add(setting);
+        models.add(lifepay);
         models.add(xuqibao);
         models.add(msgcenter);
         models.add(transfer);

@@ -30,7 +30,7 @@ public class PresentationModel extends BaseModel {
         this.value = value;
     }
 
-    public String getpresentationId() {
+    public String getPresentationId() {
         return presentationId;
     }
 

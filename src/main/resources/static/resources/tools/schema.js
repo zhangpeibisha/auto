@@ -428,11 +428,11 @@ function submitSchemaTest() {
         contentType: "application/json; charset=utf-8",
         success: function (res) {
             console.log("正确反馈信息", res);
-            layer.alert("查看测试报告ID:"+res);
+            layer.alert("查看测试报告ID:" + res);
         },
         error: function (res) {
             console.log("异常反馈信息", res)
-            layer.alert("错误:"+res.status);
+            layer.alert("错误:" + res.status);
         }
     })
 }
@@ -440,14 +440,14 @@ function submitSchemaTest() {
 function getSchemasId() {
     var schemaId = [];
     var schemaArr = mapToArr(schemaVue.checkValue);
-    console.log("arr:",schemaArr);
-    console.log("arr-id:",schemaArr[0].id);
-    console.log("map:",schemaVue.checkValue);
+    console.log("arr:", schemaArr);
+    console.log("arr-id:", schemaArr[0].id);
+    console.log("map:", schemaVue.checkValue);
     var len = schemaArr.length;
     for (var i = 0; i < len; i++) {
         schemaId.push(schemaArr[i].id);
     }
-    console.log("提交schemaid:",schemaId);
+    console.log("提交schemaid:", schemaId);
     return schemaId;
 }
 
@@ -457,7 +457,7 @@ function getSchemasId() {
 //==================================apk
 function showApkInfo() {
     // 设置参数
-// 设置表头
+    // 设置表头
     var schemaCols = [
         [{
             type: 'radio',
@@ -518,15 +518,15 @@ function showApkInfo() {
         var len = currData.length;
         for (var i = 0; i < len; i++) {
             if (temp[i].id === schemaVue.apk) {
-                console.log("找到选中的数据",temp[i]);
+                console.log("找到选中的数据", temp[i]);
                 //这里才是真正的有效勾选
                 res.data[i]["LAY_CHECKED"] = 'true';
                 //找到对应数据改变勾选样式，呈现出选中效果
                 var index = res.data[i]['LAY_TABLE_INDEX'];
-                $('tbody tr[data-index='+index+']').addClass("layui-table-click");
-                $('tbody tr[data-index='+index+'] input[type=radio]').next().addClass("layui-form-radioed");
-                $('tbody tr[data-index='+index+'] input[type=radio]').next().children("i").addClass("layui-anim-scaleSpring");
-                $('tbody tr[data-index='+index+'] input[type=radio]').next().children("i").text("");
+                $('tbody tr[data-index=' + index + ']').addClass("layui-table-click");
+                $('tbody tr[data-index=' + index + '] input[type=radio]').next().addClass("layui-form-radioed");
+                $('tbody tr[data-index=' + index + '] input[type=radio]').next().children("i").addClass("layui-anim-scaleSpring");
+                $('tbody tr[data-index=' + index + '] input[type=radio]').next().children("i").text("");
                 break;
             }
         }
@@ -536,7 +536,7 @@ function showApkInfo() {
         var table = layui.table;
 
         //头工具栏事件
-        table.on('toolbar('+id+')', function (obj) {
+        table.on('toolbar(' + id + ')', function (obj) {
             var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
             switch (obj.event) {
                 case 'getCheckData':
@@ -546,7 +546,7 @@ function showApkInfo() {
                     layer.alert("选中了apk:id=" + schemaVue.apk);
                     break;
                 case 'viewData':
-                    console.log("查看选中数据",JSON.stringify(schemaVue.apk));
+                    console.log("查看选中数据", JSON.stringify(schemaVue.apk));
                     layer.alert("选中了apk:<hr>" + JSON.stringify(schemaVue.apk));
                     break;
             }
@@ -575,54 +575,55 @@ function getResultStr() {
 
 
 function viewSchemaTestResult() {
+
     updateContent(getResultStr());
 
-    layui.use('table', function(){
+    layui.use('table', function () {
         var table = layui.table;
 
         //方法级渲染
         table.render({
             elem: '#testResult'
-            ,cols: [[
+            , cols: [[
                 {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }, {
-                    field:"",
-                    title:""
+                    field: "",
+                    title: ""
                 }
             ]]
-            ,id: 'testReload'
-            ,page: true
-            ,height: 315
+            , id: 'testReload'
+            , page: true
+            , height: 315
         });
 
         var $ = layui.$, active = {
-            reload: function(){
+            reload: function () {
                 var demoReload = $('#demoReload');
 
                 //执行重载
@@ -630,7 +631,7 @@ function viewSchemaTestResult() {
                     page: {
                         curr: 1 //重新从第 1 页开始
                     }
-                    ,where: {
+                    , where: {
                         key: {
                             id: demoReload.val()
                         }
@@ -639,7 +640,7 @@ function viewSchemaTestResult() {
             }
         };
 
-        $('.demoTable .layui-btn').on('click', function(){
+        $('.demoTable .layui-btn').on('click', function () {
             var type = $(this).data('type');
             active[type] ? active[type].call(this) : '';
         });
@@ -647,7 +648,55 @@ function viewSchemaTestResult() {
 }
 
 
-//==================================查看结果
+//==================================提交记录
+function showSubmitRecording() {
+    // 设置参数
+    // 设置表头
+    var schemaCols = [
+        [{
+            field: "id",
+            title: "ID"
+        }, {
+            field: "presentationId",
+            title: "报告Id"
+        }, {
+            field: "createTime",
+            title: "创建时间"
+        }, {
+            field: "updateTime",
+            title: "更新时间"
+        }]
+    ];
+    // 请求地址
+    var url = "/schema/findPresentationList/pagination";
+    // 工具ID
+    var toolbar = "#toolbarDemo";
+    // 导出文件时的文件名字
+    var title = "Presentation";
+    // 是否需要统计
+    var totalrow = false;
+    // 是否分页
+    var page = true;
+    // 表格ID
+    var id = "presentation";
+    // 是否显示加载
+    var loading = true;
+
+    var toolsStr = `
+                     <script type="text/html" id="toolbarDemo">
+                             <h3 style="text-align: center">提交记录表</h3>
+                        </script>
+                      <table class="layui-hide"  id=${id}  lay-filter=${id}></table>
+                   `;
+
+    showTable(id, url, toolbar, title, totalrow, schemaCols, page, loading, toolsStr, function (res, curr, count) {
+
+    });
+
+}
+
+
+//==================================提交记录
 
 
 /**
