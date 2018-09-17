@@ -99,7 +99,6 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
             return;
         }
         prentPresentation.putCurr("phone info", driver.getCapabilities().asMap());
-//        Presentation son =  prentPresentation.addNext("schemas", (long) models.size());
         int index = 0;
         for (SchemaModel schemaModel : models) {
             SchemaRunOne runOne = new SchemaRunOne(

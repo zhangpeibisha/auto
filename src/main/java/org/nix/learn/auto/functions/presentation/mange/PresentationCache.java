@@ -6,6 +6,7 @@ import org.nix.learn.auto.dao.redis.RedisDao;
 import org.nix.learn.auto.functions.presentation.Presentation;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.functions.presentation.PresentationException;
+import org.nix.learn.auto.functions.presentation.TaskPresentation;
 import org.nix.learn.auto.model.PresentationModel;
 import org.nix.learn.auto.utils.CryptoUtils;
 import org.nix.learn.auto.utils.DateUtils;
@@ -70,6 +71,7 @@ public class PresentationCache implements PresentationManger {
             PresentationModel model = save(id, presentation);
             redisDao.set(id, model);
             presentationModelMapper.insert(model);
+            SAVE.remove(id);
         }
         return presentation;
     }
@@ -149,7 +151,10 @@ public class PresentationCache implements PresentationManger {
      * @return 动态报告形式
      */
     private Presentation getByModel(PresentationModel model) {
-        return JSON.parseObject(model.getValue(), Presentation.class);
+      Map map = JSON.parseObject(model.getValue(), Map.class);
+      TaskPresentation taskPresentation =  new TaskPresentation();
+      taskPresentation.setInfo(map);
+      return taskPresentation;
     }
 
 }

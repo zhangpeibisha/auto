@@ -44,4 +44,8 @@ public abstract class AbstractPresentationContent implements PresentationContent
         }
         return info;
     }
+
+    public void setInfo(Map<String, Object> info) {
+        this.info = info;
+    }
 }

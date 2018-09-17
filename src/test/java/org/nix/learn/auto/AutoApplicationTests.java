@@ -64,19 +64,21 @@ public class AutoApplicationTests {
     @Test
     public void PresentationInsertTest() {
 
-        PresentationModel model;
-        model = new PresentationModel();
-        model.setId("52f9a8b6b02311e8957f9825f24eae7e");
-        model.setPresentationId("1332223");
-        model.setValue("fsafasfsafja");
-        modelMapper.insert(model);
-        LogUtils.printLog("model", model.getUpdateTime());
+//        PresentationModel model;
+//        model = new PresentationModel();
+//        model.setId("52f9a8b6b02311e8957f9825f24eae7e");
+//        model.setPresentationId("1332223");
+//        model.setValue("fsafasfsafja");
+//        modelMapper.insert(model);
+//        LogUtils.printLog("model", model.getUpdateTime());
 //        model = modelMapper.findPresentationByPresentationId("bisha");
 //        model.setValue("zhangpei");
 //        model.setUpdateTime(null);
 //        modelMapper.updateByPrimaryKey(model);
 //        model = modelMapper.findPresentationByPresentationId("bisha");
 //        LogUtils.printLog("model", model.getUpdateTime());
+
+           LogUtils.printLog("报告",modelMapper.findPresentationByPresentationId("e5ce7a512883b2a635d5ffbea293b585"));
     }
 
     @Resource
@@ -94,5 +96,10 @@ public class AutoApplicationTests {
     @Test
     public void get() {
         System.out.println(redisDao.get("name"));
+    }
+
+
+    public static void main(String[] args) {
+
     }
 }

@@ -117,7 +117,10 @@ public class TaskPresentation extends AbstractPresentationContent implements Pre
 
     @Override
     public Boolean isOk() {
-        return runSchedule() == 1;
+        if (runSchedule()!=null){
+            return runSchedule() == 1;
+        }
+        return true;
     }
 
     @Override

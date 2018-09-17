@@ -95,6 +95,7 @@ public class SchemaServerImpl {
      * @return 报告信息
      */
     public Presentation findPresentationByPrId(String prId) {
+        // 报告需要整理再转发到前端
         return presentationCache.get(prId);
     }
 
