@@ -50,16 +50,16 @@ var menu = new Vue({
                 name: "computer",
                 jump: "jump(this)"
             }, {
-                name:"apk",
-                jump:"jump(this)"
+                name: "apk",
+                jump: "jump(this)"
             },
-            {
-                name: "submit",
-                jump: "jump(this)"
-            }, {
-                name: "result",
-                jump: "jump(this)"
-            }]
+                {
+                    name: "submit",
+                    jump: "jump(this)"
+                }, {
+                    name: "result",
+                    jump: "jump(this)"
+                }]
         }]
     }
 })
@@ -83,6 +83,12 @@ function jump(obj) {
             break;
         case  'computer':
             addPhoneInfo();
+            break;
+        case 'apk':
+            showApkInfo();
+            break;
+        case 'submit':
+            submitSchemaTest();
             break;
     }
 }

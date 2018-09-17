@@ -5,95 +5,12 @@ var schemaVue = new Vue({
         checkValue: new Map(),
         currPageData: [],
         phoneInfo: new Map(),
-        apk:""
+        apk: ""
     }
 });
 
+
 //========================================================各种表格定制======================================================================
-
-//==================================schema表
-/**
- * 展示schema的信息
- */
-function showSchemaTable() {
-    // 设置参数
-// 设置表头
-    var schemaCols = [
-        [{
-            type: 'checkbox',
-            fixed: 'left',
-            event: "choose"
-        }, {
-            field: "id",
-            title: "ID"
-        }, {
-            field: "name",
-            title: "含义"
-        }, {
-            field: "path",
-            title: "请求URL"
-        }, {
-            field: "remarks",
-            title: "备注"
-        }, {
-            field: "use",
-            title: "是否使用"
-        }, {
-            field: "useVersion",
-            title: "最低使用版本"
-        },{
-            field:"maxUseVersion",
-            title:"最高使用版本"
-        },{
-            field:"createTime",
-            title:"创建时间"
-        },{
-            field:"updateTime",
-            title:"更新时间"
-        }]
-    ];
-    // 请求地址
-    var url = "/schema/findSchemaList/pagination";
-    // 工具ID
-    var toolbar = "#toolbarDemo";
-    // 导出文件时的文件名字
-    var title = "schemaList";
-    // 是否需要统计
-    var totalrow = false;
-    // 是否分页
-    var page = true;
-    // 表格ID
-    var id = "test";
-    // 是否显示加载
-    var loading = true;
-
-    var toolsStr = `<table class="layui-hide" id="test" lay-filter=${id}></table>
-                <script type="text/html" id="toolbarDemo">
-                  <div class="layui-btn-container">
-                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">查看选中的数据</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">查看选中数据的数量</button>
-                  </div>
-                </script>`;
-
-    showTable(id, url, toolbar, title, totalrow, schemaCols, page, loading, toolsStr, function (res, curr, count) {
-        schemaVue.currPageData = res.data;
-        //配置当前页的选中状态
-        var temp = schemaVue.checkValue;
-        var len = schemaVue.currPageData.length;
-        for (var i = 0; i < len; i++) {
-            var tempValue = temp.has(md5(schemaVue.currPageData[i].path));
-            if (tempValue) {
-                //这里才是真正的有效勾选
-                res.data[i]["LAY_CHECKED"] = 'true';
-                //找到对应数据改变勾选样式，呈现出选中效果
-                var index = res.data[i]['LAY_TABLE_INDEX'];
-                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
-                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
-            }
-        }
-    })
-}
-
 /**
  * 文档URL：https://www.layui.com/doc/modules/table.html#cols
  *
@@ -136,6 +53,96 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
             loading: loading,
             done: done
         });
+    });
+}
+
+
+//==================================schema表
+/**
+ * 展示schema的信息
+ */
+function showSchemaTable() {
+    // 设置参数
+// 设置表头
+    var schemaCols = [
+        [{
+            type: 'checkbox',
+            fixed: 'left',
+            event: "choose"
+        }, {
+            field: "id",
+            title: "ID"
+        }, {
+            field: "name",
+            title: "含义"
+        }, {
+            field: "path",
+            title: "请求URL"
+        }, {
+            field: "remarks",
+            title: "备注"
+        }, {
+            field: "use",
+            title: "是否使用"
+        }, {
+            field: "useVersion",
+            title: "最低使用版本"
+        }, {
+            field: "maxUseVersion",
+            title: "最高使用版本"
+        }, {
+            field: "createTime",
+            title: "创建时间"
+        }, {
+            field: "updateTime",
+            title: "更新时间"
+        }]
+    ];
+    // 请求地址
+    var url = "/schema/findSchemaList/pagination";
+    // 工具ID
+    var toolbar = "#toolbarDemo";
+    // 导出文件时的文件名字
+    var title = "schemaList";
+    // 是否需要统计
+    var totalrow = false;
+    // 是否分页
+    var page = true;
+    // 表格ID
+    var id = "schema";
+    // 是否显示加载
+    var loading = true;
+
+    var toolsStr = `<table class="layui-hide" id=${id} lay-filter=${id}></table>
+                <script type="text/html" id="toolbarDemo">
+                  <div class="layui-btn-container">
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">查看选中的数据</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">查看选中数据的数量</button>
+                  </div>
+                </script>`;
+
+    showTable(id, url, toolbar, title, totalrow, schemaCols, page, loading, toolsStr, function (res, curr, count) {
+        console.log("数据加载触发", res, curr, count);
+        schemaVue.currPageData = res.data;
+        //配置当前页的选中状态
+        var temp = schemaVue.checkValue;
+        var len = schemaVue.currPageData.length;
+        for (var i = 0; i < len; i++) {
+            var tempValue = temp.has(schemaVue.currPageData[i].id);
+            if (tempValue) {
+                //这里才是真正的有效勾选
+                res.data[i]["LAY_CHECKED"] = 'true';
+                //找到对应数据改变勾选样式，呈现出选中效果
+                var index = res.data[i]['LAY_TABLE_INDEX'];
+                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
+                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+            }
+        }
+    })
+
+
+    layui.use('table', function (key) {
+        var table = layui.table;
 
         //工具栏事件
         table.on('toolbar(' + id + ')', function (obj) {
@@ -153,9 +160,6 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
                 case 'getCheckLength':
                     layer.msg('选中了：' + schemaVue.checkValue.size + ' 个');
                     break;
-                case 'isAll':
-                    layer.msg(checkStatus.isAll ? '全选' : '未全选')
-                    break;
             }
             ;
         });
@@ -166,35 +170,36 @@ function showTable(id, url, toolbar, title, totalrow, cols, page, loading, initT
             var data = obj.data;
             if (obj.checked) {
                 if (obj.type === 'one') {
-                    schemaVue.checkValue.set(md5(data), JSON.stringify(data));
+                    schemaVue.checkValue.set(data.id, JSON.stringify(data));
                 }
                 if (obj.type === 'all') {
                     var tempData = schemaVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        schemaVue.checkValue.set(md5(tempData[i]), JSON.stringify(tempData[i]));
+                        schemaVue.checkValue.set(tempData[i].id, JSON.stringify(tempData[i]));
                     }
                 }
 
             } else {
                 if (obj.type === 'one') {
-                    schemaVue.checkValue.delete(md5(data), JSON.stringify(data));
+                    schemaVue.checkValue.delete(data.id, JSON.stringify(data));
                 }
                 if (obj.type === 'all') {
                     var tempData = schemaVue.currPageData;
                     var len = tempData.length;
                     for (var i = 0; i < len; i++) {
-                        schemaVue.checkValue.delete(md5(tempData[i]), JSON.stringify(tempData[i]));
+                        schemaVue.checkValue.delete(tempData[i].id, JSON.stringify(tempData[i]));
                     }
                 }
             }
 
             console.log("监听复选框", schemaVue.checkValue)
         });
+    })
 
 
-    });
 }
+
 //==================================schema表
 
 
@@ -251,7 +256,8 @@ function addPhone() {
         layer.open({
             type: 1,
             title: "添加设备信息",
-            content: createConfirm()
+            content: createConfirm(),
+            area: ['350px', '300px']
         });
     });
 }
@@ -324,14 +330,14 @@ function addPhoneInfoConfirm(data) {
         var ip = ip = data.field.ip;
         var port = data.field.port;
         var udid = data.field.udid;
-        if (schemaVue.phoneInfo.has(ip+port)){
+        if (schemaVue.phoneInfo.has(ip + port)) {
             layer.msg("不允许一次提交中ip+port相同值出现两次");
             return;
         } else {
-            schemaVue.phoneInfo.set(ip+port,{
-                ip:ip,
-                port:port,
-                udid:udid
+            schemaVue.phoneInfo.set(ip + port, {
+                ip: ip,
+                port: port,
+                udid: udid
             });
         }
     }
@@ -372,7 +378,7 @@ function addPhoneInfoConfirm(data) {
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除行么', function (index) {
                     console.log("删除", obj);
-                    schemaVue.phoneInfo.remove(obj.ip+obj.port);
+                    schemaVue.phoneInfo.remove(obj.ip + obj.port);
                     obj.del();
                     layer.close(index);
                 });
@@ -397,21 +403,49 @@ function mapToArr(map) {
 /**
  * 提交这一次的提交信息
  */
-function sbumitSchemaTest() {
-    var submit = {
-        computers:[],
-        schemas:[],
-        apkId:""
+function submitSchemaTest() {
+    var submit = {};
+    submit.computers = mapToArr(schemaVue.phoneInfo);
+    submit.schemas = getSchemasId();
+    submit.apkId = schemaVue.apk;
+    if (submit.computers == null) {
+        alert("你的设备信息未添加，无法提交测试请求");
+        return;
+    }
+    if (submit.schemas == null || submit.schemas.length === 0) {
+        alert("你的schema信息未选择，无法提交测试请求")
+        return;
+    }
+    if (submit.apkId == null) {
+        alert("你的apk信息提交不完整，无法提交测试请求")
+        return;
     }
     $.ajax({
-        
+        url: "/schema/schemaServer",
+        data: JSON.stringify(submit),
+        type: "POST",
+        dataType: "json",
+        contentType: "application/json; charset=utf-8",
+        success: function (res) {
+            console.log("正确反馈信息", res)
+        },
+        error: function (res) {
+            console.log("异常反馈信息", res)
+        }
     })
 }
 
-
+function getSchemasId() {
+    var schemaId = [];
+    var schemaArr = mapToArr(schemaVue.checkValue);
+    var len = schemaArr.length;
+    for (var i = 0; i < len; i++) {
+        schemaId.push(schemaArr[i].id);
+    }
+    return schemaId;
+}
 
 //==================================提交数据
-
 
 
 //==================================apk
@@ -420,84 +454,103 @@ function showApkInfo() {
 // 设置表头
     var schemaCols = [
         [{
-            type: 'checkbox',
-            fixed: 'left',
-            event: "choose"
+            type: 'radio',
         }, {
             field: "id",
             title: "ID"
         }, {
-            field: "name",
-            title: "含义"
+            field: "runEnvironment",
+            title: "运行环境"
         }, {
-            field: "path",
-            title: "请求URL"
+            field: "version",
+            title: "apk版本"
         }, {
-            field: "remarks",
-            title: "备注"
+            field: "installPath",
+            title: "安装路径"
         }, {
-            field: "use",
-            title: "是否使用"
+            field: "appPackage",
+            title: "apk包名"
         }, {
-            field: "useVersion",
-            title: "最低使用版本"
-        },{
-            field:"maxUseVersion",
-            title:"最高使用版本"
-        },{
-            field:"createTime",
-            title:"创建时间"
-        },{
-            field:"updateTime",
-            title:"更新时间"
+            field: "appActivity",
+            title: "apk活动"
+        }, {
+            field: "createTime",
+            title: "创建时间"
+        }, {
+            field: "updateTime",
+            title: "更新时间"
         }]
     ];
     // 请求地址
-    var url = "/schema/findSchemaList/pagination";
+    var url = "/schema/findApkList/pagination";
     // 工具ID
     var toolbar = "#toolbarDemo";
     // 导出文件时的文件名字
-    var title = "schemaList";
+    var title = "ApkList";
     // 是否需要统计
     var totalrow = false;
     // 是否分页
     var page = true;
     // 表格ID
-    var id = "test";
+    var id = "apk";
     // 是否显示加载
     var loading = true;
 
-    var toolsStr = `<table class="layui-hide" id="test" lay-filter=${id}></table>
+    var toolsStr = `<table class="layui-hide"  id=${id}  lay-filter=${id}></table>
                 <script type="text/html" id="toolbarDemo">
                   <div class="layui-btn-container">
-                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">查看选中的数据</button>
-                    <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">查看选中数据的数量</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="getCheckData">确定选中</button>
+                    <button class="layui-btn layui-btn-sm" lay-event="viewData">查看选中的数据</button>
                   </div>
                 </script>`;
 
     showTable(id, url, toolbar, title, totalrow, schemaCols, page, loading, toolsStr, function (res, curr, count) {
-        schemaVue.currPageData = res.data;
+        console.log("单选框-数据加载触发", res, curr, count);
+        var currData = res.data;
         //配置当前页的选中状态
-        var temp = schemaVue.checkValue;
-        var len = schemaVue.currPageData.length;
+        var temp = currData;
+        var len = currData.length;
         for (var i = 0; i < len; i++) {
-            var tempValue = temp.has(md5(schemaVue.currPageData[i].path));
-            if (tempValue) {
+            if (temp[i].id === schemaVue.apk) {
+                console.log("找到选中的数据",temp[i]);
                 //这里才是真正的有效勾选
                 res.data[i]["LAY_CHECKED"] = 'true';
                 //找到对应数据改变勾选样式，呈现出选中效果
                 var index = res.data[i]['LAY_TABLE_INDEX'];
-                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').prop('checked', true);
-                $('.layui-table-fixed-l tr[data-index=' + index + '] input[type="checkbox"]').next().addClass('layui-form-checked');
+                $('tbody tr[data-index='+index+']').addClass("layui-table-click");
+                $('tbody tr[data-index='+index+'] input[type=radio]').next().addClass("layui-form-radioed");
+                $('tbody tr[data-index='+index+'] input[type=radio]').next().children("i").addClass("layui-anim-scaleSpring");
+                $('tbody tr[data-index='+index+'] input[type=radio]').next().children("i").text("");
+                break;
             }
         }
+    });
+
+    layui.use("table", function (key) {
+        var table = layui.table;
+
+        //头工具栏事件
+        table.on('toolbar('+id+')', function (obj) {
+            var checkStatus = table.checkStatus(obj.config.id); //获取选中行状态
+            switch (obj.event) {
+                case 'getCheckData':
+                    var data = checkStatus.data;  //获取选中行数据
+                    console.log("data", data);
+                    schemaVue.apk = data[0].id;
+                    layer.alert("选中了apk:id=" + schemaVue.apk);
+                    break;
+                case 'viewData':
+                    console.log("查看选中数据",JSON.stringify(schemaVue.apk));
+                    layer.alert("选中了apk:<hr>" + JSON.stringify(schemaVue.apk));
+                    break;
+            }
+        });
     })
+
 }
 
 
-
 //==================================apk
-
 
 
 //==================================查看结果
@@ -506,24 +559,7 @@ function viewSchemaTestResult() {
 }
 
 
-
-
-
 //==================================查看结果
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /**
