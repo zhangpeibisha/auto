@@ -72,7 +72,7 @@ public class SchemaRunColony implements SchemaRun {
 
     @Override
     public void runTask() {
-        presentation.putCurr("task info", JSON.toJSON(this));
+//        presentation.putCurr("task info", JSON.toJSON(this));
         int index = 0;
         if (runStaples.size() == 0){
             presentation.setFail();
