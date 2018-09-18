@@ -5,6 +5,7 @@ import com.github.pagehelper.PageInfo;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.dao.mybatis.mapper.ApkInfoModelMapper;
 import org.nix.learn.auto.dao.mybatis.mapper.SchemaModelMapper;
+import org.nix.learn.auto.functions.presentation.LinkedMapPresentation;
 import org.nix.learn.auto.functions.presentation.Presentation;
 import org.nix.learn.auto.functions.presentation.TaskPresentation;
 import org.nix.learn.auto.functions.presentation.mange.PresentationCache;
@@ -50,10 +51,10 @@ public class SchemaServerImpl {
         long taskValue = (long) schemaSubmitDto.getIp().size();
 
         // 将报告加入缓存
-        TaskPresentation taskPresentation = new TaskPresentation(taskValue);
+        Presentation presentation = new LinkedMapPresentation(taskValue);
 
         // 整理信息准备测试
-        List<RunStaple> servers = schemaSubmitDto.getRunStaples(taskPresentation);
+        List<RunStaple> servers = schemaSubmitDto.getRunStaples(presentation);
 
         List<SchemaModel> models = findSchemaModelsByIds(schemaSubmitDto.getSchemas());
         if (models.size() == 0) {
@@ -67,10 +68,10 @@ public class SchemaServerImpl {
             throw new ServerException("apk信息为空，不可测试");
         }
 
-        SchemaRunColony colony = new SchemaRunColony(servers, models, taskPresentation, apkInfoModel, Paths.get("/Users/mac/IdeaProjects/auto_git/src/main/file/test/"));
+        SchemaRunColony colony = new SchemaRunColony(servers, models, presentation, apkInfoModel, Paths.get("/Users/mac/IdeaProjects/auto_git/src/main/file/test/"));
         colony.runTask();
 
-        String id = presentationCache.put(taskPresentation);
+        String id = presentationCache.put(presentation);
         return id;
     }
 
