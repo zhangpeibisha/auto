@@ -377,7 +377,6 @@ function addPhoneInfoConfirm(data) {
                 layer.alert('行信息为：<br>' + JSON.stringify(data))
             } else if (obj.event === 'del') {
                 layer.confirm('真的删除么', function (index) {
-                    console.log("删除", obj);
                     schemaVue.phoneInfo.delete(data.ip + data.port);
                     obj.del();
                     layer.close(index);
@@ -427,14 +426,12 @@ function submitSchemaTest() {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function (res) {
-            console.log("正确反馈信息", res);
             layer.alert("查看测试报告ID:" + res);
         },
         error: function (res) {
-            console.log("异常反馈信息", res)
             layer.alert("错误:" + res.status);
         },
-        finally:function (res) {
+        finally: function (res) {
             // 清空信息
             schemaVue.phoneInfo.clear();
             schemaVue.checkValue.clear();
@@ -446,9 +443,6 @@ function submitSchemaTest() {
 function getSchemasId() {
     var schemaId = [];
     var schemaArr = mapToArr(schemaVue.checkValue);
-    console.log("arr:", schemaArr);
-    console.log("arr-id:", schemaArr[0].id);
-    console.log("map:", schemaVue.checkValue);
     var len = schemaArr.length;
     for (var i = 0; i < len; i++) {
         schemaId.push(schemaArr[i].id);
@@ -567,92 +561,192 @@ function showApkInfo() {
 
 //==================================查看结果
 
-function getResultStr() {
-    return `<div class="demoTable">
-              搜索ID：
-              <div class="layui-inline">
-                <input class="layui-input" name="id" id="demoReload" autocomplete="off">
-              </div>
-              <button class="layui-btn" data-type="reload">搜索</button>
+function getResultStr(id) {
+    return `
+            <div style="height: 20px"></div>
+            <div style="display: flex">
+                <div class="demoTable" style="align-content: right">
+                  搜索ID：
+                  <div class="layui-inline">
+                    <input class="layui-input" name="id" id="demoReload" autocomplete="off">
+                  </div>
+                  <button class="layui-btn" onclick="click_sousuo()" data-type="reload">搜索</button>
+                </div>
             </div>
-             
-            <table class="layui-hide" id="testResult" lay-filter="user"></table> `;
+            <table class="layui-hide" id=${id} lay-filter="demoEvent"></table> `;
 }
 
+
+var restulVue = new Vue({
+    data:{
+        result:[]
+    }
+});
 
 function viewSchemaTestResult() {
 
-    updateContent(getResultStr());
+    var id = "resultTable";
 
-    layui.use('table', function () {
+    var toolsStr = getResultStr(id);
+    updateContent(toolsStr);
+
+    layui.use("table", function (key) {
         var table = layui.table;
-
-        //方法级渲染
         table.render({
-            elem: '#testResult'
-            , cols: [[
-                {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }, {
-                    field: "",
-                    title: ""
-                }
-            ]]
-            , id: 'testReload'
-            , page: true
-            , height: 315
+            elem: '#'+id,
+            cols: [[{
+                field: "apkId",
+                title: "执行apk"
+            }, {
+                field: "appiumPath",
+                title: "服务器Url"
+            }, {
+                field: "computer",
+                title: "电脑IP"
+            }, {
+                field: "deviceModel",
+                title: '手机型号'
+            }, {
+                field: "deviceName",
+                title: '手机序列号'
+            }, {
+                field: "savePath",
+                title: '截图保存地址',
+                event: "viewPic"
+            }, {
+                field: "schemaPath",
+                title: 'schemaUrl'
+            }, {
+                field: "runResultMsg",
+                title: '反馈信息'
+            }, {
+                field: "success",
+                title: '是否完成'
+            }, {
+                field: "taskSchedul",
+                title: '进度'
+            }]],
+            data: restulVue.result,
+            limit: 30
         });
 
-        var $ = layui.$, active = {
-            reload: function () {
-                var demoReload = $('#demoReload');
 
-                //执行重载
-                table.reload('testReload', {
-                    page: {
-                        curr: 1 //重新从第 1 页开始
-                    }
-                    , where: {
-                        key: {
-                            id: demoReload.val()
-                        }
-                    }
+        //监听单元格事件
+        table.on('tool(demoEvent)', function(obj){
+            console.log("监听。",obj);
+            var data = obj.data;
+            if(obj.event === 'viewPic'){
+                layer.prompt({
+                    formType: 2
+                    ,title: '在此处设置一个弹框可以展示该路径的照片'
+                    ,value: data.savePath
+                }, function(value, index){
+                    layer.close(index);
+
+                    //这里一般是发送修改的Ajax请求
+
                 });
             }
-        };
-
-        $('.demoTable .layui-btn').on('click', function () {
-            var type = $(this).data('type');
-            active[type] ? active[type].call(this) : '';
         });
+
     });
+
+
+
 }
 
+function click_sousuo(){
+    console.log("点击搜索");
+    var pId = $("#demoReload").val();
+    console.log("pId",pId);
+    $.ajax({
+        url:"/schema/getResult",
+        data:{
+            presentationId:pId
+        },
+        dataType: "json",
+        success:function (res) {
+            showPresentationData(res,0);
+            viewSchemaTestResult();
+        },
+        error:function (res) {
+            layer.msg("获取数据失败:"+res.responseJSON.message)
+        }
+    })
+}
+
+/**
+ *
+ * @param data 整体数据
+ * @param i  数据到第几个
+ */
+function showPresentationData(data,i) {
+    var result = {};
+
+    // 是否执行成功
+    result.success = data.ok;
+    // 任务完成度
+    result.taskSchedul = data.info.status.runSchedule;
+    // 运行的apk的ID，在表格中时点击展示apk信息    data.info.data.0.apk.id;
+    result.apkId = parseJsonByKey(data,"info.data.0.apk.id");
+
+    // // 电脑的IP data.info.next.i.data.j.ip;
+    result.computer = parseJsonByKey(data,"info.next.0.data.0.ip");
+    //
+    // // 1.获取到1个手机信息 data.next.i.next.j.data.k.phone;
+    result.deviceName = parseJsonByKey(data,"info.next.0.next.0.data.0.phone.deviceName");
+    result.deviceModel = parseJsonByKey(data,"info.next.0.next.0.data.0.phone.deviceModel");
+    // // 2.获取服务器信息  data.next.i.next.j.data.k.appiumPath;
+    result.appiumPath = parseJsonByKey(data,"info.next.0.next.0.data.0.appiumPath");
+    // // 3.获取运行结果  data.next.i.next.j.data.k.data.h;   schemaRun.runSchema.path;
+    result.savePath = parseJsonByKey(data,"info.next.0.next.0.next.0.data.0.savePath");
+    result.schemaPath = parseJsonByKey(data,"info.next.0.next.0.next.0.data.0.runSchema.path");
+    result.runResultMsg = parseJsonByKey(data, "info.next.0.next.0.next.0.data.0.msg");
+
+    console.log("获取到到值为:",result)
+
+    restulVue.result.push(result)
+
+    console.log("获取到到值为:", restulVue.result)
+}
+
+/**
+ * 递归对json进行解析
+ * @param jsonObj json值
+ * @param keyStr key的字符串形式，以 . 进行分割
+ * @returns {*|void}  返回找到的值
+ */
+function parseJsonByKey(jsonObj,keyStr) {
+    var keys = keyStr.split(".");
+    return  parseJson(jsonObj,keys,0);
+}
+
+/**
+ * 遍历解析Json
+ * @param jsonObj json数据
+ * @param keys  键值集合
+ * @param index  当前寻找到第几个键值
+ * @returns {*} 指定键第值
+ */
+function parseJson(jsonObj,keys,index) {
+    // 循环所有键
+    for(var key in jsonObj) {
+        //如果对象类型为object类型且数组长度大于0 或者 是对象 ，继续递归解析
+            var element = jsonObj[key];
+            if(element.length > 0 && typeof(element) === "object" || typeof(element) === "object") {
+                // console.log("----key -->  " + key + ":" + keys[index] + " ");
+                if (key === keys[index]){
+                   return parseJson(element,keys,++index);
+                }
+            } else { //不是对象或数组、直接输出
+                if (key === keys[index]){
+                    // console.log("----end -->  " + key + ":" + element + " ");
+                    // console.log("result",element);
+                    return element;
+                }
+            }
+    }
+}
 
 //==================================提交记录
 function showSubmitRecording() {
