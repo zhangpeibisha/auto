@@ -115,7 +115,10 @@ public class SchemaRunOne implements SchemaRun {
 
     @Override
     public void runTask() {
-        presentation.putCurr("schema", JSON.toJSON(schemaModel));
+
+        Result result = new Result();
+
+        result.setRunSchema(schemaModel);
         // 核心运行部分
         try {
             AndroidDriver driver = (AndroidDriver) defaultAndroidDriver.getDriver();
@@ -129,10 +132,45 @@ public class SchemaRunOne implements SchemaRun {
 
             // 开始手机信息进行保存，为报告生成做准备
             presentation.setSuccess();
-            presentation.putCurr("savePath",savePath);
-        } catch (WebDriverException | SchemaException | InterruptedException | IOException e) {
+            result.setSavePath(savePath);
+            result.setMsg("执行成功");
+        } catch (Exception e) {
             presentation.setFail();
-            presentation.putCurr("fail msg",e.getMessage());
+            result.setMsg("执行失败:"+e.getMessage());
+            LogUtils.printLog("one "+e.getMessage());
+        }
+
+        presentation.putCurr("data",result);
+    }
+
+
+    class Result{
+        private SchemaModel runSchema;
+        private Path savePath;
+        private String msg;
+
+        public SchemaModel getRunSchema() {
+            return runSchema;
+        }
+
+        public void setRunSchema(SchemaModel runSchema) {
+            this.runSchema = runSchema;
+        }
+
+        public Path getSavePath() {
+            return savePath;
+        }
+
+        public void setSavePath(Path savePath) {
+            this.savePath = savePath;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
         }
     }
 

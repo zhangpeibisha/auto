@@ -12,8 +12,10 @@ import org.nix.learn.auto.model.SchemaModel;
 import org.nix.learn.auto.functions.schema.*;
 import org.nix.learn.auto.utils.LogUtils;
 
+import java.net.URL;
 import java.nio.file.Path;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -87,29 +89,62 @@ public class SchemaRunPhone extends Thread implements SchemaRun {
 
     @Override
     public void runTask() {
-        AppiumDriver driver;
+        Result result = new Result();
         try {
+            result.setAppiumPath(defaultAndroidDriver.getAppiumPath());
+            AppiumDriver driver;
             driver = defaultAndroidDriver.getDriver();
-        } catch (AppiumException e) {
+            result.setPhone(driver.getCapabilities().asMap());
+
+            for (SchemaModel schemaModel : models) {
+                SchemaRunOne runOne = new SchemaRunOne(
+                        schemaModel,
+                        defaultAndroidDriver,
+                        prentPresentation.addNext("schemas", (long) 1),
+                        apkVersion,
+                        screenshotPath);
+                runOne.runTask();
+            }
+            result.setMsg("启动执行成功");
+        } catch (Exception e) {
             int size = models.size();
             for (int i = 0; i < size; i++) {
                 prentPresentation.setFail();
             }
-            prentPresentation.putCurr("run fail", defaultAndroidDriver.getAppiumPath());
-            return;
+            result.setMsg("启动appium服务器失败:"+e.getMessage());
+            LogUtils.printLog("phone "+e.getMessage());
         }
-        prentPresentation.putCurr("phone info", driver.getCapabilities().asMap());
-        int index = 0;
-        for (SchemaModel schemaModel : models) {
-            SchemaRunOne runOne = new SchemaRunOne(
-                    schemaModel,
-                    defaultAndroidDriver,
-                    prentPresentation.addNext(index+" :schemas", (long) 1),
-                    apkVersion,
-                    screenshotPath);
-            runOne.runTask();
+        prentPresentation.putCurr("data",result);
+    }
 
-            index++;
+
+    class Result{
+        private String msg;
+        private Map phone;
+        private URL appiumPath;
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+
+        public Map getPhone() {
+            return phone;
+        }
+
+        public void setPhone(Map phone) {
+            this.phone = phone;
+        }
+
+        public URL getAppiumPath() {
+            return appiumPath;
+        }
+
+        public void setAppiumPath(URL appiumPath) {
+            this.appiumPath = appiumPath;
         }
     }
 

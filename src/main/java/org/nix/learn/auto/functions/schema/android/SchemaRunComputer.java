@@ -1,9 +1,11 @@
 package org.nix.learn.auto.functions.schema.android;
 
 import com.alibaba.fastjson.JSON;
+import io.appium.java_client.AppiumDriver;
 import org.apache.log4j.Logger;
 import org.nix.learn.auto.core.appium.AppiumException;
 import org.nix.learn.auto.core.appium.create.DefaultAndroidDriver;
+import org.nix.learn.auto.core.appium.server.AppiumServer;
 import org.nix.learn.auto.functions.presentation.Presentation;
 import org.nix.learn.auto.functions.presentation.PresentationContent;
 import org.nix.learn.auto.model.SchemaModel;
@@ -70,24 +72,67 @@ public class SchemaRunComputer implements SchemaRun {
      */
     @Override
     public void runTask() {
+
+        Result result = new Result();
+
         List<DefaultAndroidDriver> list = runStaple.createDefaultAndroidDrivers();
         if (list != null) {
-            int index = 0;
-            prentPresentation.putCurr("current phones",list.size());
-            for (DefaultAndroidDriver defaultAndroidDriver : list) {
-                SchemaRunPhone runPhone = new SchemaRunPhone(
-                        models,
-                        defaultAndroidDriver,
-                        // 下一级报告应该是针对于schema生成报告
-                        prentPresentation.addNext(index + " :phone", (long) models.size()),
-                        apkVersion, screenshotPath);
-
-                SchemaThreadPool.put(runPhone);
-                index++;
+            AppiumServer server = runStaple.getServer();
+            result.setIp(server.getIP());
+            try {
+                for (DefaultAndroidDriver defaultAndroidDriver : list) {
+                    SchemaRunPhone runPhone = new SchemaRunPhone(
+                            models,
+                            defaultAndroidDriver,
+                            // 下一级报告应该是针对于schema生成报告
+                            prentPresentation.addNext("phone", (long) models.size()),
+                            apkVersion, screenshotPath);
+                    SchemaThreadPool.put(runPhone);
+                }
+                result.setMsg("执行成功");
+            }catch (Exception e){
+                LogUtils.printLog("computer "+e.getMessage());
+                result.setMsg("执行失败："+e.getMessage());
             }
+
         } else {
-            prentPresentation.putCurr("current phones","null");
+            result.setMsg("没有手机可以运行");
         }
 
+        prentPresentation.putCurr("data",result);
     }
+
+
+    class Result{
+        private String ip;
+        private String msg;
+
+        public Result() {
+        }
+
+        public String getIp() {
+            return ip;
+        }
+
+        public void setIp(String ip) {
+            this.ip = ip;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
+        }
+
+        @Override
+        public String toString() {
+            return "Result{" +
+                    "ip='" + ip + '\'' +
+                    ", msg='" + msg + '\'' +
+                    '}';
+        }
+    }
+
 }

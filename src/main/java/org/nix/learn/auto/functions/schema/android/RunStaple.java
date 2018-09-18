@@ -96,4 +96,12 @@ public class RunStaple {
         }
         udids.add(udid);
     }
+
+    public AppiumServer getServer() {
+        return server;
+    }
+
+    public void setServer(AppiumServer server) {
+        this.server = server;
+    }
 }

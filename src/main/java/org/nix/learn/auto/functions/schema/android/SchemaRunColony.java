@@ -72,19 +72,75 @@ public class SchemaRunColony implements SchemaRun {
 
     @Override
     public void runTask() {
-//        presentation.putCurr("task info", JSON.toJSON(this));
-        int index = 0;
+
+        Result result = new Result();
+
         if (runStaples.size() == 0){
             presentation.setFail();
-            return;
+            result.setMsg("没有可执行的设备");
+        }else {
+            try {
+                for (RunStaple runStaple : runStaples) {
+                    SchemaRunComputer computer = new SchemaRunComputer(runStaple, presentation.addNext("computer", (long) runStaples.size())
+                            , schemaModels, apkInfo.getVersion(), screenshotPath);
+                    computer.runTask();
+
+                }
+                result.setApk(apkInfo);
+                result.setSchemas(schemaModels);
+                result.setMsg("启动执行成功");
+            }catch (Exception e){
+                LogUtils.printLog("起始类 "+e.getMessage());
+                result.setMsg("启动执行失败:"+e.getMessage());
+            }
         }
-        for (RunStaple runStaple : runStaples) {
-            SchemaRunComputer computer = new SchemaRunComputer(runStaple, presentation.addNext(index + " :computer", (long) runStaples.size())
-                    , schemaModels, apkInfo.getVersion(), screenshotPath);
-            computer.runTask();
-            index++;
+        presentation.putCurr("data",result);
+    }
+
+
+
+    class Result{
+        private ApkInfoModel apk;
+        private List<SchemaModel> schemas;
+        private String msg;
+
+        public ApkInfoModel getApk() {
+            return apk;
+        }
+
+        public void setApk(ApkInfoModel apk) {
+            this.apk = apk;
+        }
+
+        public List<SchemaModel> getSchemas() {
+            return schemas;
+        }
+
+        public void setSchemas(List<SchemaModel> schemas) {
+            this.schemas = schemas;
+        }
+
+        public String getMsg() {
+            return msg;
+        }
+
+        public void setMsg(String msg) {
+            this.msg = msg;
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
     public static void main(String[] args) throws InterruptedException {
