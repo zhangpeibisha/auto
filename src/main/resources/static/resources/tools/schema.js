@@ -433,6 +433,12 @@ function submitSchemaTest() {
         error: function (res) {
             console.log("异常反馈信息", res)
             layer.alert("错误:" + res.status);
+        },
+        finally:function (res) {
+            // 清空信息
+            schemaVue.phoneInfo.clear();
+            schemaVue.checkValue.clear();
+            schemaVue.apk = "";
         }
     })
 }
