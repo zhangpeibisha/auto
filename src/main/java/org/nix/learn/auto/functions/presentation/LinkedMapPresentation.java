@@ -28,7 +28,7 @@ public class LinkedMapPresentation implements Presentation<Double>{
     /**
      * 子集
      */
-    private List<Presentation> next;
+    private Map<String,Presentation> next;
 
     private Presentation father;
 
@@ -52,13 +52,16 @@ public class LinkedMapPresentation implements Presentation<Double>{
         this.father = father;
     }
 
+    private Integer nextIndex = 0;
+
     @Override
     public Presentation addNext(String sonKey, Long runNumber) {
         if (next ==null){
-            next = new LinkedList<>();
+            next = new ConcurrentHashMap<>();
         }
         Presentation presentation = new LinkedMapPresentation(this,runNumber);
-        next.add(presentation);
+        next.put(String.valueOf(nextIndex),presentation);
+        nextIndex++;
         return presentation;
     }
 
@@ -141,11 +144,11 @@ public class LinkedMapPresentation implements Presentation<Double>{
         this.data = data;
     }
 
-    public List<Presentation> getNext() {
+    public Map<String, Presentation> getNext() {
         return next;
     }
 
-    public void setNext(List<Presentation> next) {
+    public void setNext(Map<String, Presentation> next) {
         this.next = next;
     }
 

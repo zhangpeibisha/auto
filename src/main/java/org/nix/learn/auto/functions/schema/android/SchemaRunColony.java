@@ -90,7 +90,6 @@ public class SchemaRunColony implements SchemaRun {
                 result.setSchemas(schemaModels);
                 result.setMsg("启动执行成功");
             }catch (Exception e){
-                LogUtils.printLog("起始类 "+e.getMessage());
                 result.setMsg("启动执行失败:"+e.getMessage());
             }
         }
